@@ -11,7 +11,18 @@ public class Endereco {
 	private String uf;
 	private String complemento;
 	
-	
+	public Endereco(String cep, String tipo_logra, String logradouro, String numero, String bairro,
+			String cidade, String uf, String complemento) {
+		super();
+		this.cep = cep;
+		this.tipo_logra = tipo_logra;
+		this.logradouro = logradouro;
+		this.numero = numero;
+		this.bairro = bairro;
+		this.cidade = cidade;
+		this.uf = uf;
+		this.complemento = complemento;
+	}
 	public int getIdendereco() {
 		return idendereco;
 	}

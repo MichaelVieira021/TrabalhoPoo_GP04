@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import com.serratec.conexao.Conexao;
 import com.serratec.conexao.DadosConexao;
 import com.serratec.classes.Cliente;
+import com.serratec.uteis.*;
 
 public class ClienteDAO {
 	private Conexao conexao;
@@ -37,7 +38,7 @@ public class ClienteDAO {
 	
 	private void prepararSqlInclusao() {
 		String sql = "insert into "+ this.schema + ".cliente";	
-		sql += " (nome, cpf, endereco, dtnasc, rg, sexo)";
+		sql += " (nome, cpf, email, telefone, dt_nascimento, endereco)";
 		sql += " values ";
 		sql += " (?, ?, ?, ?, ?, ?)";
 		
@@ -53,10 +54,10 @@ public class ClienteDAO {
 		String sql = "update "+ this.schema + ".cliente";	
 		sql += " set nome = ?,";
 		sql += " cpf = ?,";
-		sql += " endereco = ?,";
-		sql += " rg = ?,";
-		sql += " dtnasc = ?,";
-		sql += " sexo = ?";
+		sql += " email = ?,";
+		sql += " telefone = ?,";
+		sql += " dt_nascimento = ?";
+		sql += " endereco = ?";
 		sql += " where idcliente = ?";
 		
 		try {
@@ -71,11 +72,11 @@ public class ClienteDAO {
 		try {
 			pAlteracao.setString(1, cliente.getNome());
 			pAlteracao.setString(2, cliente.getCpf());
-			//pAlteracao.setString(3, cliente.getEndereco());
-			//pAlteracao.setString(4, cliente.getRg());
-			//pAlteracao.setDate(5, Date.valueOf(cliente.getDtNasc()));
-			//pAlteracao.setString(6, String.valueOf(cliente.getSexo()));
-			//pAlteracao.setInt(7, cliente.getIdcliente());
+			pAlteracao.setString(3, cliente.getEmail());
+			pAlteracao.setString(4, cliente.getTelefone());
+			pAlteracao.setDate  (5, Date.valueOf(cliente.getDt_nascimento()));
+			pAlteracao.setString(6, com.serratec.uteis.Util.buscarCep());
+			pAlteracao.setInt   (7, cliente.getIdcliente());
 			
 			return pAlteracao.executeUpdate();
 		} catch (Exception e) {
@@ -94,10 +95,11 @@ public class ClienteDAO {
 							
 			pInclusao.setString(1, cliente.getNome());
 			pInclusao.setString(2, cliente.getCpf());
-			//pInclusao.setString(3, cliente.getEndereco());
-			//pInclusao.setDate(4, Date.valueOf(cliente.getDtNasc()));
-			//pInclusao.setString(5, cliente.getRg());
-			//pInclusao.setString(6, String.valueOf(cliente.getSexo()));
+			pInclusao.setString(3, cliente.getEmail());
+			pInclusao.setString(4, cliente.getTelefone());
+			pInclusao.setDate(5, Date.valueOf(cliente.getDt_nascimento()));
+			pInclusao.setString(6, com.serratec.uteis.Util.buscarCep());
+			//pInclusao.setInt(7, cliente.getIdcliente());	
 			
 			return pInclusao.executeUpdate();
 		} catch (Exception e) {

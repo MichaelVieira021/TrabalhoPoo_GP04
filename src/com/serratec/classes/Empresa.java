@@ -1,7 +1,10 @@
 package com.serratec.classes;
 
 import java.util.Scanner;
+
+import com.serratec.conexao.Conexao;
 import com.serratec.uteis.Util;
+
 //import com.serratec.classes.Cliente;
 import java.util.ArrayList;
 
@@ -9,6 +12,18 @@ public class Empresa {
 	//private static final String nome = "g4Tech";
 	//private String cnpj = "34554354";
 	
+	private com.serratec.conexao.Conexao con; 
+	private String schema;
+	
+	// Criação de novo construtor, necessário para conectar com a main
+	// con: O objeto de conexao com o banco de dados
+	// schema: A String que contem o nome do schema da base de dados
+	public Empresa(Conexao con, String schema) {
+		super();
+		this.con = con;
+		this.schema = schema;
+	}
+
 	private ArrayList<com.serratec.classes.Cliente> cliente = new ArrayList<>();
 	private ArrayList<com.serratec.classes.Produto> produto = new ArrayList<>();
 	//private ArrayList<com.serratec.classes.Pedido> pedido = new ArrayList<>();	
@@ -43,10 +58,8 @@ public class Empresa {
 		s = in.nextLine();
 		c.setTelefone(s);
 	
-		System.out.println("Informe o endereco: ");
-		s = in.nextLine();
+		//com.serratec.uteis.Util.buscarCep();
 		//c.setEndereco(s);
-		
 		//in.close();
 		
 		return c;

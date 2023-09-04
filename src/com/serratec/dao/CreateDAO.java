@@ -159,6 +159,13 @@ public class CreateDAO {
 		}
 	}
 		
+
+	/*
+	 * =================================================================================
+	 * 								CRIAR ENTIDADES
+	 * =================================================================================
+	 * */
+	
 	private static void criarEntidadeCliente(Conexao con, String schema) {
 		String entidade = "cliente";
 		
@@ -166,65 +173,18 @@ public class CreateDAO {
 			criarTabela(con, entidade, schema);
 		
 		if (entidadeExists(con, schema, entidade)) {
-			criarCampo(con, schema, entidade, "idcliente", "serial"	 	 , true,  false, null, null);
-			criarCampo(con, schema, entidade, "nome"	 , "varchar(100)", false, false, null, null);
-			criarCampo(con, schema, entidade, "cpf"		 , "varchar(11)" , false, false, null, null);
-			criarCampo(con, schema, entidade, "rg"		 , "varchar(11)" , false, false, null, null);
-			criarCampo(con, schema, entidade, "endereco" , "varchar(150)", false, false, null, null);
-			criarCampo(con, schema, entidade, "sexo"	 , "varchar(1)"	 , false, false, null, null);			
-			criarCampo(con, schema, entidade, "dtnasc"	 , "date"	 	 , false, false, null, null);
-		}		
-	}
-	
-	private static void criarEntidadeFuncionario(Conexao con, String schema) {
-		String entidade = "funcionario";
-		
-		if (!entidadeExists(con, schema, entidade))		
-			criarTabela(con, entidade, schema);
-		
-		if (entidadeExists(con, schema, entidade)) {
-			criarCampo(con, schema, entidade, "idfunc"	 , "serial"	 	 	 , true,  false, null, null);
-			criarCampo(con, schema, entidade, "nome"	 , "varchar(100)"	 , false, false, null, null);
-			criarCampo(con, schema, entidade, "cpf"		 , "varchar(11)" 	 , false, false, null, null);
-			criarCampo(con, schema, entidade, "rg"		 , "varchar(11)" 	 , false, false, null, null);
-			criarCampo(con, schema, entidade, "endereco" , "varchar(150)"	 , false, false, null, null);
-			criarCampo(con, schema, entidade, "sexo"	 , "varchar(1)"	 	 , false, false, null, null);			
-			criarCampo(con, schema, entidade, "cargo"	 , "varchar(60)" 	 , false, false, null, null);
-			criarCampo(con, schema, entidade, "salario"	 , "double precision", false, false, null, null);
-			criarCampo(con, schema, entidade, "ctps"	 , "varchar(10)"	 , false, false, null, null);
-		}		
-	}
-	
-	private static void criarEntidadeLivro(Conexao con, String schema) {
-		String entidade = "livro";
-		
-		if (!entidadeExists(con, schema, entidade))		
-			criarTabela(con, entidade, schema);
-		
-		if (entidadeExists(con, schema, entidade)) {
-			criarCampo(con, schema, entidade, "idlivro", "serial"	 	, true,  false, null, null);
-			criarCampo(con, schema, entidade, "titulo"	, "varchar(100)", false, false, null, null);
-			criarCampo(con, schema, entidade, "autor" 	, "varchar(100)", false, false, null, null);
-			criarCampo(con, schema, entidade, "isbn"		, "varchar(14)" , false, false, null, null);
-			criarCampo(con, schema, entidade, "editora" 	, "varchar(60)", false, false, null, null);
-			criarCampo(con, schema, entidade, "nrpaginas" 	, "integer", false, false, null, null);
-			criarCampo(con, schema, entidade, "quantidade" 	, "integer", false, false, null, null);
-			
-			cadastrarLivros(con, schema, entidade);
-		}		
-	}
-	
-	private static void criarEntidadeLivrosCliente(Conexao con, String schema) {
-		String entidade = "livroscliente";
-		
-		if (!entidadeExists(con, schema, entidade))		
-			criarTabela(con, entidade, schema);
-		
-		if (entidadeExists(con, schema, entidade)) {
-			criarCampo(con, schema, entidade, "idcliente", "integer", false,  false, null, null);
-			criarCampo(con, schema, entidade, "idlivro", "integer", false, false, null, null);
-			criarCampo(con, schema, entidade, "quantidade", "integer", false, false, null, null);
-			criarChaveComposta(con, schema, entidade, "idcliente, idlivro");
+			criarCampo(con, schema, entidade, "idcliente", "serial"	 	 	, true,  false, null, null);
+			/*criarCampo(con, schema, entidade, "codigo"	 ,
+					"TEXT GENERATED ALWAYS AS ( 'USER' || LPAD(idcliente::TEXT, 3, '0') ) STORED", 
+					false,  false, null, null);*/
+			criarCampo(con, schema, entidade, "nome"	 , "varchar(100)"	, false, false, null, null);
+			criarCampo(con, schema, entidade, "cpf"		 , "varchar(11)" 	, false, false, null, null);
+			criarCampo(con, schema, entidade, "email"	 , "varchar(150)"	, false, false, null, null);
+			criarCampo(con, schema, entidade, "telefone" , "varchar(16)"	, false, false, null, null);
+			criarCampo(con, schema, entidade, "dt_nascimento"	, "date"	, false, false, null, null);
+			criarCampo(con, schema, entidade, "endereco"	 	, "text"	, false, false, null, null);
+			//criarCampo(con, schema, entidade, "idendereco"	 , "int"	
+			//		, false, true, "endereco", "idendereco");
 		}		
 	}
 

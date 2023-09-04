@@ -32,7 +32,7 @@ public class Main {
 		if (CreateDAO.createBD(BANCO, SCHEMA, dadosCon)) {
 			con = new Conexao(dadosCon); 
 			con.conect();
-			//g4Tech = new Empresa(con, SCHEMA);
+			g4Tech = new Empresa(con, SCHEMA);
 			menuPrincipal();
 		} else {
 			System.out.println("Ocorreu um problema na criacao do banco de dados");
@@ -56,7 +56,7 @@ public class Main {
 				System.out.println("║                                   ║");
 				System.out.println("║-----------------------------------║");
 				System.out.println("║      Digite '4' para [Sair]       ║");
-				System.out.print("╚═══════════════════════════════════╝\n> ");
+				System.out.print  ("╚═══════════════════════════════════╝\n> ");
 				
 				opcao = Util.validarInteiro("Informe uma opcao: ");
 				
@@ -77,10 +77,6 @@ public class Main {
 				break;
 			default: System.out.println("Opcao invalida");
 			}
-		}
-		
-		public static void menuCadastrar() {
-			menuPadrao(Util.CRUD.CADASTRAR);			
 		}
 		
 		public static int menuPadrao(Util.CRUD tipoCrud) {
@@ -115,6 +111,10 @@ public class Main {
 			} while (opcao != 0);
 			
 			return opcao;
+		}
+		
+		public static void menuCadastrar() {
+			menuPadrao(Util.CRUD.CADASTRAR);			
 		}
 		
 		public static void escolherMenuCadastrar(int opcao) {		
