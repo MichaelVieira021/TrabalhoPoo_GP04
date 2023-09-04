@@ -1,20 +1,18 @@
 package com.serratec.main;
 
 import com.serratec.classes.Cliente;
+import com.serratec.classes.Empresa;
 import com.serratec.conexao.Conexao;
 import com.serratec.conexao.DadosConexao;
 import com.serratec.uteis.Util;
 import com.serratec.dao.CreateDAO;
 import com.serratec.dao.ClienteDAO;
 
-//import classes.Biblioteca;
-//import dao.CreateDAO;
-
 public class Main {
 	public static Empresa g4Tech;
 	public static Conexao con;
 	public static DadosConexao dadosCon = new DadosConexao();
-	public static final String BANCO = "trabalhoPooTeste";
+	public static final String BANCO = "trabalhopooteste";
 	public static final String SCHEMA = "grupo04";
 	public static final String LOCAL = "localhost";
 	public static final String USUARIO = "postgres";

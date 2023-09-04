@@ -6,7 +6,7 @@ public class Produto {
 	private String descricao;
 	private double vl_unitario;
 	private static int qtd_estoque;
-	private Categoria categoria;
+	//private Categoria categoria;
 
 	
 	public void dadosProdutos() {
@@ -65,18 +65,6 @@ public class Produto {
 
 
 	public void setQtd_estoque(int qtd_estoque) {
-		this.qtd_estoque = qtd_estoque;
-	}
-
-
-	public Categoria getCategoria() {
-		return categoria;
-	}
-
-
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
-	}
-	
-	
+		Produto.qtd_estoque = qtd_estoque;
+	}	
 }
