@@ -9,8 +9,8 @@ import com.serratec.uteis.Util;
 import java.util.ArrayList;
 
 public class Empresa {
-	//private static final String nome = "g4Tech";
-	//private String cnpj = "34554354";
+	private static final String nome = "g4Tech";
+	private String cnpj = "34554354";
 	
 	private com.serratec.conexao.Conexao con; 
 	private String schema;
