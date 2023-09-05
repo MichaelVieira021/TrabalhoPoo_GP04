@@ -5,9 +5,6 @@ import java.util.Scanner;
 import com.serratec.conexao.Conexao;
 import com.serratec.uteis.Util;
 import com.serratec.uteis.Menus;
-import com.serratec.uteis.ValidarCPF;
-
-//import com.serratec.classes.Cliente;
 import java.util.ArrayList;
 
 public class Empresa {
@@ -47,19 +44,10 @@ public class Empresa {
 		String s = in.nextLine();
 		c.setNome(s);
 		
-		
 		System.out.println("Informe o CPF (somente números): ");
-		/*do {
-			s = in.nextLine();
-			System.out.println(ValidarCPF.isCPF(s));
-			c.setCpf(ValidarCPF.imprimeCPF(s));
-		} while(ValidarCPF.isCPF(s) != true);*/
-		
 		s = in.nextLine();
 		c.setCpf(s);
-		
-		c.setDt_nascimento(Util.validarData("Informe a data de nascimento (dd/MM/yyyy): "));
-		
+			
 		System.out.println("Informe o Email: ");
 		s = in.nextLine();
 		c.setEmail(s);
@@ -67,9 +55,13 @@ public class Empresa {
 		System.out.println("Informe o Telefone: ");
 		s = in.nextLine();
 		c.setTelefone(s);
+		
+		c.setDt_nascimento(Util.validarData("Informe a data de nascimento (dd/MM/yyyy): "));
 	
-		//com.serratec.uteis.Util.buscarCep();
-		//c.setEndereco(s);
+		System.out.println("Informe o CEP: ");
+		s = in.nextLine();
+		com.serratec.uteis.BuscarCEP.buscarCep(s);
+		c.setEndereco(s);
 		//in.close();
 		
 		return c;

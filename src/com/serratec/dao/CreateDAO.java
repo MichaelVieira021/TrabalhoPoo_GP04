@@ -21,8 +21,8 @@ public class CreateDAO {
 			if (criarSchema(conexao, schema)) {
 				criarEntidadeCliente(conexao, schema);
 				criarEntidadeEndereco(conexao, schema);
-				criarEntidadeProduto(conexao, schema);
 				criarEntidadeCategoria(conexao, schema);
+				criarEntidadeProduto(conexao, schema);
 				//criarEntidadeLivrosCliente(conexao, schema);
 				
 				bdCriado = true;
@@ -129,10 +129,9 @@ public class CreateDAO {
 			}
 
 			if (estrangeiro) {
-				sql += "references " + entidadeEstrangeira + "(" + atributoEstrangeiro + ")";
+				sql += "references " + schema + "." + entidadeEstrangeira + "(" + atributoEstrangeiro + ")";
 			}
 
-			
 			con.query(sql);
 		}
 	}
@@ -218,6 +217,8 @@ public class CreateDAO {
 			criarCampo(con, schema, entidade, "idcategoria"			, "serial"	 	 		, true,  false, null, null);
 			criarCampo(con, schema, entidade, "nm_categoria"	 	, "varchar(255)"		, false, false, null, null);
 			criarCampo(con, schema, entidade, "descricao"			, "text" 				, false, false, null, null);
+		
+			cadastrarCategorias(con,schema,entidade);
 		}		
 	}
 	
@@ -234,7 +235,7 @@ public class CreateDAO {
 			criarCampo(con, schema, entidade, "vl_custo"			, "double precision"	, false, false, null, null);
 			criarCampo(con, schema, entidade, "vl_venda" 			, "double precision"	, false, false, null, null);
 			criarCampo(con, schema, entidade, "qtd_estoque"			, "int"					, false, false, null, null);
-			criarCampo(con, schema, entidade, "idcategoria"	 		, "int"					, false, true, schema+".categoria", "idcategoria");
+			criarCampo(con, schema, entidade, "idcategoria"	 		, "int"					, false, true, "categoria", "idcategoria");
 		}		
 	}
 	
@@ -303,31 +304,22 @@ public class CreateDAO {
 		return atributoExist;
 	}
 	
-	/*private static void cadastrarLivros(Conexao con, String schema, String entidade) {
-		
-		ResultSet tabela = con.query("select titulo from " + schema + "." + entidade + " limit 1");
+	private static void cadastrarCategorias(Conexao con, String schema, String entidade) {
+		ResultSet tabela = con.query("select nm_categoria from " + schema + "." + entidade + " limit 1");
 		
 		try {
 			if (!tabela.next()) {
-				String sql = "insert into " + schema + "." + entidade;
-				sql += " (titulo, autor, isbn, editora, nrpaginas, quantidade)";
-				sql += " values";
-				sql += "('e assim que acaba', 'Colleen Hoover', '11111', 'Galera', 368, 1),";
-				sql += "('Como fazer amigos e influenciar pessoas', 'Dale Carnegie', '8543108683,', 'Editora Sextante', 256, 4),";
-				sql += "('Pai rico pai pobre', 'Robert T. Kiyosaki', '8550801488', 'Alta Books', 336, 3),";
-				sql += "('O homem mais rico da Babilonia', 'George S. Clason', '22222', 'HarperCollins', 160, 2),";
-				sql += "('SQL Guia Pratico: Um guia para o uso de SQL', 'Alice Zhao', 'B0BQP75V8R', 'Novatec Editora', 351, 1),";
-				sql += "('Entendendo Algoritmos: Um Guia Ilustrado Para Programadores e Outros Curiosos', 'Aditya Y. Bhargava', '8575225634', 'Novatec Editora', 264, 1),";
-				sql += "('Codigo limpo: Habilidades praticas do Agile Software', 'Robert C. Martin', '8576082675', 'Alta Books', 425, 2),";
-				sql += "('Arquitetura limpa: O guia do artesao para estrutura e design de software', 'Robert C. Martin', '8550804606', 'Alta Books', 432, 1),";
-				sql += "('O codificador limpo: Um codigo de conduta para programadores profissionais', 'Bob Martin', '8576086476', 'Alta Books', 244, 1),";
-				sql += "('Refatoracao: Aperfeicoando o Design de Codigos Existentes', 'Colleen Hoover', '8575227246', 'Novatec Editora', 456, 6)";
-				
-				con.query(sql);
+				String sqlCategoria = "insert into " + schema + "." + entidade;
+				sqlCategoria += " (nm_categoria, descricao)";
+				sqlCategoria += " values";
+				sqlCategoria += "('Teclados', 'Descrição de Teclados'),";
+				sqlCategoria += "('Monitores', 'Descrição de Monitores'),";
+				sqlCategoria += "('Mouses', 'Descrição de Mouses')";
+				con.query(sqlCategoria);
 				tabela.close();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}		
-	}*/
+	}
 }

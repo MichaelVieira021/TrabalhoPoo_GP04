@@ -14,8 +14,9 @@ import com.serratec.main.Main;
 
 public class BuscarCEP {
 	public static Scanner in = new Scanner(System.in);
+
 	//função para buscar cep
-    public static String buscarCep() 
+    public static String buscarCep(String cep) 
     {
     	//PROCURAR CEP
     	String logradouro;
@@ -27,10 +28,7 @@ public class BuscarCEP {
     	String numero_residencia = "";
     	String complemento = "";
         String json;        
-        String cep;
         
-		System.out.println("Informe o CEP: ");
-		cep = in.nextLine();
         try {
             URL url = new URL("http://viacep.com.br/ws/"+ cep +"/json");
             URLConnection urlConnection = url.openConnection();
@@ -63,17 +61,22 @@ public class BuscarCEP {
             cidade = array[19]; 
             uf = array[23];
             
+            endereco ="(" + tipo_logradouro + ") " + logradouro + ", " + numero_residencia + 
+            		" - " + bairro + " - " + cidade + " - " + uf + " - Complemento: " + complemento;
+            
+            // DESCONTINUADO: CRIAVA NOVO ENDEREÇO NA CLASSE Endereco
             //criar endereco
             /*Endereco novoEndereco = new Endereco(cep, tipo_logradouro, logradouro, 
             							numero_residencia, bairro, cidade, uf, complemento);
             int retorno = com.serratec.main.Main.cadastrarEndereco().incluirEndereco(novoEndereco);
             com.serratec.classes.Empresa.adicionarEndereco(novoEndereco);*/
-            endereco ="(" + tipo_logradouro + ") " + logradouro + ", " + numero_residencia + 
-            		" - " + bairro + " - " + cidade + " - " + uf + " - Complemento: " + complemento;
-            System.out.println(Arrays.toString(array));
+            
+            //VERIFICAÇÕES PARA VER SE ESSA JOÇA ESTA FUNCIONANDO
+            //System.out.println(Arrays.toString(array));
             //JOptionPane.showMessageDialog(null, logradouro + " " + bairro + " " + cidade + " " + uf);
 			//System.out.println(logradouro + " " + bairro + " " + cidade + " " + uf);
-            System.out.println(endereco);
+            //System.out.println(endereco);
+            
             return endereco;
         } catch (Exception e) {
             throw new RuntimeException(e);

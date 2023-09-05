@@ -75,7 +75,7 @@ public class ClienteDAO {
 			pAlteracao.setString(3, cliente.getEmail());
 			pAlteracao.setString(4, cliente.getTelefone());
 			pAlteracao.setDate  (5, Date.valueOf(cliente.getDt_nascimento()));
-			pAlteracao.setString(6, com.serratec.uteis.BuscarCEP.buscarCep());
+			pAlteracao.setString(6, cliente.getEndereco());
 			pAlteracao.setInt   (7, cliente.getIdcliente());
 			
 			return pAlteracao.executeUpdate();
@@ -97,7 +97,7 @@ public class ClienteDAO {
 			pInclusao.setString(3, cliente.getEmail());
 			pInclusao.setString(4, cliente.getTelefone());
 			pInclusao.setDate(5, Date.valueOf(cliente.getDt_nascimento()));
-			pInclusao.setString(6, com.serratec.uteis.BuscarCEP.buscarCep());
+			pInclusao.setString(6,cliente.getEndereco());
 			//pInclusao.setInt(7, cliente.getIdcliente());	
 			
 			return pInclusao.executeUpdate();

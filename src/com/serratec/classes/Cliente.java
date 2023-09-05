@@ -4,8 +4,8 @@ public class Cliente extends Pessoa{
 	private int idcliente;
 	private String email;
 	private String telefone;
-	private Endereco endereco;
-
+	private String endereco;
+	
 	public int getIdcliente() {
 		return idcliente;
 	}
@@ -14,10 +14,10 @@ public class Cliente extends Pessoa{
 		this.idcliente = idcliente;
 	}
 	
-	public Endereco getEndereco() {
+	public String getEndereco() {
 		return endereco;
 	}
-	public void setEndereco(Endereco endereco) {
+	public void setEndereco(String endereco) {
 		this.endereco = endereco;
 	}
 	
