@@ -60,8 +60,7 @@ public class Empresa {
 	
 		System.out.println("Informe o CEP: ");
 		s = in.nextLine();
-		com.serratec.uteis.BuscarCEP.buscarCep(s);
-		c.setEndereco(s);
+		c.setEndereco(com.serratec.uteis.BuscarCEP.buscarCep(s));
 		//in.close();
 		
 		return c;
