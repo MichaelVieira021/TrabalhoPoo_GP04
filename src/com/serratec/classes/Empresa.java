@@ -26,7 +26,7 @@ public class Empresa {
 	private ArrayList<com.serratec.classes.Cliente> cliente = new ArrayList<>();
 	private ArrayList<com.serratec.classes.Produto> produto = new ArrayList<>();
 	//private ArrayList<com.serratec.classes.Endereco> endereco = new ArrayList<>();
-	//private ArrayList<com.serratec.classes.Pedido> pedido = new ArrayList<>();	
+	private ArrayList<com.serratec.classes.Pedido> pedido = new ArrayList<>();	
 	
  	public com.serratec.classes.Cliente cadastrarCliente() {
  		com.serratec.classes.Cliente c = new com.serratec.classes.Cliente();
@@ -114,7 +114,26 @@ public class Empresa {
 		
 		return c;
 	}
- 	
+
+ 	public Pedido cadastrarPedido() {
+ 		com.serratec.classes.Pedido pd = new com.serratec.classes.Pedido();
+		
+		@SuppressWarnings("resource")
+		Scanner in = new Scanner(System.in);
+		
+		System.out.println(Util.LINHA);
+		System.out.println("Cadastro de pedido: ");
+		System.out.println(Util.LINHA);
+		
+		Util.br();
+						
+		pd.setDt_emissao(Util.validarData("Data de emissão: "));
+		
+		pd.setIdcliente(Util.validarInteiro("Id do cliente: "));
+		
+		
+		return pd;
+	}
  	/*public com.serratec.classes.Produto adicionarProduto(com.serratec.classes.Produto produto) {
  		com.serratec.classes.Produto c = new com.serratec.classes.Produto();
 		
@@ -150,4 +169,9 @@ public class Empresa {
 		return endereco;
 	}*/	
  	
+	public void adicionarPedido(Pedido pedido) {
+		this.pedido.add(pedido);
+	}
+
+	
 }

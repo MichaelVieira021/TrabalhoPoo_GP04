@@ -3,11 +3,13 @@ package com.serratec.main;
 import com.serratec.classes.Cliente;
 import com.serratec.classes.Produto;
 import com.serratec.classes.Empresa;
+import com.serratec.classes.Pedido;
 import com.serratec.conexao.Conexao;
 import com.serratec.conexao.DadosConexao;
 import com.serratec.uteis.Menus;
 import com.serratec.uteis.Util;
 import com.serratec.dao.CreateDAO;
+import com.serratec.dao.PedidoDAO;
 import com.serratec.dao.ClienteDAO;
 import com.serratec.dao.ProdutoDAO;
 
@@ -124,7 +126,7 @@ public class Main {
 			switch (opcao) {
 			case 1: cadastrarCliente(); break;
 			case 2: cadastrarProduto(); break;
-			//case 3: cadastrarLivro(); break;
+			case 3: cadastrarPedido(); break;
 			case 0: Menus.menuCategorias();break;
 			default: Util.escrever("Opcao invalida");
 			}
@@ -157,6 +159,18 @@ public class Main {
 
 		}
 		
+		public static void cadastrarPedido() {
+			Pedido pd = new Pedido();
+			PedidoDAO pddao = new PedidoDAO(con, SCHEMA);
+			
+			pd = g4Tech.cadastrarPedido();
+			
+			pddao.incluirPedido(pd);
+			
+			g4Tech.adicionarPedido(pd);
+			
+
+		}
 		/*
 		public static EnderecoDAO cadastrarEndereco() {
 			EnderecoDAO novoEnderecoDAO = new EnderecoDAO(con, SCHEMA);

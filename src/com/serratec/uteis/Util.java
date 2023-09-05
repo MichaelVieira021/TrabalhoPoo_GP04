@@ -41,7 +41,8 @@ public class Util {
 		
 		do {
 			System.out.println(mensagem);
-			sData = in.nextLine();		
+			sData = in.nextLine();
+			sData = in.nextLine();
 			
 			try {
 				dataConvertida = LocalDate.parse(sData, dtf);   
