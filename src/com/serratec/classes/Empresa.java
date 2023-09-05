@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import com.serratec.conexao.Conexao;
 import com.serratec.uteis.Util;
+import com.serratec.uteis.ValidarCPF;
 
 //import com.serratec.classes.Cliente;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class Empresa {
 
 	private ArrayList<com.serratec.classes.Cliente> cliente = new ArrayList<>();
 	private ArrayList<com.serratec.classes.Produto> produto = new ArrayList<>();
+	//private ArrayList<com.serratec.classes.Endereco> endereco = new ArrayList<>();
 	//private ArrayList<com.serratec.classes.Pedido> pedido = new ArrayList<>();	
 	
  	public com.serratec.classes.Cliente cadastrarCliente() {
@@ -44,7 +46,12 @@ public class Empresa {
 		String s = in.nextLine();
 		c.setNome(s);
 		
-		System.out.println("Informe o CPF: ");
+		System.out.println("Informe o CPF (somente números): ");
+		/*do {
+			s = in.nextLine();
+			System.out.println(ValidarCPF.isCPF(s));
+			c.setCpf(ValidarCPF.imprimeCPF(s));
+		} while(ValidarCPF.isCPF(s) != true);*/
 		s = in.nextLine();
 		c.setCpf(s);
 		
@@ -131,4 +138,23 @@ public class Empresa {
 		
 		return produto;
 	}
+ 	
+ 	/*
+ 	public com.serratec.classes.Endereco adicionarEndereco(com.serratec.classes.Endereco endereco) {
+ 		com.serratec.classes.Endereco c = new com.serratec.classes.Endereco();
+		
+		c.setCep(endereco.getCep());
+		c.setBairro(endereco.getBairro());
+		c.setCidade(endereco.getCidade());
+		c.setComplemento(endereco.getComplemento());
+		c.setLogradouro(endereco.getLogradouro());
+		c.setNumero(endereco.getNumero());
+		c.setTipo_logra(endereco.getTipo_logra());
+		c.setUf(endereco.getUf());
+		
+		this.endereco.add(c);
+		
+		return endereco;
+	}*/	
+ 	
 }

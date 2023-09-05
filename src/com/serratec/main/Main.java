@@ -140,5 +140,11 @@ public class Main {
 				g4Tech.adicionarCliente(c);
 			}
 		}
-
+		
+		/*
+		public static EnderecoDAO cadastrarEndereco() {
+			EnderecoDAO novoEnderecoDAO = new EnderecoDAO(con, SCHEMA);
+			return novoEnderecoDAO;
+		}
+		*/
 }

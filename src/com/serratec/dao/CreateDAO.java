@@ -20,6 +20,7 @@ public class CreateDAO {
 			
 			if (criarSchema(conexao, schema)) {
 				criarEntidadeCliente(conexao, schema);
+				criarEntidadeEndereco(conexao, schema);
 				//criarEntidadeFuncionario(conexao, schema);
 				//criarEntidadeLivro(conexao, schema);
 				//criarEntidadeLivrosCliente(conexao, schema);
@@ -187,7 +188,26 @@ public class CreateDAO {
 			//		, false, true, "endereco", "idendereco");
 		}		
 	}
-
+	
+	private static void criarEntidadeEndereco(Conexao con, String schema) {
+		String entidade = "endereco";
+		
+		if (!entidadeExists(con, schema, entidade))		
+			criarTabela(con, entidade, schema);
+		
+		if (entidadeExists(con, schema, entidade)) {
+			criarCampo(con, schema, entidade, "idendereco"		, "serial"	 	 	, true,  false, null, null);
+			criarCampo(con, schema, entidade, "cep"	 			, "varchar(14)"		, false, false, null, null);
+			criarCampo(con, schema, entidade, "tipo_logra"		, "varchar(255)" 	, false, false, null, null);
+			criarCampo(con, schema, entidade, "logradouro"		, "varchar(255)"	, false, false, null, null);
+			criarCampo(con, schema, entidade, "numero" 			, "varchar(16)"		, false, false, null, null);
+			criarCampo(con, schema, entidade, "bairro"			, "varchar(255)"	, false, false, null, null);
+			criarCampo(con, schema, entidade, "cidade"	 		, "varchar(255)"	, false, false, null, null);
+			criarCampo(con, schema, entidade, "uf"	 			, "varchar(2)"		, false, false, null, null);
+			criarCampo(con, schema, entidade, "complemento"	 	, "varchar(255)"	, false, false, null, null);
+		}		
+	}
+	
 	public static boolean databaseExists(Conexao con, String bd) {
 		ResultSet entidade;
 		boolean dbExists = false;
