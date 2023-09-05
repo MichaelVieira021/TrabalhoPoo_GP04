@@ -2,6 +2,7 @@ package com.serratec.uteis;
 
 import java.util.InputMismatchException;
 
+
 public class ValidarCPF {
 
     public static boolean isCPF(String CPF) {

@@ -46,12 +46,14 @@ public class Empresa {
 		String s = in.nextLine();
 		c.setNome(s);
 		
+		
 		System.out.println("Informe o CPF (somente números): ");
 		/*do {
 			s = in.nextLine();
 			System.out.println(ValidarCPF.isCPF(s));
 			c.setCpf(ValidarCPF.imprimeCPF(s));
 		} while(ValidarCPF.isCPF(s) != true);*/
+		
 		s = in.nextLine();
 		c.setCpf(s);
 		
@@ -107,26 +109,27 @@ public class Empresa {
 		s = in.nextLine();
 		c.setDescricao(s);
 		
-		System.out.println("Valor: ");
-		double vl = Util.validarDouble();
-		c.setVl_unitario(vl);
+		System.out.println("Valor custo: ");
+		Double n = in.nextDouble();
+		//double vl = Util.validarDouble();
+		c.setVl_custo(n);
 		
 		System.out.println("Quantidade: ");
 		s = in.nextLine();
 		int qtd = Util.validarInteiro(s);
 		c.setQtd_estoque(qtd);
 	
-		//System.out.println("Categoria: ");
-		//s = in.nextLine();
+		System.out.println("Categoria: ");
+		s = in.nextLine();
 		
 		//in.close();
 		
-		produto.add(c);
+		//produto.add(c);
 		
 		return c;
 	}
  	
- 	public com.serratec.classes.Produto adicionarProduto(com.serratec.classes.Produto produto) {
+ 	/*public com.serratec.classes.Produto adicionarProduto(com.serratec.classes.Produto produto) {
  		com.serratec.classes.Produto c = new com.serratec.classes.Produto();
 		
 		c.setNome(produto.getNome());
@@ -137,6 +140,10 @@ public class Empresa {
 		this.produto.add(c);
 		
 		return produto;
+	}*/
+ 	
+	public void adicionarProduto(Produto produto) {
+		this.produto.add(produto);
 	}
  	
  	/*
