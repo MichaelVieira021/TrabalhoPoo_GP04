@@ -21,8 +21,8 @@ public class CreateDAO {
 			if (criarSchema(conexao, schema)) {
 				criarEntidadeCliente(conexao, schema);
 				criarEntidadeEndereco(conexao, schema);
-				//criarEntidadeFuncionario(conexao, schema);
-				//criarEntidadeLivro(conexao, schema);
+				criarEntidadeProduto(conexao, schema);
+				criarEntidadeCategoria(conexao, schema);
 				//criarEntidadeLivrosCliente(conexao, schema);
 				
 				bdCriado = true;
@@ -208,6 +208,38 @@ public class CreateDAO {
 		}		
 	}
 	
+	private static void criarEntidadeCategoria(Conexao con, String schema) {
+		String entidade = "categoria";
+		
+		if (!entidadeExists(con, schema, entidade))		
+			criarTabela(con, entidade, schema);
+		
+		if (entidadeExists(con, schema, entidade)) {
+			criarCampo(con, schema, entidade, "idcategoria"			, "serial"	 	 		, true,  false, null, null);
+			criarCampo(con, schema, entidade, "nm_categoria"	 	, "varchar(255)"		, false, false, null, null);
+			criarCampo(con, schema, entidade, "descricao"			, "text" 				, false, false, null, null);
+		}		
+	}
+	
+	private static void criarEntidadeProduto(Conexao con, String schema) {
+		String entidade = "produto";
+		
+		if (!entidadeExists(con, schema, entidade))		
+			criarTabela(con, entidade, schema);
+		
+		if (entidadeExists(con, schema, entidade)) {
+			criarCampo(con, schema, entidade, "idproduto"			, "serial"	 	 		, true,  false, null, null);
+			criarCampo(con, schema, entidade, "nome"	 			, "varchar(255)"		, false, false, null, null);
+			criarCampo(con, schema, entidade, "descricao"			, "text" 				, false, false, null, null);
+			criarCampo(con, schema, entidade, "vl_custo"			, "double precision"	, false, false, null, null);
+			criarCampo(con, schema, entidade, "vl_venda" 			, "double precision"	, false, false, null, null);
+			criarCampo(con, schema, entidade, "qtd_estoque"			, "int"					, false, false, null, null);
+			criarCampo(con, schema, entidade, "idcategoria"	 		, "int"					, false, true, schema+".categoria", "idcategoria");
+		}		
+	}
+	
+
+	
 	public static boolean databaseExists(Conexao con, String bd) {
 		ResultSet entidade;
 		boolean dbExists = false;
@@ -271,7 +303,7 @@ public class CreateDAO {
 		return atributoExist;
 	}
 	
-	private static void cadastrarLivros(Conexao con, String schema, String entidade) {
+	/*private static void cadastrarLivros(Conexao con, String schema, String entidade) {
 		
 		ResultSet tabela = con.query("select titulo from " + schema + "." + entidade + " limit 1");
 		
@@ -297,5 +329,5 @@ public class CreateDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}		
-	}
+	}*/
 }

@@ -4,18 +4,29 @@ public class Produto {
 	private int idproduto;
 	private String nome;
 	private String descricao;
-	private double vl_unitario;
+	private double vl_custo;
+	private double vl_venda;
 	private static int qtd_estoque;
-	//private Categoria categoria;
+	private int idcategoria;
 
 	
 	public void dadosProdutos() {
 		Categoria teste = new Categoria();
 		System.out.println("Produto: " + this.getNome());
 		System.out.println("Descrição: " + this.getDescricao());
-		System.out.println("Valor: " + this.getVl_unitario());
+		System.out.println("Valor: " + this.getVl_venda());
 		System.out.println("Quantidade: " + this.getQtd_estoque());
-		System.out.println("Categoria: " + teste.getNome());
+		System.out.println("Categoria: " + teste.getNm_categoria());
+	}
+
+
+	public int getIdcategoria() {
+		return idcategoria;
+	}
+
+
+	public void setIdcategoria(int idcategoria) {
+		this.idcategoria = idcategoria;
 	}
 
 
@@ -48,14 +59,23 @@ public class Produto {
 		this.nome = nome;
 	}
 
-
-	public double getVl_unitario() {
-		return vl_unitario;
+	public double getVl_custo() {
+		return vl_custo;
 	}
 
 
-	public void setVl_unitario(double vl_unitario) {
-		this.vl_unitario = vl_unitario;
+	public void setVl_custo(double vl_custo) {
+		this.vl_custo = vl_custo;
+	}
+
+
+	public double getVl_venda() {
+		return vl_venda;
+	}
+
+
+	public void setVl_venda(double vl_venda) {
+		this.vl_venda = getVl_custo() * 1.15;
 	}
 
 

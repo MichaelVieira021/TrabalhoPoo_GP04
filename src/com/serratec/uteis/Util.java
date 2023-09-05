@@ -60,8 +60,8 @@ public class Util {
 		
 		do {
 			try {
-				System.out.println(mensagem);
-				String s = in.nextLine();
+				System.out.print(mensagem);
+				String s = in.next();
 				numero = Integer.parseInt(s);
 				validado = true;
 			} catch (Exception e) {
@@ -69,28 +69,23 @@ public class Util {
 			}
 		} while (!validado);
 		
-		//in.close();
-		
 		return numero;
 	}
 	
-	public static double validarDouble() {
-		String s;
+	public static double validarDouble(String mensagem) {
 		double numero = 0.0;
 		boolean validado = false;
-		Scanner in = new Scanner(System.in);
 		
 		do {
 			try {
-				s = in.next();			
+				System.out.print(mensagem);
+				String s = in.next();			
 				numero = Double.parseDouble(s);
 				validado = true;
 			} catch (Exception e) {
 				System.out.println("Informe um numero valido - " + e.getMessage());
 			}
 		} while (!validado);
-		
-		in.close();
 		
 		return numero;
 	}

@@ -1,12 +1,15 @@
 package com.serratec.main;
 
 import com.serratec.classes.Cliente;
+import com.serratec.classes.Produto;
 import com.serratec.classes.Empresa;
 import com.serratec.conexao.Conexao;
 import com.serratec.conexao.DadosConexao;
+import com.serratec.uteis.Menus;
 import com.serratec.uteis.Util;
 import com.serratec.dao.CreateDAO;
 import com.serratec.dao.ClienteDAO;
+import com.serratec.dao.ProdutoDAO;
 
 public class Main {
 	public static Empresa g4Tech;
@@ -120,9 +123,9 @@ public class Main {
 		public static void escolherMenuCadastrar(int opcao) {		
 			switch (opcao) {
 			case 1: cadastrarCliente(); break;
-			//case 2: cadastrarFuncionario(); break;
+			case 2: cadastrarProduto(); break;
 			//case 3: cadastrarLivro(); break;
-			case 0: break;
+			case 0: Menus.menuCategorias();break;
 			default: Util.escrever("Opcao invalida");
 			}
 		}
@@ -139,6 +142,19 @@ public class Main {
 				Util.escrever("Cliente criado com sucesso.");
 				g4Tech.adicionarCliente(c);
 			}
+		}
+		
+		public static void cadastrarProduto() {
+			Produto p = new Produto();
+			ProdutoDAO pdao = new ProdutoDAO(con, SCHEMA);
+			
+			p = g4Tech.cadastrarProduto();
+			
+			pdao.incluirProduto(p);
+			
+			g4Tech.adicionarProduto(p);
+			
+
 		}
 		
 		/*

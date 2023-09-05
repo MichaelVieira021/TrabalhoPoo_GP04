@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import com.serratec.conexao.Conexao;
 import com.serratec.uteis.Util;
+import com.serratec.uteis.Menus;
 import com.serratec.uteis.ValidarCPF;
 
 //import com.serratec.classes.Cliente;
@@ -46,12 +47,14 @@ public class Empresa {
 		String s = in.nextLine();
 		c.setNome(s);
 		
+		
 		System.out.println("Informe o CPF (somente números): ");
 		/*do {
 			s = in.nextLine();
 			System.out.println(ValidarCPF.isCPF(s));
 			c.setCpf(ValidarCPF.imprimeCPF(s));
 		} while(ValidarCPF.isCPF(s) != true);*/
+		
 		s = in.nextLine();
 		c.setCpf(s);
 		
@@ -99,34 +102,28 @@ public class Empresa {
 		
 		Util.br();
 		
-		System.out.println("Produto: ");
-		String s = in.nextLine();
+		System.out.print("Produto: ");
+		String s = in.next();
 		c.setNome(s);
 		
-		System.out.println("Descrição: ");
-		s = in.nextLine();
+		System.out.print("Descrição: ");
+		s = in.next();
 		c.setDescricao(s);
 		
-		System.out.println("Valor: ");
-		double vl = Util.validarDouble();
-		c.setVl_unitario(vl);
-		
-		System.out.println("Quantidade: ");
-		s = in.nextLine();
-		int qtd = Util.validarInteiro(s);
+		double vl = Util.validarDouble("Valor custo: ");
+		c.setVl_custo(vl);
+			
+		int qtd = Util.validarInteiro("Quantidade: ");
 		c.setQtd_estoque(qtd);
-	
-		//System.out.println("Categoria: ");
-		//s = in.nextLine();
 		
-		//in.close();
-		
-		produto.add(c);
+		int cat = Menus.menuCategorias();
+		//int cat = Util.validarInteiro("Categoria: ");
+		c.setIdcategoria(cat);
 		
 		return c;
 	}
  	
- 	public com.serratec.classes.Produto adicionarProduto(com.serratec.classes.Produto produto) {
+ 	/*public com.serratec.classes.Produto adicionarProduto(com.serratec.classes.Produto produto) {
  		com.serratec.classes.Produto c = new com.serratec.classes.Produto();
 		
 		c.setNome(produto.getNome());
@@ -137,6 +134,10 @@ public class Empresa {
 		this.produto.add(c);
 		
 		return produto;
+	}*/
+ 	
+	public void adicionarProduto(Produto produto) {
+		this.produto.add(produto);
 	}
  	
  	/*
