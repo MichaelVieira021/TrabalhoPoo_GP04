@@ -22,7 +22,7 @@ public class Main {
 	public static final String LOCAL = "localhost";
 	public static final String USUARIO = "postgres";
 	public static final String SENHA = "123456";
-	public static final String PORTA = "5432";
+	public static final String PORTA = "5433";
 	public static final String BD = "PostgreSql";
 	
 	public static void main(String[] args) {
@@ -139,7 +139,7 @@ public class Main {
 		public static void escolherMenuAlterar(int opcao) {		
 			switch (opcao) {
 			case 1: alterarCliente(); break;
-			//case 2: alterarFuncionario(); break;
+			case 2: alterarProduto(); break;
 			//case 3: alterarLivro(); break;
 			case 0: break;
 			default: Util.escrever("Opcao invalida");
@@ -190,11 +190,20 @@ public class Main {
 			Cliente c = g4Tech.localizarCliente();
 			
 			c.dadosPessoa();
-			c.alterar();
+			c.alterarCliente();
 			g4Tech.atualizarDadosCliente(c);
 			cdao.alterarCliente(c);
 		}
 		
+		public static void alterarProduto() {
+			ProdutoDAO proddao = new ProdutoDAO(con, SCHEMA);
+			Produto prod = g4Tech.localizarProduto();
+			
+			prod.dadosProdutos();
+			prod.alterarProduto();
+			g4Tech.atualizarDadosProduto(prod);
+			proddao.alterarProduto(prod);
+		}
 		/*
 		public static EnderecoDAO cadastrarEndereco() {
 			EnderecoDAO novoEnderecoDAO = new EnderecoDAO(con, SCHEMA);

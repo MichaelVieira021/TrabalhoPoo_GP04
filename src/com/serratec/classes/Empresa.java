@@ -4,16 +4,19 @@ import java.util.Scanner;
 
 import com.serratec.conexao.Conexao;
 import com.serratec.dao.ClienteDAO;
+import com.serratec.dao.ProdutoDAO;
 import com.serratec.main.Main;
 import com.serratec.uteis.Util;
 import com.serratec.uteis.Menus;
 import com.serratec.classes.ListaClientes;
+import com.serratec.classes.ListaProdutos;
 import java.util.ArrayList;
 
 public class Empresa {
 	private static final String nome = "g4Tech";
 	private String cnpj = "34554354";
 	public static ListaClientes clientes; 
+	public static ListaProdutos produtos; 
 
 	private com.serratec.conexao.Conexao con; 
 	private String schema;
@@ -232,5 +235,57 @@ public class Empresa {
 		clientes.getListacliente().get(i).setEmail(cl.getEmail());
 		clientes.getListacliente().get(i).setTelefone(cl.getTelefone());
 	}
+	
+	public com.serratec.classes.Produto localizarProduto() {
+		@SuppressWarnings("resource")
+		Scanner in = new Scanner(System.in);
+		com.serratec.classes.Produto prod = new com.serratec.classes.Produto();
+		
+		int i = -1;
+				
+		System.out.println("Digite o Nome: "); 
+		String s = in.nextLine();
+		produtos = new ListaProdutos(con, schema);
+		
+		for (Produto c : produtos.getListaProdutos()) {
+			if (c.getNome().equals(s)) {
+				//System.out.println("NOME:  " + prod1.getNome() );
+				i = produtos.getListaProdutos().lastIndexOf(c);
+				//System.out.println("Id do Produto: " + (i+1));
+				break;
+			}
+		}
+		
+		if (i >= 0) {
+			prod.setNome(produtos.getListaProdutos().get(i).getNome());
+			prod.setDescricao(produtos.getListaProdutos().get(i).getDescricao());
+			prod.setVl_custo(produtos.getListaProdutos().get(i).getVl_custo());
+			prod.setVl_venda(produtos.getListaProdutos().get(i).getVl_venda());
+			prod.setQtd_estoque(produtos.getListaProdutos().get(i).getQtd_estoque());
+			prod.setIdcategoria(produtos.getListaProdutos().get(i).getIdcategoria());
+			return prod;	
+		} else
+			return null;
+	}
+	public void atualizarDadosProduto(com.serratec.classes.Produto proddao) {
+		int i = 0;
+		
+	  for (int index = 0; index < produtos.getListaProdutos().size(); index++) {
+	        Produto prod = produtos.getListaProdutos().get(index);
+	        if (prod.getNome().equals(proddao.getNome())) {
+	            i = index-1; // Encontrou o produto
+	            break;
+	        }
+	    }
+		
+		produtos.getListaProdutos().get(i).setNome(proddao.getNome());
+		produtos.getListaProdutos().get(i).setDescricao(proddao.getDescricao());
+		produtos.getListaProdutos().get(i).setVl_custo(proddao.getVl_custo());
+		produtos.getListaProdutos().get(i).setVl_venda(proddao.getVl_venda());
+		produtos.getListaProdutos().get(i).setQtd_estoque(proddao.getQtd_estoque());
+		produtos.getListaProdutos().get(i).setIdcategoria(proddao.getIdcategoria());
+	}
+	
+	
 	
 }

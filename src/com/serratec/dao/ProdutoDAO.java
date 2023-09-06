@@ -1,10 +1,12 @@
 package com.serratec.dao;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.serratec.classes.Cliente;
 import com.serratec.classes.Produto;
 import com.serratec.classes.Produto;
 import com.serratec.conexao.Conexao;
@@ -55,27 +57,27 @@ public class ProdutoDAO {
 		}
 	}
 	
-	/*public int alterarProduto(Livro livro) {
+	public int alterarProduto(Produto produto) {
 		try {
-			pAlteracao.setString(1, livro.getTitulo());
-			pAlteracao.setString(2, livro.getAutor());
-			pAlteracao.setString(3, livro.getEditora());
-			pAlteracao.setString(4, livro.getIsbn());
-			pAlteracao.setInt(5, livro.getNumPaginas());
-			pAlteracao.setInt(6, livro.getQuantidade());
-			pAlteracao.setInt(7, livro.getIdlivro());
+			pAlteracao.setString(1, produto.getNome());
+			pAlteracao.setString(2, produto.getDescricao());
+			pAlteracao.setDouble(3, produto.getVl_custo());
+			pAlteracao.setDouble(4, produto.getVl_venda());
+			pAlteracao.setInt   (5, produto.getQtd_estoque());
+			pAlteracao.setInt   (6, produto.getIdcategoria());
+			pAlteracao.setInt   (7, produto.getIdproduto());
 			
 			return pAlteracao.executeUpdate();
 		} catch (Exception e) {
 			if (e.getLocalizedMessage().contains("is null")) {
-				System.err.println("\nLivro nao alterado.\nVerifique se foi chamado o conect:\n" + e);				
+				System.err.println("\nCliente nao alterado.\nVerifique se foi chamado o conect:\n" + e);				
 			} else {				
 				System.err.println(e);
 				e.printStackTrace();
 			}
 			return 0;
 		}
-	}*/
+	}
 	
 	public int incluirProduto(Produto produto) {
 		try {		

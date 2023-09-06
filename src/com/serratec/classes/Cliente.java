@@ -28,7 +28,7 @@ public class Cliente extends Pessoa{
 		System.out.println("------------------------------------");
 	}
 	
-	public void alterar() {
+	public void alterarCliente() {
 		@SuppressWarnings("resource")
 		Scanner in = new Scanner(System.in);
 		
