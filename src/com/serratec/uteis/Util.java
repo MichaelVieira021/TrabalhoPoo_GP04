@@ -42,15 +42,16 @@ public class Util {
 		do {
 			System.out.println(mensagem);
 			sData = in.nextLine();
-			in.nextLine();
+			sData = in.nextLine();
 			try {
 				dataConvertida = LocalDate.parse(sData, dtf);   
 				dataValidada = true;
 				return dataConvertida;
 			} catch (Exception e) {
-				System.out.println("Data invalida");	
+				System.out.println("Data invalida");
+				return null;
 			}
-			return null;
+			
 		} while (!dataValidada);
 	}
 	

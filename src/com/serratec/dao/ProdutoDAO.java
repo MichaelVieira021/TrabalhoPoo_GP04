@@ -2,7 +2,10 @@ package com.serratec.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
+import com.serratec.classes.Produto;
 import com.serratec.classes.Produto;
 import com.serratec.conexao.Conexao;
 
@@ -52,7 +55,7 @@ public class ProdutoDAO {
 		}
 	}
 	
-	/*public int alterarCliente(Livro livro) {
+	/*public int alterarProduto(Livro livro) {
 		try {
 			pAlteracao.setString(1, livro.getTitulo());
 			pAlteracao.setString(2, livro.getAutor());
@@ -104,4 +107,24 @@ public class ProdutoDAO {
 		
 		return tabela;
 	}
+	
+	public ArrayList<Produto> carregarProdutoMenu() {
+        ArrayList<Produto> produtos = new ArrayList<>();
+        String sql = "SELECT idproduto, nome FROM " + this.schema + ".produto ORDER BY idproduto";
+
+        ResultSet tabela = conexao.query(sql);
+
+        try {
+            while (tabela.next()) {
+            	int  idProduto = tabela.getInt("idproduto");
+                String nomeProduto = tabela.getString("nome");
+                Produto produto = new Produto(idProduto, nomeProduto);
+                produtos.add(produto);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return produtos;
+    }
 }

@@ -42,7 +42,6 @@ public class Main {
 		} else {
 			System.out.println("Ocorreu um problema na criacao do banco de dados");
 		}
-		
 	}
 		
 		public static void menuPrincipal() {

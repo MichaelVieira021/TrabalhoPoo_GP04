@@ -18,8 +18,8 @@ public class PedidoDAO {
 	public PedidoDAO(Conexao conexao, String schema) { 
 		this.conexao = conexao;
 		this.schema = schema;
-		//prepararSqlInclusao();
-		//prepararSqlAlteracao();
+		prepararSqlInclusao();
+		prepararSqlAlteracao();
 	}
 	
 	private void prepararSqlInclusao() {
@@ -38,8 +38,6 @@ public class PedidoDAO {
 	
 	private void prepararSqlAlteracao() {
 		String sql = "update "+ this.schema + ".pedido";	
-		
-		
 		sql += " set dt_emissao = ?,";		
 		sql += " idcliente = ?,";
 		sql += " where idpedido = ?";

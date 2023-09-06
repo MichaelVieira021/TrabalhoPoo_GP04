@@ -128,7 +128,10 @@ public class Empresa {
 						
 		pd.setDt_emissao(Util.validarData("Data de emissão: "));
 		
-		pd.setIdcliente(Util.validarInteiro("Id do cliente: "));
+		pd.setIdcliente(Menus.menuClientes());
+		
+		Menus.menuProdutos();
+		//pd.setIdcliente(Util.validarInteiro("Id do cliente: "));
 		
 		
 		return pd;

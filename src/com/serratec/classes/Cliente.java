@@ -6,6 +6,12 @@ public class Cliente extends Pessoa{
 	private String telefone;
 	private String endereco;
 	
+	public Cliente() {}
+
+	public Cliente(int idcliente, String nome) {
+		this.setIdcliente(idcliente);
+		this.setNome(nome);
+	}
 	public int getIdcliente() {
 		return idcliente;
 	}
