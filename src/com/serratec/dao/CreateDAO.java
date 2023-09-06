@@ -186,6 +186,7 @@ public class CreateDAO {
 			criarCampo(con, schema, entidade, "endereco"	 	, "text"	, false, false, null, null);
 			//criarCampo(con, schema, entidade, "idendereco"	 , "int"	
 			//		, false, true, "endereco", "idendereco");
+			cadastrarClientes(con, schema, entidade);
 		}		
 	}
 	
@@ -316,6 +317,25 @@ public class CreateDAO {
 		}
 		
 		return atributoExist;
+	}
+	
+	private static void cadastrarClientes(Conexao con, String schema, String entidade) {
+		ResultSet tabela = con.query("select nome from " + schema + "." + entidade + " limit 1");
+		
+		try {
+			if (!tabela.next()) {
+				String sqlClientes = "insert into " + schema + "." + entidade;
+				sqlClientes += " (nome, cpf, email, telefone, dt_nascimento, endereco)";
+				sqlClientes += " values";
+				sqlClientes += "('Lucas', '12345678901', 'lucas@mail' , '12345678', '11/11/2011','Rua das Flores'),";
+				sqlClientes += "('JP Galvao', '98765432109', 'jp@mail' , '87654321', '01/01/2001','Bolso do Bruno Henrique'),";
+				sqlClientes += "('Bruno Lage', '65498732110', 'blage@mail' , '98732165', '22/02/2022','Rua dos Tolos')";
+				con.query(sqlClientes);
+				tabela.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
 	}
 	
 	private static void cadastrarCategorias(Conexao con, String schema, String entidade) {

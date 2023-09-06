@@ -51,8 +51,6 @@ public class BuscarCEP {
          	System.out.println("Qual é o número da residência?");
          	//validarInteiro(numero_residencia);
          	numero_residencia = in.nextLine();
-         	System.out.println("Qual é o tido do logradouro?");
-         	tipo_logradouro = in.nextLine();
          	System.out.println("Algum complemento?");
          	complemento = in.nextLine();
             
@@ -61,8 +59,8 @@ public class BuscarCEP {
             cidade = array[19]; 
             uf = array[23];
             
-            endereco ="(" + tipo_logradouro + ") " + logradouro + ", " + numero_residencia + 
-            		" - " + bairro + " - " + cidade + " - " + uf + " - Complemento: " + complemento;
+            endereco = logradouro + ", " + numero_residencia + " - " + bairro + " - " + 
+            		   cidade + " - " + uf + " - Complemento: " + complemento;
             
             // DESCONTINUADO: CRIAVA NOVO ENDEREÇO NA CLASSE Endereco
             //criar endereco

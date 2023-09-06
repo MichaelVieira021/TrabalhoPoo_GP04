@@ -60,7 +60,7 @@ public class ClienteDAO {
 		sql += " cpf = ?,";
 		sql += " email = ?,";
 		sql += " telefone = ?,";
-		sql += " dt_nascimento = ?";
+		sql += " dt_nascimento = ?,";
 		sql += " endereco = ?";
 		sql += " where idcliente = ?";
 		

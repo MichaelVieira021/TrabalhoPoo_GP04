@@ -37,6 +37,7 @@ public class Main {
 		if (CreateDAO.createBD(BANCO, SCHEMA, dadosCon)) {
 			con = new Conexao(dadosCon); 
 			con.conect();
+			//clientes = new ListaClientes(con, SCHEMA);
 			g4Tech = new Empresa(con, SCHEMA);
 			menuPrincipal();
 		} else {
@@ -73,7 +74,7 @@ public class Main {
 			
 			switch (opcao) {
 			case 1: menuCadastrar(); break;
-			//case 2: menuAlterar(); break;
+			case 2: menuAlterar(); break;
 			//case 3: menuLocalizar(); break;
 			//case 4: menuExcluir(); break;
 			case 0: 
@@ -107,7 +108,7 @@ public class Main {
 				
 				switch (tipoCrud) {
 				case CADASTRAR: escolherMenuCadastrar(opcao); break;
-				//case ALTERAR: escolherMenuAlterar(opcao); break;
+				case ALTERAR: escolherMenuAlterar(opcao); break;
 				//case IMPRIMIR: escolherMenuImprimir(opcao); break;
 				//case EXCLUIR: escolherMenuExcluir(opcao); break;
 				}
@@ -127,6 +128,20 @@ public class Main {
 			case 2: cadastrarProduto(); break;
 			case 3: cadastrarPedido(); break;
 			case 0: Menus.menuCategorias();break;
+			default: Util.escrever("Opcao invalida");
+			}
+		}
+		
+		public static void menuAlterar() {
+			menuPadrao(Util.CRUD.ALTERAR);
+		}
+		
+		public static void escolherMenuAlterar(int opcao) {		
+			switch (opcao) {
+			case 1: alterarCliente(); break;
+			//case 2: alterarFuncionario(); break;
+			//case 3: alterarLivro(); break;
+			case 0: break;
 			default: Util.escrever("Opcao invalida");
 			}
 		}
@@ -167,9 +182,19 @@ public class Main {
 			pddao.incluirPedido(pd);
 			
 			g4Tech.adicionarPedido(pd);
-			
-
+					
 		}
+		
+		public static void alterarCliente() {
+			ClienteDAO cdao = new ClienteDAO(con, SCHEMA);
+			Cliente c = g4Tech.localizarCliente();
+			
+			c.dadosPessoa();
+			c.alterar();
+			g4Tech.atualizarDadosCliente(c);
+			cdao.alterarCliente(c);
+		}
+		
 		/*
 		public static EnderecoDAO cadastrarEndereco() {
 			EnderecoDAO novoEnderecoDAO = new EnderecoDAO(con, SCHEMA);
