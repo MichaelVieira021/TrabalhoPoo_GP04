@@ -10,9 +10,7 @@ import com.serratec.dao.ClienteDAO;
 public class ListaClientes {
 	private Conexao con;
 	private String schema;
-	
-	ArrayList<Cliente> listacliente = new ArrayList<>();
-	
+	private ArrayList<Cliente> listacliente = new ArrayList<>();
 	
 	public ListaClientes (Conexao con, String schema) {
 		this.con = con;
@@ -50,7 +48,6 @@ public class ListaClientes {
 			while (tabela.next()) {							
 				this.listacliente.add(dadosCliente(tabela));				
 			}
-			
 			tabela.close();
 		
 		} catch (Exception e) {
@@ -93,7 +90,5 @@ public class ListaClientes {
 	public void setListacliente(ArrayList<Cliente> listacliente) {
 		this.listacliente = listacliente;
 	}
-	
-	
 	
 }

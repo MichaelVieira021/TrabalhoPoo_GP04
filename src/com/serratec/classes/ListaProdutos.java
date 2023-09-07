@@ -9,37 +9,17 @@ import com.serratec.dao.ProdutoDAO;
 public class ListaProdutos {
 	private Conexao con;
 	private String schema;
+	private ArrayList<Produto> listaProdutos = new ArrayList<>();
 	
-	//get e set 
-	public Conexao getCon() {
-		return con;
-	}
-	public void setCon(Conexao con) {
-		this.con = con;
-	}
-	public String getSchema() {
-		return schema;
-	}
-	public void setSchema(String schema) {
-		this.schema = schema;
-	}
-	public ArrayList<Produto> getListaProdutos() {
-		return listaProdutos;
-	}
-	public void setListaProdutos(ArrayList<Produto> listaProdutos) {
-		this.listaProdutos = listaProdutos;
-	}
-
-	ArrayList<Produto> listaProdutos = new ArrayList<>();
-	
-	//constructor
 	public ListaProdutos (Conexao con, String schema) {
 		this.con = con;
 		this.schema = schema;
 		
 		carregarListaProdutos();
 	}
-	//methods
+
+
+	//methods------------------------------------------
 	public void adicionarProdutoLista(Produto prod) {
 		this.listaProdutos.add(prod);
 	}
@@ -97,5 +77,25 @@ public class ListaProdutos {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	//get e set---------------------------------------- 
+	public Conexao getCon() {
+		return con;
+	}
+	public void setCon(Conexao con) {
+		this.con = con;
+	}
+	public String getSchema() {
+		return schema;
+	}
+	public void setSchema(String schema) {
+		this.schema = schema;
+	}
+	public ArrayList<Produto> getListaProdutos() {
+		return listaProdutos;
+	}
+	public void setListaProdutos(ArrayList<Produto> listaProdutos) {
+		this.listaProdutos = listaProdutos;
 	}
 }

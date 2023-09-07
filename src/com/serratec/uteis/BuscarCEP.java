@@ -5,22 +5,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Arrays;
 import java.util.Scanner;
-
-import com.serratec.classes.Endereco;
-import com.serratec.dao.EnderecoDAO;
-import com.serratec.main.Main;
 
 public class BuscarCEP {
 	public static Scanner in = new Scanner(System.in);
 
-	//função para buscar cep
-    public static String buscarCep(String cep) 
-    {
-    	//PROCURAR CEP
+    public static String buscarCep(String cep){
     	String logradouro;
-    	String tipo_logradouro = null;
     	String bairro;
     	String cidade;
     	String uf;
@@ -39,19 +30,15 @@ public class BuscarCEP {
 
             br.lines().forEach(l -> jsonSb.append(l.trim()));
             json = jsonSb.toString();
-            
-            // JOptionPane.showMessageDialog(null, json);
-            
             json = json.replaceAll("[{},:]", "");
             json = json.replaceAll("\"", "\n");                       
             String array[] = new String[30];
             array = json.split("\n");
             
-            // JOptionPane.showMessageDialog(null, array);
-         	System.out.println("Qual é o número da residência?");
-         	//validarInteiro(numero_residencia);
+         	System.out.print("Número da residência:");
          	numero_residencia = in.nextLine();
-         	System.out.println("Algum complemento?");
+         	
+         	System.out.print("Complemento: ");
          	complemento = in.nextLine();
             
             logradouro = array[7];            
@@ -59,21 +46,13 @@ public class BuscarCEP {
             cidade = array[19]; 
             uf = array[23];
             
-            endereco = logradouro + ", " + numero_residencia + " - " + bairro + " - " + 
-            		   cidade + " - " + uf + " - Complemento: " + complemento;
-            
-            // DESCONTINUADO: CRIAVA NOVO ENDEREÇO NA CLASSE Endereco
-            //criar endereco
-            /*Endereco novoEndereco = new Endereco(cep, tipo_logradouro, logradouro, 
-            							numero_residencia, bairro, cidade, uf, complemento);
-            int retorno = com.serratec.main.Main.cadastrarEndereco().incluirEndereco(novoEndereco);
-            com.serratec.classes.Empresa.adicionarEndereco(novoEndereco);*/
-            
-            //VERIFICAÇÕES PARA VER SE ESSA JOÇA ESTA FUNCIONANDO
-            //System.out.println(Arrays.toString(array));
-            //JOptionPane.showMessageDialog(null, logradouro + " " + bairro + " " + cidade + " " + uf);
-			//System.out.println(logradouro + " " + bairro + " " + cidade + " " + uf);
-            //System.out.println(endereco);
+            if(complemento == "") {
+                endereco = logradouro + ", " + numero_residencia + " - " + bairro + " - " + 
+             		   cidade + " - " + uf;
+            }else {
+            	endereco = logradouro + ", " + numero_residencia + " - " + bairro + " - " + 
+            			cidade + " - " + uf + " - Complemento: " + complemento;
+            }
             
             return endereco;
         } catch (Exception e) {

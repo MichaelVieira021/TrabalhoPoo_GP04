@@ -22,7 +22,7 @@ public class Main {
 	public static final String LOCAL = "localhost";
 	public static final String USUARIO = "postgres";
 	public static final String SENHA = "123456";
-	public static final String PORTA = "5433";
+	public static final String PORTA = "5432";
 	public static final String BD = "PostgreSql";
 	
 	public static void main(String[] args) {
@@ -39,175 +39,80 @@ public class Main {
 			con.conect();
 			//clientes = new ListaClientes(con, SCHEMA);
 			g4Tech = new Empresa(con, SCHEMA);
-			menuPrincipal();
+			Menus.menuPrincipal();
 		} else {
 			System.out.println("Ocorreu um problema na criacao do banco de dados");
 		}
 	}
-		
-		public static void menuPrincipal() {
+	
+	//CLIENTE--------------------------------------------
+	public static void cadastrarCliente() {
+		Cliente c = new Cliente();
+		ClienteDAO cdao = new ClienteDAO(con, SCHEMA);
 			
-			int opcao = 0;
+		c = g4Tech.cadastrarCliente();		
+		int retorno = cdao.incluirCliente(c);
 			
-			do {	
-				System.out.println("╔═══════════════════════════════════╗");
-				System.out.println("║                MENU               ║");
-				System.out.println("║-----------------------------------║");
-				System.out.println("║                                   ║");
-				System.out.println("║        [1] - Cadastrar            ║");
-				System.out.println("║        [2] - Alterar              ║");
-				System.out.println("║        [3] - Excluir              ║");
-				System.out.println("║        [4] - Localizar            ║");
-				System.out.println("║                                   ║");
-				System.out.println("║-----------------------------------║");
-				System.out.println("║      Digite '4' para [Sair]       ║");
-				System.out.print  ("╚═══════════════════════════════════╝\n> ");
-				
-				opcao = Util.validarInteiro("Informe uma opcao: ");
-				
-				escolherMenu(opcao);
-				
-			} while (opcao != 0);
+		if (retorno > 0) {
+			Util.escrever("Cliente criado com sucesso.");
+			g4Tech.adicionarCliente(c);
+		}
 	}
 		
-		public static void escolherMenu(int opcao) {
+	public static void alterarCliente() {
+		ClienteDAO cdao = new ClienteDAO(con, SCHEMA);
+		Cliente c = g4Tech.localizarCliente();
 			
-			switch (opcao) {
-			case 1: menuCadastrar(); break;
-			case 2: menuAlterar(); break;
-			//case 3: menuLocalizar(); break;
-			//case 4: menuExcluir(); break;
-			case 0: 
-				System.out.println("\nPrograma finalizado.");	
-				break;
-			default: System.out.println("Opcao invalida");
-			}
-		}
+		c.dadosPessoa();
+		c.alterarCliente();
+		g4Tech.atualizarDadosCliente(c);
+		cdao.alterarCliente(c);
+	}
 		
-		public static int menuPadrao(Util.CRUD tipoCrud) {
-			int opcao = 0;
-			
-			do {
-				Util.escrever(Util.LINHA);
-				
-				switch (tipoCrud) {
-				case CADASTRAR: Util.escrever("CADASTRAR"); break;
-				case ALTERAR: Util.escrever("ALTERAR"); break;
-				case IMPRIMIR: Util.escrever("IMPRIMIR"); break;
-				case EXCLUIR: Util.escrever("EXCLUIR"); break;
-				}
-						
-				Util.escrever(Util.LINHA);
-				Util.escrever("[1]- Cliente");
-				Util.escrever("[2]- Produto");
-				Util.escrever("[3]- Pedidos");
-				Util.escrever("[0]- Voltar");
-				Util.escrever(Util.LINHA);
-				
-				opcao = Util.validarInteiro("Informe uma opcao: ");			
-				
-				switch (tipoCrud) {
-				case CADASTRAR: escolherMenuCadastrar(opcao); break;
-				case ALTERAR: escolherMenuAlterar(opcao); break;
-				//case IMPRIMIR: escolherMenuImprimir(opcao); break;
-				//case EXCLUIR: escolherMenuExcluir(opcao); break;
-				}
-				
-			} while (opcao != 0);
-			
-			return opcao;
-		}
-		
-		public static void menuCadastrar() {
-			menuPadrao(Util.CRUD.CADASTRAR);			
-		}
-		
-		public static void escolherMenuCadastrar(int opcao) {		
-			switch (opcao) {
-			case 1: cadastrarCliente(); break;
-			case 2: cadastrarProduto(); break;
-			case 3: cadastrarPedido(); break;
-			case 0: Menus.menuCategorias();break;
-			default: Util.escrever("Opcao invalida");
-			}
-		}
-		
-		public static void menuAlterar() {
-			menuPadrao(Util.CRUD.ALTERAR);
-		}
-		
-		public static void escolherMenuAlterar(int opcao) {		
-			switch (opcao) {
-			case 1: alterarCliente(); break;
-			case 2: alterarProduto(); break;
-			//case 3: alterarLivro(); break;
-			case 0: break;
-			default: Util.escrever("Opcao invalida");
-			}
-		}
-		
-		public static void cadastrarCliente() {
-			Cliente c = new Cliente();
-			ClienteDAO cdao = new ClienteDAO(con, SCHEMA);
-			
-			c = g4Tech.cadastrarCliente();		
-			
-			int retorno = cdao.incluirCliente(c);
-			
-			if (retorno > 0) {
-				Util.escrever("Cliente criado com sucesso.");
-				g4Tech.adicionarCliente(c);
-			}
-		}
-		
-		public static void cadastrarProduto() {
-			Produto p = new Produto();
-			ProdutoDAO pdao = new ProdutoDAO(con, SCHEMA);
-			
-			p = g4Tech.cadastrarProduto();
-			
-			pdao.incluirProduto(p);
-			
-			g4Tech.adicionarProduto(p);
-			
+	public static void excluirCliente() {
 
-		}
+	}
+
+	//PRODUTO--------------------------------------------
+	public static void cadastrarProduto() {
+		Produto p = new Produto();
+		ProdutoDAO pdao = new ProdutoDAO(con, SCHEMA);
+			
+		p = g4Tech.cadastrarProduto();
+		pdao.incluirProduto(p);
+		g4Tech.adicionarProduto(p);
+	}
 		
-		public static void cadastrarPedido() {
-			Pedido pd = new Pedido();
-			PedidoDAO pddao = new PedidoDAO(con, SCHEMA);
+	public static void alterarProduto() {
+		ProdutoDAO proddao = new ProdutoDAO(con, SCHEMA);
+		Produto prod = g4Tech.localizarProduto();
 			
-			pd = g4Tech.cadastrarPedido();
-			
-			pddao.incluirPedido(pd);
-			
-			g4Tech.adicionarPedido(pd);
-					
-		}
+		prod.dadosProdutos();
+		prod.alterarProduto();
+		g4Tech.atualizarDadosProduto(prod);
+		proddao.alterarProduto(prod);
+	}
+
+	public static void excluirProduto() {
 		
-		public static void alterarCliente() {
-			ClienteDAO cdao = new ClienteDAO(con, SCHEMA);
-			Cliente c = g4Tech.localizarCliente();
-			
-			c.dadosPessoa();
-			c.alterarCliente();
-			g4Tech.atualizarDadosCliente(c);
-			cdao.alterarCliente(c);
-		}
+	}
 		
-		public static void alterarProduto() {
-			ProdutoDAO proddao = new ProdutoDAO(con, SCHEMA);
-			Produto prod = g4Tech.localizarProduto();
+	//PEDIDO-----------------------------------------------
+	public static void cadastrarPedido() {
+		Pedido pd = new Pedido();
+		PedidoDAO pddao = new PedidoDAO(con, SCHEMA);
 			
-			prod.dadosProdutos();
-			prod.alterarProduto();
-			g4Tech.atualizarDadosProduto(prod);
-			proddao.alterarProduto(prod);
-		}
-		/*
-		public static EnderecoDAO cadastrarEndereco() {
-			EnderecoDAO novoEnderecoDAO = new EnderecoDAO(con, SCHEMA);
-			return novoEnderecoDAO;
-		}
-		*/
+		pd = g4Tech.cadastrarPedido();
+		pddao.incluirPedido(pd);
+		g4Tech.adicionarPedido(pd);			
+	}
+		
+	public static void alterarPedido() {
+
+	}
+		
+	public static void excluirPedido() {
+
+	}
+		
 }

@@ -5,9 +5,7 @@ public class Categoria {
 	private String nm_categoria;
 	private String descricao;
 	
-	public Categoria() {
-		
-	}
+	public Categoria() {}
 	
 	public Categoria(int idcategoria, String nm_categoria) {
 		this.idcategoria = idcategoria;

@@ -3,9 +3,7 @@ package com.serratec.dao;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import com.serratec.classes.Pedido;
-import com.serratec.classes.Produto;
 import com.serratec.conexao.Conexao;
 
 public class PedidoDAO {
@@ -22,6 +20,7 @@ public class PedidoDAO {
 		prepararSqlAlteracao();
 	}
 	
+	//------------------------------------------------------------
 	private void prepararSqlInclusao() {
 		String sql = "insert into "+ this.schema + ".pedido";	
 		sql += " (dt_emissao,idcliente)";
@@ -41,15 +40,6 @@ public class PedidoDAO {
 		sql += " set dt_emissao = ?,";		
 		sql += " idcliente = ?,";
 		sql += " where idpedido = ?";
-		/*
-		sql += " set nome = ?,";
-		sql += " descricao = ?,";
-		sql += " vl_custo = ?,";
-		sql += " vl_venda = ?,";
-		sql += " qtd_estoque = ?,";
-		sql += " idcategoria = ?";
-		sql += " where idproduto = ?";
-		*/
 		
 		try {
 			this.pAlteracao =  conexao.getC().prepareStatement(sql);
@@ -59,7 +49,7 @@ public class PedidoDAO {
 		}
 	}
 	
-	
+	//------------------------------------------------------------
 	public int incluirPedido(Pedido pedido) {
 		try {		
 							

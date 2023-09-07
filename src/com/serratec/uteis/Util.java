@@ -1,16 +1,8 @@
 package com.serratec.uteis;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Scanner;
-
-import com.serratec.classes.Endereco;
 
 public class Util {
 	public static Scanner in = new Scanner(System.in);

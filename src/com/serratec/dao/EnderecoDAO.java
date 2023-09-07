@@ -130,7 +130,6 @@ public class EnderecoDAO {
 		}
 	}*/
 	
-	@SuppressWarnings("exports")
 	public ResultSet carregarEndereco() {
 		ResultSet tabela;				
 		String sql = "select * from " + this.schema + ".endereco order by idendereco";

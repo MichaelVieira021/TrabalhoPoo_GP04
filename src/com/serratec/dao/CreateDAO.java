@@ -24,7 +24,6 @@ public class CreateDAO {
 				criarEntidadeCategoria(conexao, schema);
 				criarEntidadeProduto(conexao, schema);
 				criarEntidadePedido(conexao, schema);
-				//criarEntidadeLivrosCliente(conexao, schema);
 				
 				bdCriado = true;
 			}
@@ -34,6 +33,7 @@ public class CreateDAO {
 		return bdCriado;
 	}
 	
+	//CONEXÃO--------------------------------------------------------------------------------
 	private static Conexao conectar(String bd, DadosConexao dadosCon) {		
 		dadosCon.setBanco(bd);
 		Conexao conexao = new Conexao(dadosCon);
@@ -45,6 +45,7 @@ public class CreateDAO {
 		con.disconect();
 	}
 	
+	//---------------------------------------------------------------------------------------
 	private static boolean criarDatabase(Conexao con, String bd) {		
 		boolean bdExiste;
 		int tentativas = 1;
@@ -137,7 +138,7 @@ public class CreateDAO {
 		}
 	}
 	
-	private static void criarChaveComposta(Conexao con, String schema, String entidade, 
+	/*private static void criarChaveComposta(Conexao con, String schema, String entidade, 
 			String nomesCamposCompostos ) {
 		
 		boolean chaveExist = false;
@@ -158,15 +159,10 @@ public class CreateDAO {
 				
 		con.query(sql);
 		}
-	}
-		
-
-	/*
-	 * =================================================================================
-	 * 								CRIAR ENTIDADES
-	 * =================================================================================
-	 * */
+	}*/
 	
+
+	//CRIAR ENTIDADES --------------------------------------------------------------
 	private static void criarEntidadeCliente(Conexao con, String schema) {
 		String entidade = "cliente";
 		
@@ -175,17 +171,12 @@ public class CreateDAO {
 		
 		if (entidadeExists(con, schema, entidade)) {
 			criarCampo(con, schema, entidade, "idcliente", "serial"	 	 	, true,  false, null, null);
-			/*criarCampo(con, schema, entidade, "codigo"	 ,
-					"TEXT GENERATED ALWAYS AS ( 'USER' || LPAD(idcliente::TEXT, 3, '0') ) STORED", 
-					false,  false, null, null);*/
 			criarCampo(con, schema, entidade, "nome"	 , "varchar(100)"	, false, false, null, null);
 			criarCampo(con, schema, entidade, "cpf"		 , "varchar(11)" 	, false, false, null, null);
 			criarCampo(con, schema, entidade, "email"	 , "varchar(150)"	, false, false, null, null);
 			criarCampo(con, schema, entidade, "telefone" , "varchar(16)"	, false, false, null, null);
 			criarCampo(con, schema, entidade, "dt_nascimento"	, "date"	, false, false, null, null);
 			criarCampo(con, schema, entidade, "endereco"	 	, "text"	, false, false, null, null);
-			//criarCampo(con, schema, entidade, "idendereco"	 , "int"	
-			//		, false, true, "endereco", "idendereco");
 			cadastrarClientes(con, schema, entidade);
 		}		
 	}
@@ -256,6 +247,7 @@ public class CreateDAO {
 	}
 
 	
+	//---------------------------------------------------------------------------------------
 	public static boolean databaseExists(Conexao con, String bd) {
 		ResultSet entidade;
 		boolean dbExists = false;
@@ -319,6 +311,8 @@ public class CreateDAO {
 		return atributoExist;
 	}
 	
+	
+	//---------------------------------------------------------------------------------------
 	private static void cadastrarClientes(Conexao con, String schema, String entidade) {
 		ResultSet tabela = con.query("select nome from " + schema + "." + entidade + " limit 1");
 		

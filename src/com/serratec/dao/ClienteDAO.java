@@ -5,12 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import com.serratec.conexao.Conexao;
-import com.serratec.conexao.DadosConexao;
-import com.serratec.classes.Categoria;
 import com.serratec.classes.Cliente;
-import com.serratec.uteis.*;
+
 
 public class ClienteDAO {
 	private Conexao conexao;
@@ -28,18 +25,7 @@ public class ClienteDAO {
 		prepararSqlExclusao();
 	}
 	
-	private void prepararSqlExclusao() {
-		String sql = "delete from "+ this.schema + ".cliente";
-		sql += " where idcliente = ?";
-		
-		try {
-			this.pExclusao = conexao.getC().prepareStatement(sql);
-		} catch (Exception e) {
-			System.err.println(e);
-			e.printStackTrace();
-		}
-	}
-	
+	//-------------------------------------------------------
 	private void prepararSqlInclusao() {
 		String sql = "insert into "+ this.schema + ".cliente";	
 		sql += " (nome, cpf, email, telefone, dt_nascimento, endereco)";
@@ -72,6 +58,40 @@ public class ClienteDAO {
 		}
 	}
 	
+	private void prepararSqlExclusao() {
+		String sql = "delete from "+ this.schema + ".cliente";
+		sql += " where idcliente = ?";
+		
+		try {
+			this.pExclusao = conexao.getC().prepareStatement(sql);
+		} catch (Exception e) {
+			System.err.println(e);
+			e.printStackTrace();
+		}
+	}
+	
+	//-------------------------------------------------------
+	public int incluirCliente(Cliente cliente) {
+		try {							
+			pInclusao.setString(1, cliente.getNome());
+			pInclusao.setString(2, cliente.getCpf());
+			pInclusao.setString(3, cliente.getEmail());
+			pInclusao.setString(4, cliente.getTelefone());
+			pInclusao.setDate(5, Date.valueOf(cliente.getDt_nascimento()));
+			pInclusao.setString(6,cliente.getEndereco());
+			
+			return pInclusao.executeUpdate();
+		} catch (Exception e) {
+			if (e.getLocalizedMessage().contains("is null")) {
+				System.err.println("\nCliente nao incluido.\nVerifique se foi chamado o conect:\n" + e);				
+			} else {				
+				System.err.println(e);
+				e.printStackTrace();
+			}
+			return 0;
+		}
+	}
+	
 	public int alterarCliente(Cliente cliente) {
 		try {
 			pAlteracao.setString(1, cliente.getNome());
@@ -93,29 +113,7 @@ public class ClienteDAO {
 			return 0;
 		}
 	}
-	
-	public int incluirCliente(Cliente cliente) {
-		try {							
-			pInclusao.setString(1, cliente.getNome());
-			pInclusao.setString(2, cliente.getCpf());
-			pInclusao.setString(3, cliente.getEmail());
-			pInclusao.setString(4, cliente.getTelefone());
-			pInclusao.setDate(5, Date.valueOf(cliente.getDt_nascimento()));
-			pInclusao.setString(6,cliente.getEndereco());
-			//pInclusao.setInt(7, cliente.getIdcliente());	
-			
-			return pInclusao.executeUpdate();
-		} catch (Exception e) {
-			if (e.getLocalizedMessage().contains("is null")) {
-				System.err.println("\nCliente nao incluido.\nVerifique se foi chamado o conect:\n" + e);				
-			} else {				
-				System.err.println(e);
-				e.printStackTrace();
-			}
-			return 0;
-		}
-	}
-	
+
 	public int excluirCliente(Cliente cliente) {
 		try {
 			//pExclusao.setInt(1, cliente.getIdcliente());
@@ -132,7 +130,7 @@ public class ClienteDAO {
 		}
 	}
 	
-	@SuppressWarnings("exports")
+	//-------------------------------------------------------
 	public ResultSet carregarClientes() {
 		ResultSet tabela;				
 		String sql = "select * from " + this.schema + ".cliente order by idcliente";

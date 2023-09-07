@@ -1,13 +1,9 @@
 package com.serratec.dao;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import com.serratec.classes.Cliente;
-import com.serratec.classes.Produto;
 import com.serratec.classes.Produto;
 import com.serratec.conexao.Conexao;
 
@@ -25,6 +21,7 @@ public class ProdutoDAO {
 		prepararSqlAlteracao();
 	}
 	
+	//------------------------------------------------------------
 	private void prepararSqlInclusao() {
 		String sql = "insert into "+ this.schema + ".produto";	
 		sql += " (nome, descricao, vl_custo, vl_venda, qtd_estoque, idcategoria)";
@@ -57,28 +54,8 @@ public class ProdutoDAO {
 		}
 	}
 	
-	public int alterarProduto(Produto produto) {
-		try {
-			pAlteracao.setString(1, produto.getNome());
-			pAlteracao.setString(2, produto.getDescricao());
-			pAlteracao.setDouble(3, produto.getVl_custo());
-			pAlteracao.setDouble(4, produto.getVl_venda());
-			pAlteracao.setInt   (5, produto.getQtd_estoque());
-			pAlteracao.setInt   (6, produto.getIdcategoria());
-			pAlteracao.setInt   (7, produto.getIdproduto());
-			
-			return pAlteracao.executeUpdate();
-		} catch (Exception e) {
-			if (e.getLocalizedMessage().contains("is null")) {
-				System.err.println("\nCliente nao alterado.\nVerifique se foi chamado o conect:\n" + e);				
-			} else {				
-				System.err.println(e);
-				e.printStackTrace();
-			}
-			return 0;
-		}
-	}
 	
+	//------------------------------------------------------------
 	public int incluirProduto(Produto produto) {
 		try {		
 							
@@ -100,7 +77,31 @@ public class ProdutoDAO {
 			return 0;
 		}
 	}
+
+	public int alterarProduto(Produto produto) {
+		try {
+			pAlteracao.setString(1, produto.getNome());
+			pAlteracao.setString(2, produto.getDescricao());
+			pAlteracao.setDouble(3, produto.getVl_custo());
+			pAlteracao.setDouble(4, produto.getVl_venda());
+			pAlteracao.setInt   (5, produto.getQtd_estoque());
+			pAlteracao.setInt   (6, produto.getIdcategoria());
+			pAlteracao.setInt   (7, produto.getIdproduto());
+			
+			return pAlteracao.executeUpdate();
+		} catch (Exception e) {
+			if (e.getLocalizedMessage().contains("is null")) {
+				System.err.println("\nProduto não alterado.\nVerifique se foi chamado o conect:\n" + e);				
+			} else {				
+				System.err.println(e);
+				e.printStackTrace();
+			}
+			return 0;
+		}
+	}
+
 	
+	//------------------------------------------------------------
 	public ResultSet carregarProduto() {
 		ResultSet tabela;				
 		String sql = "select * from " + this.schema + ".produto order by idproduto";
