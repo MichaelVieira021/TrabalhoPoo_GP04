@@ -23,6 +23,7 @@ public class CreateDAO {
 				criarEntidadeEndereco(conexao, schema);
 				criarEntidadeCategoria(conexao, schema);
 				criarEntidadeProduto(conexao, schema);
+				criarEntidadePedido(conexao, schema);
 				//criarEntidadeLivrosCliente(conexao, schema);
 				
 				bdCriado = true;
@@ -185,6 +186,7 @@ public class CreateDAO {
 			criarCampo(con, schema, entidade, "endereco"	 	, "text"	, false, false, null, null);
 			//criarCampo(con, schema, entidade, "idendereco"	 , "int"	
 			//		, false, true, "endereco", "idendereco");
+			cadastrarClientes(con, schema, entidade);
 		}		
 	}
 	
@@ -217,7 +219,6 @@ public class CreateDAO {
 			criarCampo(con, schema, entidade, "idcategoria"			, "serial"	 	 		, true,  false, null, null);
 			criarCampo(con, schema, entidade, "nm_categoria"	 	, "varchar(255)"		, false, false, null, null);
 			criarCampo(con, schema, entidade, "descricao"			, "text" 				, false, false, null, null);
-		
 			cadastrarCategorias(con,schema,entidade);
 		}		
 	}
@@ -236,9 +237,23 @@ public class CreateDAO {
 			criarCampo(con, schema, entidade, "vl_venda" 			, "double precision"	, false, false, null, null);
 			criarCampo(con, schema, entidade, "qtd_estoque"			, "int"					, false, false, null, null);
 			criarCampo(con, schema, entidade, "idcategoria"	 		, "int"					, false, true, "categoria", "idcategoria");
+		    cadastrarProdutos(con,schema,entidade);   
 		}		
 	}
 	
+	private static void criarEntidadePedido(Conexao con, String schema) {
+		String entidade = "pedido";
+		
+		if (!entidadeExists(con, schema, entidade))		
+			criarTabela(con, entidade, schema);
+		
+		if (entidadeExists(con, schema, entidade)) {
+			criarCampo(con, schema, entidade, "idpedido"			, "serial"	 	 		, true,  false, null, null);
+			criarCampo(con, schema, entidade, "dt_emissao"	 		, "date"				, false, false, null, null);
+			criarCampo(con, schema, entidade, "idcliente"			, "int" 				, false, true, "cliente", "idcliente");
+		
+		}		
+	}
 
 	
 	public static boolean databaseExists(Conexao con, String bd) {
@@ -304,6 +319,25 @@ public class CreateDAO {
 		return atributoExist;
 	}
 	
+	private static void cadastrarClientes(Conexao con, String schema, String entidade) {
+		ResultSet tabela = con.query("select nome from " + schema + "." + entidade + " limit 1");
+		
+		try {
+			if (!tabela.next()) {
+				String sqlClientes = "insert into " + schema + "." + entidade;
+				sqlClientes += " (nome, cpf, email, telefone, dt_nascimento, endereco)";
+				sqlClientes += " values";
+				sqlClientes += "('Lucas', '12345678901', 'lucas@mail' , '12345678', '11/11/2011','Rua das Flores'),";
+				sqlClientes += "('JP Galvao', '98765432109', 'jp@mail' , '87654321', '01/01/2001','Bolso do Bruno Henrique'),";
+				sqlClientes += "('Bruno Lage', '65498732110', 'blage@mail' , '98732165', '22/02/2022','Rua dos Tolos')";
+				con.query(sqlClientes);
+				tabela.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+	}
+	
 	private static void cadastrarCategorias(Conexao con, String schema, String entidade) {
 		ResultSet tabela = con.query("select nm_categoria from " + schema + "." + entidade + " limit 1");
 		
@@ -322,4 +356,29 @@ public class CreateDAO {
 			e.printStackTrace();
 		}		
 	}
+	
+    private static void cadastrarProdutos(Conexao con, String schema, String entidade) {
+        ResultSet tabela = con.query("select nome from " + schema + "." + entidade + " limit 1");
+        
+        try {
+            if (!tabela.next()) {
+                String sqlProduto = "insert into " + schema + "." + entidade;
+                sqlProduto += " (nome, descricao, vl_custo, vl_venda, qtd_estoque, idcategoria)";
+                sqlProduto += " values";
+                sqlProduto += "('Kit Gamer', 'Descrição Kit Gamer', '150', '180', '50', '1'),";
+                sqlProduto += "('Monitor Gamer', 'Descrição Monitor gamer', '500', '660', '50', '2'),";
+                sqlProduto += "('Mouse Gamer', 'Descrição Mouse gamer', '50', '90', '4', '3'),";
+                sqlProduto += "('Webcan Gamer', 'Descrição Webcan gamer', '200', '300', '7', '3'),";
+                sqlProduto += "('Teclado Gamer', 'Descrição Teclado gamer', '180', '200', '33', '2'),";
+                sqlProduto += "('Mousepad Gamer', 'Descrição Mousepad gamer', '20', '30', '80', '2'),";
+                sqlProduto += "('Geladeira Gamer', 'Descrição Geladeira gamer', '4000', '5000', '50', '1'),";
+                sqlProduto += "('Monitor Comum', 'Descrição Monitor gamer', '600', '700', '5', '2')";
+                con.query(sqlProduto);
+                tabela.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }        
+    }
+ 
 }

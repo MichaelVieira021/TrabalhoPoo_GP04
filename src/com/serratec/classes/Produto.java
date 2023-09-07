@@ -9,7 +9,12 @@ public class Produto {
 	private static int qtd_estoque;
 	private int idcategoria;
 
-	
+	public Produto() {}
+
+	public Produto(int idproduto, String nome) {
+		this.setIdcategoria(idproduto);
+		this.setNome(nome);
+	}
 	public void dadosProdutos() {
 		Categoria teste = new Categoria();
 		System.out.println("Produto: " + this.getNome());

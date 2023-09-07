@@ -3,11 +3,13 @@ package com.serratec.main;
 import com.serratec.classes.Cliente;
 import com.serratec.classes.Produto;
 import com.serratec.classes.Empresa;
+import com.serratec.classes.Pedido;
 import com.serratec.conexao.Conexao;
 import com.serratec.conexao.DadosConexao;
 import com.serratec.uteis.Menus;
 import com.serratec.uteis.Util;
 import com.serratec.dao.CreateDAO;
+import com.serratec.dao.PedidoDAO;
 import com.serratec.dao.ClienteDAO;
 import com.serratec.dao.ProdutoDAO;
 
@@ -35,12 +37,12 @@ public class Main {
 		if (CreateDAO.createBD(BANCO, SCHEMA, dadosCon)) {
 			con = new Conexao(dadosCon); 
 			con.conect();
+			//clientes = new ListaClientes(con, SCHEMA);
 			g4Tech = new Empresa(con, SCHEMA);
 			menuPrincipal();
 		} else {
 			System.out.println("Ocorreu um problema na criacao do banco de dados");
 		}
-		
 	}
 		
 		public static void menuPrincipal() {
@@ -72,7 +74,7 @@ public class Main {
 			
 			switch (opcao) {
 			case 1: menuCadastrar(); break;
-			//case 2: menuAlterar(); break;
+			case 2: menuAlterar(); break;
 			//case 3: menuLocalizar(); break;
 			//case 4: menuExcluir(); break;
 			case 0: 
@@ -106,7 +108,7 @@ public class Main {
 				
 				switch (tipoCrud) {
 				case CADASTRAR: escolherMenuCadastrar(opcao); break;
-				//case ALTERAR: escolherMenuAlterar(opcao); break;
+				case ALTERAR: escolherMenuAlterar(opcao); break;
 				//case IMPRIMIR: escolherMenuImprimir(opcao); break;
 				//case EXCLUIR: escolherMenuExcluir(opcao); break;
 				}
@@ -124,8 +126,22 @@ public class Main {
 			switch (opcao) {
 			case 1: cadastrarCliente(); break;
 			case 2: cadastrarProduto(); break;
-			//case 3: cadastrarLivro(); break;
+			case 3: cadastrarPedido(); break;
 			case 0: Menus.menuCategorias();break;
+			default: Util.escrever("Opcao invalida");
+			}
+		}
+		
+		public static void menuAlterar() {
+			menuPadrao(Util.CRUD.ALTERAR);
+		}
+		
+		public static void escolherMenuAlterar(int opcao) {		
+			switch (opcao) {
+			case 1: alterarCliente(); break;
+			//case 2: alterarFuncionario(); break;
+			//case 3: alterarLivro(); break;
+			case 0: break;
 			default: Util.escrever("Opcao invalida");
 			}
 		}
@@ -155,6 +171,28 @@ public class Main {
 			g4Tech.adicionarProduto(p);
 			
 
+		}
+		
+		public static void cadastrarPedido() {
+			Pedido pd = new Pedido();
+			PedidoDAO pddao = new PedidoDAO(con, SCHEMA);
+			
+			pd = g4Tech.cadastrarPedido();
+			
+			pddao.incluirPedido(pd);
+			
+			g4Tech.adicionarPedido(pd);
+					
+		}
+		
+		public static void alterarCliente() {
+			ClienteDAO cdao = new ClienteDAO(con, SCHEMA);
+			Cliente c = g4Tech.localizarCliente();
+			
+			c.dadosPessoa();
+			c.alterar();
+			g4Tech.atualizarDadosCliente(c);
+			cdao.alterarCliente(c);
 		}
 		
 		/*

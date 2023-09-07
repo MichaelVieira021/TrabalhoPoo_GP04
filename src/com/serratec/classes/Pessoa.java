@@ -3,9 +3,9 @@ package com.serratec.classes;
 import java.time.LocalDate;
 
 public class Pessoa {
-	private String nome;
-	private String cpf;
-	private LocalDate dt_nascimento;
+	protected String nome;
+	protected String cpf;
+	protected LocalDate dt_nascimento;
 
 	public String getNome() {
 		return nome;

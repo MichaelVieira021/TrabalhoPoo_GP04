@@ -3,14 +3,18 @@ package com.serratec.classes;
 import java.util.Scanner;
 
 import com.serratec.conexao.Conexao;
+import com.serratec.dao.ClienteDAO;
+import com.serratec.main.Main;
 import com.serratec.uteis.Util;
 import com.serratec.uteis.Menus;
+import com.serratec.classes.ListaClientes;
 import java.util.ArrayList;
 
 public class Empresa {
 	private static final String nome = "g4Tech";
 	private String cnpj = "34554354";
-	
+	public static ListaClientes clientes; 
+
 	private com.serratec.conexao.Conexao con; 
 	private String schema;
 	
@@ -26,7 +30,7 @@ public class Empresa {
 	private ArrayList<com.serratec.classes.Cliente> cliente = new ArrayList<>();
 	private ArrayList<com.serratec.classes.Produto> produto = new ArrayList<>();
 	//private ArrayList<com.serratec.classes.Endereco> endereco = new ArrayList<>();
-	//private ArrayList<com.serratec.classes.Pedido> pedido = new ArrayList<>();	
+	private ArrayList<com.serratec.classes.Pedido> pedido = new ArrayList<>();	
 	
  	public com.serratec.classes.Cliente cadastrarCliente() {
  		com.serratec.classes.Cliente c = new com.serratec.classes.Cliente();
@@ -60,8 +64,7 @@ public class Empresa {
 	
 		System.out.println("Informe o CEP: ");
 		s = in.nextLine();
-		com.serratec.uteis.BuscarCEP.buscarCep(s);
-		c.setEndereco(s);
+		c.setEndereco(com.serratec.uteis.BuscarCEP.buscarCep(s));
 		//in.close();
 		
 		return c;
@@ -114,7 +117,29 @@ public class Empresa {
 		
 		return c;
 	}
- 	
+
+ 	public Pedido cadastrarPedido() {
+ 		com.serratec.classes.Pedido pd = new com.serratec.classes.Pedido();
+		
+		@SuppressWarnings("resource")
+		Scanner in = new Scanner(System.in);
+		
+		System.out.println(Util.LINHA);
+		System.out.println("Cadastro de pedido: ");
+		System.out.println(Util.LINHA);
+		
+		Util.br();
+						
+		pd.setDt_emissao(Util.validarData("Data de emissão: "));
+		
+		pd.setIdcliente(Menus.menuClientes());
+		
+		Menus.menuProdutos();
+		//pd.setIdcliente(Util.validarInteiro("Id do cliente: "));
+		
+		
+		return pd;
+	}
  	/*public com.serratec.classes.Produto adicionarProduto(com.serratec.classes.Produto produto) {
  		com.serratec.classes.Produto c = new com.serratec.classes.Produto();
 		
@@ -150,4 +175,62 @@ public class Empresa {
 		return endereco;
 	}*/	
  	
+	public void adicionarPedido(Pedido pedido) {
+		this.pedido.add(pedido);
+	}
+
+	
+	public com.serratec.classes.Cliente localizarCliente() {
+		@SuppressWarnings("resource")
+		Scanner in = new Scanner(System.in);
+		com.serratec.classes.Cliente cl = new com.serratec.classes.Cliente();
+		
+		int i = -1;
+				
+		System.out.println("Informe o CPF do cliente: ");
+		String s = in.next();
+		clientes = new ListaClientes(con, schema);
+		
+		for (Cliente c : clientes.getListacliente()) {
+			System.out.println("i = " + i + " CPF: " + c.getCpf() + " Input: " + s);
+			if (c.getCpf().equals(s)) {
+				i = clientes.getListacliente().lastIndexOf(c);
+				System.out.println("i encontrado: " + i);
+				break;
+			}
+		}
+		
+		if (i >= 0) {
+			cl.setNome(clientes.getListacliente().get(i).getNome());
+			cl.setCpf(clientes.getListacliente().get(i).getCpf());
+			cl.setEndereco(clientes.getListacliente().get(i).getEndereco());
+			cl.setDt_nascimento(clientes.getListacliente().get(i).getDt_nascimento());
+			cl.setIdcliente(clientes.getListacliente().get(i).getIdcliente());
+			cl.setEmail(clientes.getListacliente().get(i).getEmail());
+			cl.setTelefone(clientes.getListacliente().get(i).getTelefone());
+			
+			return cl;	
+		} else
+			return null;
+	}
+	
+	public void atualizarDadosCliente(com.serratec.classes.Cliente cl) {
+		int i = 0;
+		
+		for (Cliente c : clientes.getListacliente()) {
+			if (c.getIdcliente() == cl.getIdcliente()) {
+				i = clientes.getListacliente().lastIndexOf(c);
+				System.out.println("i: " + i);
+				break;
+			}
+		}
+		
+		clientes.getListacliente().get(i).setNome(cl.getNome());
+		clientes.getListacliente().get(i).setCpf(cl.getCpf());
+		clientes.getListacliente().get(i).setEndereco(cl.getEndereco());
+		clientes.getListacliente().get(i).setDt_nascimento(cl.getDt_nascimento());
+		clientes.getListacliente().get(i).setEmail(cl.getEmail());
+		clientes.getListacliente().get(i).setTelefone(cl.getTelefone());
+	}
+	
 }

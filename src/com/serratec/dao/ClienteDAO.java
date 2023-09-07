@@ -3,8 +3,12 @@ package com.serratec.dao;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 import com.serratec.conexao.Conexao;
 import com.serratec.conexao.DadosConexao;
+import com.serratec.classes.Categoria;
 import com.serratec.classes.Cliente;
 import com.serratec.uteis.*;
 
@@ -56,7 +60,7 @@ public class ClienteDAO {
 		sql += " cpf = ?,";
 		sql += " email = ?,";
 		sql += " telefone = ?,";
-		sql += " dt_nascimento = ?";
+		sql += " dt_nascimento = ?,";
 		sql += " endereco = ?";
 		sql += " where idcliente = ?";
 		
@@ -137,4 +141,24 @@ public class ClienteDAO {
 			
 		return tabela;
 	}
+	
+	public ArrayList<Cliente> carregarClienteMenu() {
+        ArrayList<Cliente> clientes = new ArrayList<>();
+        String sql = "SELECT idcliente, nome FROM " + this.schema + ".cliente ORDER BY idcliente";
+
+        ResultSet tabela = conexao.query(sql);
+
+        try {
+            while (tabela.next()) {
+            	int  idcliente = tabela.getInt("idcliente");
+                String nomeCliente = tabela.getString("nome");
+                Cliente cliente = new Cliente(idcliente, nomeCliente);
+                clientes.add(cliente);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return clientes;
+    }
 }
