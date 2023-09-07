@@ -4,6 +4,7 @@ import java.util.Scanner;
 import com.serratec.conexao.Conexao;
 import com.serratec.uteis.Util;
 import com.serratec.uteis.Menus;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Empresa {
@@ -14,7 +15,6 @@ public class Empresa {
 	
 	private ArrayList<com.serratec.classes.Cliente> cliente = new ArrayList<>();
 	private ArrayList<com.serratec.classes.Produto> produto = new ArrayList<>();
-	//private ArrayList<com.serratec.classes.Endereco> endereco = new ArrayList<>();
 	private ArrayList<com.serratec.classes.Pedido> pedido = new ArrayList<>();
 	
 	private com.serratec.conexao.Conexao con; 
@@ -92,10 +92,8 @@ public class Empresa {
 		clientes = new ListaClientes(con, schema);
 		
 		for (Cliente c : clientes.getListacliente()) {
-			System.out.println("i = " + i + " CPF: " + c.getCpf() + " Input: " + s);
 			if (c.getCpf().equals(s)) {
 				i = clientes.getListacliente().lastIndexOf(c);
-				System.out.println("i encontrado: " + i);
 				break;
 			}
 		}
@@ -120,7 +118,6 @@ public class Empresa {
 		for (Cliente c : clientes.getListacliente()) {
 			if (c.getIdcliente() == cl.getIdcliente()) {
 				i = clientes.getListacliente().lastIndexOf(c);
-				System.out.println("i: " + i);
 				break;
 			}
 		}
@@ -131,6 +128,40 @@ public class Empresa {
 		clientes.getListacliente().get(i).setDt_nascimento(cl.getDt_nascimento());
 		clientes.getListacliente().get(i).setEmail(cl.getEmail());
 		clientes.getListacliente().get(i).setTelefone(cl.getTelefone());
+	}
+	
+	public void listarDadosClientes() {
+ 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		clientes = new ListaClientes(con, schema);
+
+		System.out.println("\n==================================================================================");
+		System.out.println("                               LISTAGEM DE CLIENTES                               ");
+		System.out.println("==================================================================================");
+		System.out.println("Nome\t\t\t\tCPF\t\tEmail\t\t\tDt.Nasc.");
+		System.out.println("----------------------------------------------------------------------------------");
+		for (Cliente c : clientes.getListacliente()) {
+			System.out.printf("%-25s\t", c.getNome());
+			System.out.printf("%-15s\t", c.getCpf());
+			System.out.printf("%-10s\t\t", c.getEmail());
+			if (c.getDt_nascimento() != null)
+				//System.out.printf("%s", c.getDt_nascimento().format(dtf));
+				System.out.println("Não sei usar Data :(");
+			System.out.println();
+		}
+
+		System.out.println();
+	}
+	
+	public void excluirCliente(com.serratec.classes.Cliente cl) {
+		int i = -1;
+		clientes = new ListaClientes(con, schema);
+		for (Cliente c : clientes.getListacliente()) {
+			if (c.getIdcliente() == cl.getIdcliente())
+				i = clientes.getListacliente().lastIndexOf(c);
+		}
+		
+		if (i >= 0)
+			this.cliente.remove(i);
 	}
 	
 	//-----------------------------------------------------------------------

@@ -116,7 +116,7 @@ public class ClienteDAO {
 
 	public int excluirCliente(Cliente cliente) {
 		try {
-			//pExclusao.setInt(1, cliente.getIdcliente());
+			pExclusao.setInt(1, cliente.getIdcliente());	
 			
 			return pExclusao.executeUpdate();
 		} catch  (Exception e) {

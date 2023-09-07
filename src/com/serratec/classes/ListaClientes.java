@@ -70,12 +70,7 @@ public class ListaClientes {
 			c.setEmail(tabela.getString("email"));
 			c.setTelefone(tabela.getString("telefone"));
 			c.setIdcliente(tabela.getInt("idcliente"));
-			System.out.println(tabela.getString("nome") + " - " +
-							   tabela.getString("endereco") + " - " +
-							   tabela.getString("cpf") + " - " +
-							   tabela.getString("email") + " - " +
-							   tabela.getString("telefone") + " - " +
-							   tabela.getString("idcliente"));
+
 			return c;
 		} catch (SQLException e) {
 			e.printStackTrace();

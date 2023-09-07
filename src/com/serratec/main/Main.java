@@ -111,8 +111,30 @@ public class Main {
 		cdao.alterarCliente(c);
 	}
 		
+	public static void imprimirCliente() {
+		g4Tech.listarDadosClientes();
+	}
+	
 	public static void excluirCliente() {
-
+		@SuppressWarnings("resource")
+		Scanner input = new Scanner(System.in);
+		int i = 0;
+		ClienteDAO cdao = new ClienteDAO(con, SCHEMA);
+		Cliente c = g4Tech.localizarCliente();
+		
+		if (c != null) {		
+			Util.escrever("Deseja excluir o cliente: " + c.getNome());
+			char s = input.next().charAt(0);
+			
+			if (s == 's' || s == 'S')
+				i = cdao.excluirCliente(c);
+			System.out.println("i: " + i);
+			if (i > 0) {
+				g4Tech.excluirCliente(c);
+				System.out.println("Cliente excluido com sucesso.");
+			}
+		} else
+			System.out.println("Cliente nao encontrado.");
 	}
 
 	//PRODUTO--------------------------------------------
@@ -135,6 +157,10 @@ public class Main {
 		proddao.alterarProduto(prod);
 	}
 
+	public static void imprimirProduto() {
+		
+	}
+	
 	public static void excluirProduto() {
 		
 	}
@@ -153,8 +179,12 @@ public class Main {
 
 	}
 		
+	public static void imprimirPedido() {
+		
+	}
+	
 	public static void excluirPedido() {
-
+		
 	}
 		
 }

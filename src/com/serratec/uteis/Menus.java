@@ -8,7 +8,6 @@ import com.serratec.dao.ClienteDAO;
 import com.serratec.dao.CategoriaDAO;
 import com.serratec.dao.ProdutoDAO;
 import com.serratec.main.Main;
-
 public class Menus {
 	
 	public static Scanner scan = new Scanner(System.in);
@@ -94,11 +93,11 @@ public class Menus {
 			System.out.println("║                                   ║");
 			System.out.println("║        [1] - Cadastrar            ║");
 			System.out.println("║        [2] - Alterar              ║");
-			System.out.println("║        [3] - Excluir              ║");
-			System.out.println("║        [4] - Localizar            ║");
+			System.out.println("║        [3] - Imprimir             ║");
+			System.out.println("║        [4] - Excluir              ║");
 			System.out.println("║                                   ║");
 			System.out.println("║-----------------------------------║");
-			System.out.println("║      Digite '4' para [Sair]       ║");
+			System.out.println("║      Digite '0' para [Sair]       ║");
 			System.out.print  ("╚═══════════════════════════════════╝\n> ");
 			
 			opcao = Util.validarInteiro("Informe uma opcao: ");
@@ -133,8 +132,8 @@ public class Menus {
 			switch (tipoCrud) {
 			case CADASTRAR: escolherMenuCadastrar(opcao); break;
 			case ALTERAR: escolherMenuAlterar(opcao); break;
-			//case IMPRIMIR: escolherMenuImprimir(opcao); break;
-			//case EXCLUIR: escolherMenuExcluir(opcao); break;
+			case IMPRIMIR: escolherMenuImprimir(opcao); break;
+			case EXCLUIR: escolherMenuExcluir(opcao); break;
 			}
 			
 		} while (opcao != 0);
@@ -149,8 +148,8 @@ public class Menus {
 		switch (opcao) {
 		case 1: menuCadastrar(); break;
 		case 2: menuAlterar(); break;
-		//case 3: menuLocalizar(); break;
-		//case 4: menuExcluir(); break;
+		case 3: menuImprimir(); break;
+		case 4: menuExcluir(); break;
 		case 0: 
 			System.out.println("\nPrograma finalizado.");	
 			break;
@@ -183,21 +182,41 @@ public class Menus {
 		switch (opcao) {
 		case 1: Main.alterarCliente(); break;
 		case 2: Main.alterarProduto(); break;
-		//case 3: alterarLivro(); break;
+		case 3: Main.alterarPedido(); break;
 		case 0: break;
 		default: Util.escrever("Opcao invalida");
 		}
 	}
 
+	//IMPRIMIR----------------------------------------
+	public static void menuImprimir() {
+		menuPadrao(Util.CRUD.IMPRIMIR);
+	}
+	
+	public static void escolherMenuImprimir(int opcao) {		
+		switch (opcao) {
+		case 1: Main.imprimirCliente(); break;
+		case 2: Main.imprimirProduto(); break;
+		case 3: Main.imprimirPedido(); break;
+		case 0: break;
+		default: Util.escrever("Opcao invalida");
+		}
+	}
 
 	//EXCLUIR----------------------------------------
 	public static void menuExcluir() {
 		menuPadrao(Util.CRUD.EXCLUIR);
 	}
 	
-	public static void escolherMenuExcluir(int opcao) {
+	public static void escolherMenuExcluir(int opcao) {		
+		switch (opcao) {
+		case 1: Main.excluirCliente(); break;
+		case 2: Main.excluirProduto(); break;
+		case 3: Main.excluirPedido(); break;
+		case 0: break;
+		default: Util.escrever("Opcao invalida");
+		}
 	}
-
 
 
 
