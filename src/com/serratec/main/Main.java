@@ -1,11 +1,11 @@
 package com.serratec.main;
 
+import java.util.Scanner;
 import com.serratec.classes.Cliente;
 import com.serratec.classes.Produto;
 import com.serratec.classes.Empresa;
 import com.serratec.classes.Pedido;
-import com.serratec.conexao.Conexao;
-import com.serratec.conexao.DadosConexao;
+import com.serratec.conexao.*;
 import com.serratec.uteis.Menus;
 import com.serratec.uteis.Util;
 import com.serratec.dao.CreateDAO;
@@ -19,30 +19,72 @@ public class Main {
 	public static DadosConexao dadosCon = new DadosConexao();
 	public static final String BANCO = "trabalhopooteste";
 	public static final String SCHEMA = "grupo04";
-	public static final String LOCAL = "localhost";
-	public static final String USUARIO = "postgres";
-	public static final String SENHA = "123456";
-	public static final String PORTA = "5432";
-	public static final String BD = "PostgreSql";
+	public static final String PATH = System.getProperty("user.dir");
+	public static final String SFILE = "DadosConexao.ini";
+	
+	//public static final String LOCAL = "localhost";
+	//public static final String PORTA = "5432";
+	//public static final String USUARIO = "postgres";
+	//public static final String SENHA = "123456";
+	//public static final String BD = "PostgreSql";
 	
 	public static void main(String[] args) {
+		System.out.println("Present Project Directory : "+ System.getProperty("user.dir"));
+		if (configInicial()) {
+			if (CreateDAO.createBD(BANCO, SCHEMA, dadosCon)) {
+				con = new Conexao(dadosCon); 
+				con.conect();
+				g4Tech = new Empresa(con, SCHEMA);
+				Menus.menuPrincipal();
+			} else {
+				System.out.println("Ocorreu um problema na criacao do banco de dados");
+			}	
+		} else
+			System.out.println("Não foi possível executar o sistema.");
+	}
+	
+	public static boolean configInicial() {
+		@SuppressWarnings("resource")
+		Scanner input = new Scanner(System.in);
+		ArquivoConexao conexaoIni = new ArquivoConexao(PATH + "\\" + SFILE);
+		boolean abrirSistema = false;
 		
-		dadosCon.setBanco(BANCO);
-		dadosCon.setLocal(LOCAL);
-		dadosCon.setUser(USUARIO);
-		dadosCon.setSenha(SENHA);
-		dadosCon.setPorta(PORTA);
-		dadosCon.setBd(BD);
+		if (conexaoIni.criarArquivo()) {
+			if (conexaoIni.alimentaDadosConexao()) {
+				dadosCon = conexaoIni.getData();
+				abrirSistema = true;
+			} else {
+				conexaoIni.apagarArquivo();
+				System.out.println("Arquivo de configuração de conexão:\n");
+				System.out.println("Local: ");
+				String local = input.nextLine();
+				System.out.println("Porta: ");
+				String porta = input.nextLine();
+				System.out.println("Usuário: ");
+				String usuario = input.nextLine();
+				System.out.println("Senha: ");
+				String senha = input.nextLine();
+				System.out.println("Database: ");
+				String banco = input.nextLine();
+				
+				if (conexaoIni.criarArquivo()) {
+					conexaoIni.escreverArquivo("bd=PostgreSql");
+					conexaoIni.escreverArquivo("local="+local);
+					conexaoIni.escreverArquivo("porta="+porta);
+					conexaoIni.escreverArquivo("usuario="+usuario);
+					conexaoIni.escreverArquivo("senha="+senha);
+					conexaoIni.escreverArquivo("banco="+banco);
+					
+					if (conexaoIni.alimentaDadosConexao()) {
+						dadosCon = conexaoIni.getData();
+						abrirSistema = true;
+					} else System.out.println("Não foi possível efetuar a configuração.\nVerifique");	
+				}
+			}
+		} else
+			System.out.println("Houve um problema na criação do arquivo de configuração.");
 		
-		if (CreateDAO.createBD(BANCO, SCHEMA, dadosCon)) {
-			con = new Conexao(dadosCon); 
-			con.conect();
-			//clientes = new ListaClientes(con, SCHEMA);
-			g4Tech = new Empresa(con, SCHEMA);
-			Menus.menuPrincipal();
-		} else {
-			System.out.println("Ocorreu um problema na criacao do banco de dados");
-		}
+		return abrirSistema;
 	}
 	
 	//CLIENTE--------------------------------------------
