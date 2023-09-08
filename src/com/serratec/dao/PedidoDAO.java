@@ -3,6 +3,8 @@ package com.serratec.dao;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import com.serratec.classes.Pedido;
 import com.serratec.conexao.Conexao;
 
@@ -77,5 +79,23 @@ public class PedidoDAO {
 		tabela = conexao.query(sql);
 		
 		return tabela;
+	}
+	
+	public int ultimoIdPedido() {
+	    int ultimoIdPedido = -1;
+
+	    String sql = "select MAX(idpedido) from " + this.schema + ".pedido";
+
+	    try (PreparedStatement preparedStatement = conexao.getC().prepareStatement(sql);
+	         ResultSet resultSet = preparedStatement.executeQuery()) {
+
+	        if (resultSet.next()) {
+	            ultimoIdPedido = resultSet.getInt(1);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return ultimoIdPedido;
 	}
 }

@@ -146,10 +146,10 @@ public class ProdutoDAO {
 		}
 	}
 	
-	public int incluirProdutoCarrinho(ProdutoCarrinho produtocarrinho, com.serratec.classes.Pedido pedido) {
+	public int incluirProdutoCarrinho(ProdutoCarrinho produtocarrinho) {
 		try {		
 							
-			pInclusao.setInt(1, pedido.getIdpedido());
+			pInclusao.setInt(1, produtocarrinho.getIdpedido());
 			pInclusao.setInt(2, produtocarrinho.getIdproduto());
 			pInclusao.setInt(3, produtocarrinho.getQuantidade());
 			
@@ -194,5 +194,43 @@ public class ProdutoDAO {
         }
 
         return produtos;
+    }
+	
+	public Produto carregarProdutoMenu2(int id) {
+		Produto produto = new Produto();
+        String sql = "SELECT idproduto, nome, qtd_estoque FROM " + this.schema + ".produto where idproduto = "+id;
+
+        ResultSet tabela = conexao.query(sql);
+        Produto teste = new Produto();
+
+        try {
+            while (tabela.next()) {
+            	int  idProduto = tabela.getInt("idproduto");
+                String nomeProduto = tabela.getString("nome");
+                //String desc = tabela.getString("descricao");
+                //double vlc = tabela.getDouble("vl_custo");
+                //double vlv = tabela.getDouble("vl_venda");
+                int qtdEstoque = tabela.getInt("qtd_estoque");
+               // int  idCategoria = tabela.getInt("idcategoria");
+                //produto.setIdproduto(tabela.getInt("idproduto"));
+                //produto.setNome(tabela.getString("nome"));
+                //produto.setDescricao(tabela.getString("descricao"));
+                //produto.setVl_custo(tabela.getDouble("vl_custo"));
+                //produto.setVl_venda(tabela.getDouble("vl_venda"));
+                //produto.setQtd_estoque(tabela.getInt("qtd_estoque"));
+                //produto.setIdcategoria(tabela.getInt("idcategoria"));
+                produto.setIdproduto(idProduto);
+                produto.setNome(nomeProduto);
+                //produto.setDescricao(desc);
+               // produto.setVl_custo(vlc);
+                //produto.setVl_venda(vlv);
+                produto.setQtd_estoque(qtdEstoque);
+                //produto.setIdcategoria(idCategoria);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return produto;
     }
 }

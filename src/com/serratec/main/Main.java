@@ -168,15 +168,15 @@ public class Main {
 	//PEDIDO-----------------------------------------------
 	public static void cadastrarPedido() {
 		Pedido pd = new Pedido();
-		PedidoDAO pddao = new PedidoDAO(con, SCHEMA);
-			
+		//PedidoDAO pddao = new PedidoDAO(con, SCHEMA);
+		
 		pd = g4Tech.cadastrarPedido();
-		pddao.incluirPedido(pd);
-		g4Tech.adicionarPedido(pd);
+		//pddao.incluirPedido(pd);
+		//g4Tech.adicionarPedido(pd);
 		
 		//adicionar produtos ao pedido
 		//g4Tech.teste();
-		g4Tech.inserirProdutoCarrinho();
+		//g4Tech.inserirProdutoCarrinho();
 	}
 		
 	public static void alterarPedido() {
