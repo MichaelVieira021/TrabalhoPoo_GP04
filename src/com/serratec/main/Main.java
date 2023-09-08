@@ -172,7 +172,11 @@ public class Main {
 			
 		pd = g4Tech.cadastrarPedido();
 		pddao.incluirPedido(pd);
-		g4Tech.adicionarPedido(pd);			
+		g4Tech.adicionarPedido(pd);
+		
+		//adicionar produtos ao pedido
+		//g4Tech.teste();
+		g4Tech.inserirProdutoCarrinho();
 	}
 		
 	public static void alterarPedido() {

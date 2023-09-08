@@ -2,8 +2,14 @@ package com.serratec.classes;
 
 import java.util.Scanner;
 import com.serratec.conexao.Conexao;
+import com.serratec.dao.ClienteDAO;
+import com.serratec.dao.PedidoDAO;
+import com.serratec.dao.ProdutoDAO;
 import com.serratec.uteis.Util;
 import com.serratec.uteis.Menus;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
@@ -12,13 +18,27 @@ public class Empresa {
 	//private String cnpj = "34554354";
 	public static ListaClientes clientes; 
 	public static ListaProdutos produtos; 
+	public static ListaPedidos pedidos; 
 	
 	private ArrayList<com.serratec.classes.Cliente> cliente = new ArrayList<>();
 	private ArrayList<com.serratec.classes.Produto> produto = new ArrayList<>();
 	private ArrayList<com.serratec.classes.Pedido> pedido = new ArrayList<>();
 	
-	private com.serratec.conexao.Conexao con; 
-	private String schema;
+	private static Conexao con; 
+	private static String schema;
+	
+	public static class ProdutoCarrinho extends Produto{
+		private int quantidade;
+
+		public int getQuantidade() {
+			return quantidade;
+		}
+
+		public void setQuantidade(int quantidade) {
+			this.quantidade = quantidade;
+		}
+		
+	}
 	
 	public Empresa(Conexao con, String schema) {
 		super();
@@ -144,8 +164,8 @@ public class Empresa {
 			System.out.printf("%-15s\t", c.getCpf());
 			System.out.printf("%-10s\t\t", c.getEmail());
 			if (c.getDt_nascimento() != null)
-				//System.out.printf("%s", c.getDt_nascimento().format(dtf));
-				System.out.println("Não sei usar Data :(");
+				System.out.printf("%s", c.getDt_nascimento().format(dtf));
+				//System.out.println("Não sei usar Data :(");
 			System.out.println();
 		}
 
@@ -236,7 +256,7 @@ public class Empresa {
 	public void atualizarDadosProduto(com.serratec.classes.Produto proddao) {
 		int i = 0;
 		
-	  for (int index = 0; index < produtos.getListaProdutos().size(); index++) {
+	  for (int index = 0; index < produtos.getListaProdutos().size(); index++) {	  
 	        Produto prod = produtos.getListaProdutos().get(index);
 	        if (prod.getNome().equals(proddao.getNome())) {
 	            i = index-1; // Encontrou o produto
@@ -256,7 +276,9 @@ public class Empresa {
 	//------------------------------------------------------------------------
  	public Pedido cadastrarPedido() {
  		com.serratec.classes.Pedido pd = new com.serratec.classes.Pedido();
-		
+ 	    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");  
+ 	    LocalDateTime nowt = LocalDateTime.now();  
+ 	    LocalDate now = LocalDate.now();  
 		@SuppressWarnings("resource")
 		Scanner in = new Scanner(System.in);
 		
@@ -265,14 +287,13 @@ public class Empresa {
 		System.out.println(Util.LINHA);
 		
 		Util.br();
-						
-		pd.setDt_emissao(Util.validarData("Data de emissão: "));
+		System.out.println("Data de Emissão: " + dtf.format(nowt));				
+		pd.setDt_emissao(now);
 		
 		pd.setIdcliente(Menus.menuClientes());
 		
-		Menus.menuProdutos();
+		//Menus.menuProdutos();
 		//pd.setIdcliente(Util.validarInteiro("Id do cliente: "));
-		
 		
 		return pd;
 	}
@@ -281,8 +302,108 @@ public class Empresa {
 		this.pedido.add(pedido);
 	}
 
+	public void inserirProdutoCarrinho() {
+		@SuppressWarnings("resource")
+		Scanner in = new Scanner(System.in);
+		
+		int idped = -1;
+		pedidos = new ListaPedidos(con, schema);
+		
+		for (Pedido c : pedidos.getListapedidos()) {
+			idped = pedidos.getListapedidos().lastIndexOf(c);
+		}
+		
+		int quant;
+		int opcao = 1;
+		boolean verEstoque = false;
+		
+		System.out.println("=====================================");
+		System.out.println("	   INSERIR PRODUTOS");
+		System.out.println("=====================================");
+		
+		do {
+			int idprod = Menus.menuProdutos();
+			quant = Util.validarInteiro("Digite a quantidade a ser adicionada: ");			
+			verEstoque = verificarEstoque(idped, idprod, quant);
+			
+			if (!verEstoque) {
+				Util.escrever("Produto fora de estoque!");
+				opcao = 1;
+			} else {
+				System.out.println("Produto adicionado com Sucesso!");
+				System.out.println("Digite 1 para adicionar outro produto.");
+				opcao = in.nextInt();	
+			}
+				
+		} while (opcao==1);
+		
+		System.out.println("Pedido realizado com Sucesso!");
+	}
+
+	public static boolean verificarEstoque(int idped, int idprod, int quant) {
+		boolean retorno = false;
+		int i = -1;
+		int j = -1;
+		
+		pedidos = new ListaPedidos(con, schema);
+		produtos = new ListaProdutos(con, schema);
+		com.serratec.classes.Produto prod = new com.serratec.classes.Produto();
+		com.serratec.classes.Pedido ped = new com.serratec.classes.Pedido();
+		
+		for (Produto c : produtos.getListaProdutos()) {
+			if (c.getIdproduto() == idprod) {
+				i = produtos.getListaProdutos().lastIndexOf(c);
+				prod.setIdproduto(produtos.getListaProdutos().get(i).getIdproduto());
+				prod.setQtd_estoque(produtos.getListaProdutos().get(i).getQtd_estoque());
+				System.out.println("---------------");
+				System.out.println("Produto c ID: " + prod.getIdproduto());
+				System.out.println("Produto c Estoque: " + prod.getQtd_estoque());
+				break;
+			}
+		}
+		
+		for (Pedido c : pedidos.getListapedidos()) {
+			if (c.getIdpedido() == idped) {
+				j = pedidos.getListapedidos().lastIndexOf(c);
+				ped.setIdpedido(pedidos.getListapedidos().get(j).getIdpedido());
+				System.out.println("Pedido c ID: " + ped.getIdpedido());
+				break;
+			}
+		}
+		
+		if (prod.getQtd_estoque() > 0 && prod.getQtd_estoque() >= quant) {
+			adicionarProdutoCarrinho(ped, prod, quant);
+			retorno = true;
+		} else {
+			if (prod.getQtd_estoque() == 0) {
+				System.out.println("Produto fora de estoque.");
+			} else {
+				System.out.println("A quantidade solicitada e superior a quantidade disponivel.");
+			}
+		}
+		return retorno;	
+	}
+
 	
-	
+	private static void adicionarProdutoCarrinho(Pedido c, Produto l, int quant) {
+		ProdutoCarrinho le = new ProdutoCarrinho();
+		ProdutoDAO pddao = new ProdutoDAO(con, schema);
+		
+		le.setIdproduto(l.getIdproduto());
+		le.setQtd_estoque(l.getQtd_estoque());
+		le.setQuantidade(quant);
+		c.setIdpedido(c.getIdpedido()+1);
+		System.out.println("---------------");
+		System.out.println("ID do produto: " + le.getIdproduto());
+		System.out.println("Estoque do produto: " + le.getQtd_estoque());
+		System.out.println("Quantidade comprada do produto: " + le.getQuantidade());
+		System.out.println("ID do Pedido: " + c.getIdpedido());
+		
+		//PrepararSqlAlterarEstoque
+		pddao.alterarEstoque(l);	
+		pddao.incluirProdutoCarrinho(le,c);
+	}
+
 	/*public com.serratec.classes.Produto adicionarProduto(com.serratec.classes.Produto produto) {
  		com.serratec.classes.Produto c = new com.serratec.classes.Produto();
 		

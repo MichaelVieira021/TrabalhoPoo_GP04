@@ -24,6 +24,7 @@ public class CreateDAO {
 				criarEntidadeCategoria(conexao, schema);
 				criarEntidadeProduto(conexao, schema);
 				criarEntidadePedido(conexao, schema);
+				criarEntidadePedidoItem(conexao, schema);
 				
 				bdCriado = true;
 			}
@@ -246,6 +247,19 @@ public class CreateDAO {
 		}		
 	}
 
+	private static void criarEntidadePedidoItem(Conexao con, String schema) {
+		String entidade = "pedido_produto";
+		
+		if (!entidadeExists(con, schema, entidade))		
+			criarTabela(con, entidade, schema);
+		
+		if (entidadeExists(con, schema, entidade)) {
+			criarCampo(con, schema, entidade, "idpedido"			, "int"	 	 		, false,  true, "pedido", "idpedido");
+			criarCampo(con, schema, entidade, "idproduto"	 		, "int"				, false,  true, "produto", "idproduto");
+			criarCampo(con, schema, entidade, "quantidade"			, "int" 			, false, false, null, null);
+		
+		}		
+	}
 	
 	//---------------------------------------------------------------------------------------
 	public static boolean databaseExists(Conexao con, String bd) {

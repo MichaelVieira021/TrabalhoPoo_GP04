@@ -69,9 +69,6 @@ public class ListaProdutos {
 			prod.setIdcategoria(tabela.getInt("idcategoria"));
 			prod.setIdproduto(tabela.getInt("idproduto"));
 			
-			System.out.println("-----CONTROLE----");
-			System.out.println(tabela.getString("nome"));
-			System.out.println(tabela.getInt("idproduto"));
 			return prod;
 		} catch (SQLException e) {
 			e.printStackTrace();

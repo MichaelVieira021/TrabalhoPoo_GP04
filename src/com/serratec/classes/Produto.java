@@ -8,14 +8,15 @@ public class Produto {
 	private String descricao;
 	private double vl_custo;
 	private double vl_venda;
-	private static int qtd_estoque;
+	private int qtd_estoque;
 	private int idcategoria;
 
 	public Produto() {}
 
-	public Produto(int idproduto, String nome) {
+	public Produto(int idproduto, String nome, int qtdEstoque) {
 		this.setIdcategoria(idproduto);
 		this.setNome(nome);
+		this.setQtd_estoque(qtdEstoque);
 	}
 	
 	
@@ -111,6 +112,6 @@ public class Produto {
 	}
 
 	public void setQtd_estoque(int qtd_estoque) {
-		Produto.qtd_estoque = qtd_estoque;
+		this.qtd_estoque = qtd_estoque;
 	}	
 }

@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import com.serratec.classes.Produto;
 import com.serratec.conexao.Conexao;
+import com.serratec.classes.Empresa.ProdutoCarrinho;
 
 public class ProdutoDAO {
 	private Conexao conexao;
@@ -19,6 +20,8 @@ public class ProdutoDAO {
 		this.schema = schema;
 		prepararSqlInclusao();
 		prepararSqlAlteracao();
+		prepararSqlAlteracaoEstoque();
+		prepararSqlInclusaoProdutoCarrinho();
 	}
 	
 	//------------------------------------------------------------
@@ -27,6 +30,20 @@ public class ProdutoDAO {
 		sql += " (nome, descricao, vl_custo, vl_venda, qtd_estoque, idcategoria)";
 		sql += " values ";
 		sql += " (?, ?, ?, ?, ?, ?)";
+		
+		try {
+			this.pInclusao =  conexao.getC().prepareStatement(sql);
+		} catch (Exception e) {
+			System.err.println(e);
+			e.printStackTrace();
+		}
+	}
+	
+	private void prepararSqlInclusaoProdutoCarrinho() {
+		String sql = "insert into "+ this.schema + ".pedido_produto";	
+		sql += " (idpedido, idproduto, quantidade)";
+		sql += " values ";
+		sql += " (?, ?, ?)";
 		
 		try {
 			this.pInclusao =  conexao.getC().prepareStatement(sql);
@@ -50,10 +67,22 @@ public class ProdutoDAO {
 			this.pAlteracao =  conexao.getC().prepareStatement(sql);
 		} catch (Exception e) {
 			System.err.println(e);
-			e.printStackTrace();
+			e.printStackTrace();	
 		}
 	}
 	
+	private void prepararSqlAlteracaoEstoque() {
+		String sql = "update "+ this.schema + ".produto";	
+		sql += " set qtd_estoque = ?";
+		sql += " where idproduto = ?";
+		
+		try {
+			this.pAlteracao =  conexao.getC().prepareStatement(sql);
+		} catch (Exception e) {
+			System.err.println(e);
+			e.printStackTrace();
+		}
+	}
 	
 	//------------------------------------------------------------
 	public int incluirProduto(Produto produto) {
@@ -100,6 +129,41 @@ public class ProdutoDAO {
 		}
 	}
 
+	public int alterarEstoque(Produto produto) {
+		try {
+			pAlteracao.setInt   (1, produto.getQtd_estoque());
+			pAlteracao.setInt   (2, produto.getIdproduto());
+			
+			return pAlteracao.executeUpdate();
+		} catch (Exception e) {
+			if (e.getLocalizedMessage().contains("is null")) {
+				System.err.println("\nProduto não alterado.\nVerifique se foi chamado o conect:\n" + e);				
+			} else {				
+				System.err.println(e);
+				e.printStackTrace();
+			}
+			return 0;
+		}
+	}
+	
+	public int incluirProdutoCarrinho(ProdutoCarrinho produtocarrinho, com.serratec.classes.Pedido pedido) {
+		try {		
+							
+			pInclusao.setInt(1, pedido.getIdpedido());
+			pInclusao.setInt(2, produtocarrinho.getIdproduto());
+			pInclusao.setInt(3, produtocarrinho.getQuantidade());
+			
+			return pInclusao.executeUpdate();
+		} catch (Exception e) {
+			if (e.getLocalizedMessage().contains("is null")) {
+				System.err.println("\nLivro nao incluido.\nVerifique se foi chamado o conect:\n" + e);				
+			} else {				
+				System.err.println(e);
+				e.printStackTrace();
+			}
+			return 0;
+		}
+	}
 	
 	//------------------------------------------------------------
 	public ResultSet carregarProduto() {
@@ -113,7 +177,7 @@ public class ProdutoDAO {
 	
 	public ArrayList<Produto> carregarProdutoMenu() {
         ArrayList<Produto> produtos = new ArrayList<>();
-        String sql = "SELECT idproduto, nome FROM " + this.schema + ".produto ORDER BY idproduto";
+        String sql = "SELECT idproduto, nome, qtd_estoque FROM " + this.schema + ".produto ORDER BY idproduto";
 
         ResultSet tabela = conexao.query(sql);
 
@@ -121,7 +185,8 @@ public class ProdutoDAO {
             while (tabela.next()) {
             	int  idProduto = tabela.getInt("idproduto");
                 String nomeProduto = tabela.getString("nome");
-                Produto produto = new Produto(idProduto, nomeProduto);
+                int qtdEstoque = tabela.getInt("qtd_estoque");
+                Produto produto = new Produto(idProduto, nomeProduto, qtdEstoque);
                 produtos.add(produto);
             }
         } catch (SQLException e) {

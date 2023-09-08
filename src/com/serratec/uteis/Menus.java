@@ -70,7 +70,7 @@ public class Menus {
 		System.out.println("║             PRODUTOS              ║");
 		System.out.println("║-----------------------------------║");
 		for(Produto ct : e.carregarProdutoMenu()) {
-        	System.out.println("║        ["+ct.getIdcategoria()+"] - "+ ct.getNome());
+        	System.out.println("║        ["+ct.getIdcategoria()+"] - "+ ct.getNome()+ " - \t\t" + ct.getQtd_estoque());
         }
 		System.out.println("║                                   ");
 		System.out.println("║-----------------------------------║");
