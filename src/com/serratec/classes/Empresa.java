@@ -203,7 +203,7 @@ public class Empresa {
 
 		System.out.println();
 	}
-	
+
 	public void excluirCliente(com.serratec.classes.Cliente cl) {
 		int i = -1;
 		clientes = new ListaClientes(con, schema);
@@ -303,6 +303,27 @@ public class Empresa {
 		produtos.getListaProdutos().get(i).setVl_venda(proddao.getVl_venda());
 		produtos.getListaProdutos().get(i).setQtd_estoque(proddao.getQtd_estoque());
 		produtos.getListaProdutos().get(i).setIdcategoria(proddao.getIdcategoria());
+	}
+	
+	public void listarDadosProdutos() {
+		produtos = new ListaProdutos(con, schema);
+
+		System.out.println("\n====================================================================================");
+		System.out.println("                               LISTAGEM DE PRODUTOS                               ");
+		System.out.println("====================================================================================");
+		System.out.println("NOME\tDESCRIÇÃO\tVL_CUSTO\tVL_VENDA\tQTD ESTOQUE\tIDCATEGORIA");
+		System.out.println("------------------------------------------------------------------------------------");
+		for (Produto prod : produtos.getListaProdutos()) {
+		
+			System.out.printf(prod.getNome()+"\t");
+			System.out.print(prod.getDescricao()+"\t");
+			System.out.print(prod.getVl_custo()+"\t");
+			System.out.print(prod.getVl_venda()+"\t");
+			System.out.print(prod.getQtd_estoque()+"\t");
+			System.out.print(prod.getIdcategoria()+"\t");
+			System.out.println();
+		}
+		System.out.println();
 	}
 
 	@SuppressWarnings("unlikely-arg-type")

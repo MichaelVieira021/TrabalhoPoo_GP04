@@ -160,7 +160,7 @@ public class Main {
 	}
 
 	public static void imprimirProduto() {
-		
+		g4Tech.listarDadosProdutos();
 	}
 	
 	public static void excluirProduto() {
