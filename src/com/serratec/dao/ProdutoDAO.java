@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import com.serratec.classes.Produto;
 import com.serratec.conexao.Conexao;
-import com.serratec.classes.Empresa.ProdutoCarrinho;
 
 public class ProdutoDAO {
 	private Conexao conexao;
@@ -20,8 +19,6 @@ public class ProdutoDAO {
 		this.schema = schema;
 		prepararSqlInclusao();
 		prepararSqlAlteracao();
-		prepararSqlAlteracaoEstoque();
-		prepararSqlInclusaoProdutoCarrinho();
 	}
 	
 	//------------------------------------------------------------
@@ -30,20 +27,6 @@ public class ProdutoDAO {
 		sql += " (nome, descricao, vl_custo, vl_venda, qtd_estoque, idcategoria)";
 		sql += " values ";
 		sql += " (?, ?, ?, ?, ?, ?)";
-		
-		try {
-			this.pInclusao =  conexao.getC().prepareStatement(sql);
-		} catch (Exception e) {
-			System.err.println(e);
-			e.printStackTrace();
-		}
-	}
-	
-	private void prepararSqlInclusaoProdutoCarrinho() {
-		String sql = "insert into "+ this.schema + ".pedido_produto";	
-		sql += " (idpedido, idproduto, quantidade)";
-		sql += " values ";
-		sql += " (?, ?, ?)";
 		
 		try {
 			this.pInclusao =  conexao.getC().prepareStatement(sql);
@@ -70,20 +53,7 @@ public class ProdutoDAO {
 			e.printStackTrace();	
 		}
 	}
-	
-	private void prepararSqlAlteracaoEstoque() {
-		String sql = "update "+ this.schema + ".produto";	
-		sql += " set qtd_estoque = ?";
-		sql += " where idproduto = ?";
-		
-		try {
-			this.pAlteracao =  conexao.getC().prepareStatement(sql);
-		} catch (Exception e) {
-			System.err.println(e);
-			e.printStackTrace();
-		}
-	}
-	
+
 	//------------------------------------------------------------
 	public int incluirProduto(Produto produto) {
 		try {		
@@ -129,42 +99,6 @@ public class ProdutoDAO {
 		}
 	}
 
-	public int alterarEstoque(Produto produto) {
-		try {
-			pAlteracao.setInt   (1, produto.getQtd_estoque());
-			pAlteracao.setInt   (2, produto.getIdproduto());
-			
-			return pAlteracao.executeUpdate();
-		} catch (Exception e) {
-			if (e.getLocalizedMessage().contains("is null")) {
-				System.err.println("\nProduto não alterado.\nVerifique se foi chamado o conect:\n" + e);				
-			} else {				
-				System.err.println(e);
-				e.printStackTrace();
-			}
-			return 0;
-		}
-	}
-	
-	public int incluirProdutoCarrinho(ProdutoCarrinho produtocarrinho) {
-		try {		
-							
-			pInclusao.setInt(1, produtocarrinho.getIdpedido());
-			pInclusao.setInt(2, produtocarrinho.getIdproduto());
-			pInclusao.setInt(3, produtocarrinho.getQuantidade());
-			
-			return pInclusao.executeUpdate();
-		} catch (Exception e) {
-			if (e.getLocalizedMessage().contains("is null")) {
-				System.err.println("\nLivro nao incluido.\nVerifique se foi chamado o conect:\n" + e);				
-			} else {				
-				System.err.println(e);
-				e.printStackTrace();
-			}
-			return 0;
-		}
-	}
-	
 	//------------------------------------------------------------
 	public ResultSet carregarProduto() {
 		ResultSet tabela;				

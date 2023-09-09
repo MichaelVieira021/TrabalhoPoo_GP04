@@ -1,13 +1,11 @@
 package com.serratec.dao;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.serratec.conexao.Conexao;
-import com.serratec.classes.Pedido;
 import com.serratec.classes.Produto;
 //import com.serratec.classes.PedidoItem;
 import com.serratec.classes.Empresa.ProdutoCarrinho;
@@ -24,8 +22,10 @@ public class ProdutoCarrinhoDAO {
 		this.schema = schema;
 		prepararSqlInclusaoProdutoCarrinho();
 		prepararSqlAlteracao();
+		prepararSqlAlteracaoEstoque();
 	}
 
+//PREPARAR SQL--------------------------------------------
 	private void prepararSqlInclusaoProdutoCarrinho() {
 		String sql = "insert into "+ this.schema + ".pedido_produto";	
 		sql += " (idpedido,idproduto,quantidade)";
@@ -54,8 +54,57 @@ public class ProdutoCarrinhoDAO {
 		}
 	}
 	
+	private void prepararSqlAlteracaoEstoque() {
+		String sql = "update "+ this.schema + ".produto";	
+		sql += " set qtd_estoque = ?";
+		sql += " where idproduto = ?";
+		
+		try {
+			this.pAlteracao =  conexao.getC().prepareStatement(sql);
+		} catch (Exception e) {
+			System.err.println(e);
+			e.printStackTrace();
+		}
+	}
 
-	
+//--------------------------------------------------------
+	public int alterarEstoque(Produto produto) {
+		try {
+			pAlteracao.setInt   (1, produto.getQtd_estoque());
+			pAlteracao.setInt   (2, produto.getIdproduto());
+			
+			return pAlteracao.executeUpdate();
+		} catch (Exception e) {
+			if (e.getLocalizedMessage().contains("is null")) {
+				System.err.println("\nProduto não alterado.\nVerifique se foi chamado o conect:\n" + e);				
+			} else {				
+				System.err.println(e);
+				e.printStackTrace();
+			}
+			return 0;
+		}
+	}
+
+	public int incluirProdutoCarrinho(ProdutoCarrinho produtocarrinho) {
+		try {		
+							
+			pInclusao.setInt(1, produtocarrinho.getIdpedido());
+			pInclusao.setInt(2, produtocarrinho.getIdproduto());
+			pInclusao.setInt(3, produtocarrinho.getQuantidade());
+			
+			return pInclusao.executeUpdate();
+		} catch (Exception e) {
+			if (e.getLocalizedMessage().contains("is null")) {
+				System.err.println("\nLivro nao incluido.\nVerifique se foi chamado o conect:\n" + e);				
+			} else {				
+				System.err.println(e);
+				e.printStackTrace();
+			}
+			return 0;
+		}
+	}
+
+//--------------------------------------------------------	
 	public ResultSet carregarProdutoCarrinho() {
 		ResultSet tabela;				
 		String sql = "select * from " + this.schema + ".pedido_produto order by idpedido_produto";
@@ -64,7 +113,6 @@ public class ProdutoCarrinhoDAO {
 		
 		return tabela;
 	}
-	
 	
 	public ResultSet alterarProdutoCarrinho () {
 		

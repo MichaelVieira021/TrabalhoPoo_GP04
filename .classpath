@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/VlaaD/eclipse-workspace/Biblioteca/postgresql-42.3.4.jar">
+	<classpathentry kind="lib" path="C:/Users/Lucas Caldas/Downloads/postgresql-42.6.0.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>

@@ -104,7 +104,7 @@ public class Produto {
 	}
 
 	public void setVl_venda(double vl_venda) {
-		this.vl_venda = getVl_custo() * 1.15;
+		this.vl_venda = vl_venda;
 	}
 
 	public int getQtd_estoque() {

@@ -5,6 +5,7 @@ import com.serratec.conexao.Conexao;
 import com.serratec.dao.ClienteDAO;
 import com.serratec.dao.PedidoDAO;
 import com.serratec.dao.ProdutoDAO;
+import com.serratec.dao.ProdutoCarrinhoDAO;
 import com.serratec.main.Main;
 import com.serratec.uteis.Util;
 import com.serratec.uteis.Menus;
@@ -77,7 +78,7 @@ public class Empresa {
 		this.schema = schema;
 	}
 
-	//----------------------------------------------------------------------
+	// CLIENTE ----------------------------------------------------------------------
  	public com.serratec.classes.Cliente cadastrarCliente() {
  		com.serratec.classes.Cliente c = new com.serratec.classes.Cliente();
 		
@@ -215,7 +216,7 @@ public class Empresa {
 			this.cliente.remove(i);
 	}
 	
-	//-----------------------------------------------------------------------
+	// PRODUTO -----------------------------------------------------------------------
  	public com.serratec.classes.Produto cadastrarProduto() {
  		com.serratec.classes.Produto c = new com.serratec.classes.Produto();
 		
@@ -229,15 +230,16 @@ public class Empresa {
 		Util.br();
 		
 		System.out.print("Produto: ");
-		String s = in.next();
+		String s = in.nextLine();
 		c.setNome(s);
 		
 		System.out.print("Descrição: ");
-		s = in.next();
+		s = in.nextLine();
 		c.setDescricao(s);
 		
 		double vl = Util.validarDouble("Valor custo: ");
 		c.setVl_custo(vl);
+		c.setVl_venda(vl*1.15);
 			
 		int qtd = Util.validarInteiro("Quantidade: ");
 		c.setQtd_estoque(qtd);
@@ -302,9 +304,8 @@ public class Empresa {
 		produtos.getListaProdutos().get(i).setQtd_estoque(proddao.getQtd_estoque());
 		produtos.getListaProdutos().get(i).setIdcategoria(proddao.getIdcategoria());
 	}
-	
-	
-	//------------------------------------------------------------------------
+		
+	// PEDIDO ------------------------------------------------------------------------
  	public Pedido cadastrarPedido() {
  		com.serratec.classes.Pedido pd = new com.serratec.classes.Pedido();
  	    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");  
@@ -396,16 +397,15 @@ public class Empresa {
 	
 	public void inserirNoBd(Pedido pd, ArrayList<ProdutoCarrinho> pc) {
 		PedidoDAO pddao = new PedidoDAO(con, com.serratec.main.Main.SCHEMA);
-		ProdutoDAO prdao = new ProdutoDAO(con, com.serratec.main.Main.SCHEMA);
-		
+		ProdutoCarrinhoDAO pcdao = new ProdutoCarrinhoDAO(con, com.serratec.main.Main.SCHEMA);
 		
 		pddao.incluirPedido(pd);
 		int idPedido = pddao.ultimoIdPedido();		
 		
 		for (ProdutoCarrinho pdc : pedidocarrinho) {
 				pdc.setIdpedido(idPedido);
-				prdao.incluirProdutoCarrinho(pdc);
-				prdao.alterarEstoque(pdc.getPr());
+				pcdao.incluirProdutoCarrinho(pdc);
+				pcdao.alterarEstoque(pdc.getPr());
 		}
 		pedidocarrinho.clear();
 	}
@@ -456,7 +456,7 @@ public class Empresa {
 		return retorno;	
 	}
 
-	
+	// CARRINHO ---------------------------------------------------------------------
 	private static void adicionarProdutoCarrinho(Produto l, int quant) {
 		ProdutoCarrinho le = new ProdutoCarrinho();
 		ProdutoDAO pddao = new ProdutoDAO(con, schema);
@@ -479,23 +479,9 @@ public class Empresa {
 		//pddao.incluirProdutoCarrinho(le,c);
 	}
 
-	/*public com.serratec.classes.Produto adicionarProduto(com.serratec.classes.Produto produto) {
- 		com.serratec.classes.Produto c = new com.serratec.classes.Produto();
-		
-		c.setNome(produto.getNome());
-		c.setDescricao(produto.getDescricao());
-		c.setVl_unitario(produto.getVl_unitario());
-		c.setQtd_estoque(produto.getQtd_estoque());
-		
-		this.produto.add(c);
-		
-		return produto;
-	}*/
- 	
 	public com.serratec.classes.Pedido localizarPedido() {
 
 		@SuppressWarnings("resource")
-		Scanner in = new Scanner(System.in);
 		com.serratec.classes.Pedido pd = new com.serratec.classes.Pedido();
 		
 		PedidoDAO pdao = new PedidoDAO(con,schema);
@@ -535,21 +521,5 @@ public class Empresa {
 
 	public void imprimirProdutoCarrinho (Pedido pd) {
 		
-	}
-	/*public com.serratec.classes.Endereco adicionarEndereco(com.serratec.classes.Endereco endereco) {
- 		com.serratec.classes.Endereco c = new com.serratec.classes.Endereco();
-		
-		c.setCep(endereco.getCep());
-		c.setBairro(endereco.getBairro());
-		c.setCidade(endereco.getCidade());
-		c.setComplemento(endereco.getComplemento());
-		c.setLogradouro(endereco.getLogradouro());
-		c.setNumero(endereco.getNumero());
-		c.setTipo_logra(endereco.getTipo_logra());
-		c.setUf(endereco.getUf());
-		
-		this.endereco.add(c);
-		
-		return endereco;
-	}*/		
+	}	
 }
