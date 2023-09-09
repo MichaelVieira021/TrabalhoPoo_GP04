@@ -451,6 +451,17 @@ public class Empresa {
 		}
 		return retorno;	
 	}
+	
+	public void excluirPedido(com.serratec.classes.Pedido pedi) {
+		int i = -1;
+		produtos = new ListaProdutos(con, schema);
+		for (Pedido pedi1 : pedidos.getListapedidos()) {
+			if (pedi1.getIdpedido() == pedi.getIdpedido())
+				i = pedidos.getListapedidos().lastIndexOf(pedi);
+		}
+		if (i >= 0)
+			this.produto.remove(i);
+	}
 
 	// CARRINHO ---------------------------------------------------------------------
 	private static void adicionarProdutoCarrinho(Produto l, int quant) {

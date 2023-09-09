@@ -209,7 +209,25 @@ public class Main {
 	}
 	
 	public static void excluirPedido() {
+		@SuppressWarnings("resource")
+		Scanner input = new Scanner(System.in);
+		int i = 0;
+		PedidoDAO pedidao = new PedidoDAO(con, SCHEMA);
+		Pedido pedi = g4Tech.localizarPedido();
 		
+		if (pedi != null) {		
+			Util.escrever("Deseja excluir o Pedido n°: "  + pedi.getIdpedido() + " Feito no dia: " + pedi.getDt_emissao());
+			char s = input.next().charAt(0);
+			
+			if (s == 's' || s == 'S') {
+				i = pedidao.excluirPedido(pedi);
+			}
+			if (i > 0) {
+				g4Tech.excluirPedido(pedi);
+				System.out.println("Produto excluido com sucesso.");
+			}
+		} else
+			System.out.println("Produto não encontrado.");
 	}
 		
 }

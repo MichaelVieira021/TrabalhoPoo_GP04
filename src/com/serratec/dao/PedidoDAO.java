@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.serratec.classes.Pedido;
 import com.serratec.classes.PedidoItem;
+import com.serratec.classes.Produto;
 import com.serratec.conexao.Conexao;
 
 public class PedidoDAO {
@@ -18,12 +19,14 @@ public class PedidoDAO {
 	
 	PreparedStatement pInclusao;
 	PreparedStatement pAlteracao;
+	PreparedStatement pExclusao;
 	
 	public PedidoDAO(Conexao conexao, String schema) { 
 		this.conexao = conexao;
 		this.schema = schema;
 		prepararSqlInclusao();
 		prepararSqlAlteracao();
+		prepararSqlExclusao();
 	}
 	
 	//------------------------------------------------------------
@@ -49,6 +52,19 @@ public class PedidoDAO {
 		
 		try {
 			this.pAlteracao =  conexao.getC().prepareStatement(sql);
+		} catch (Exception e) {
+			System.err.println(e);
+			e.printStackTrace();
+		}
+	}
+	
+	@SuppressWarnings("unused")
+	private void prepararSqlExclusao() {
+		String sql = "delete from "+ this.schema + ".pedido";
+		sql += " where idpedido = ?" ;
+		
+		try {
+			this.pExclusao = conexao.getC().prepareStatement(sql);
 		} catch (Exception e) {
 			System.err.println(e);
 			e.printStackTrace();
@@ -178,4 +194,20 @@ public class PedidoDAO {
         
         return itens;
     }
+    
+	public int excluirPedido(Pedido pedido) {		
+		try {
+			pExclusao.setInt(1, pedido.getIdpedido());	
+			
+			return pExclusao.executeUpdate();
+		}catch  (Exception e) {
+			if (e.getLocalizedMessage().contains("is null")) {
+				System.err.println("\nProduto nao incluido.\nVerifique se foi chamado o conect:\n" + e);				
+			} else {				
+				System.err.println(e);
+				e.printStackTrace();
+			}
+			return 0;
+		}
+	}
 }
