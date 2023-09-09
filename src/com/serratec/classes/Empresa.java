@@ -311,6 +311,40 @@ public class Empresa {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
 		LocalDateTime nowt = LocalDateTime.now();
 		LocalDate now = LocalDate.now();
+	
+	@SuppressWarnings("unlikely-arg-type")
+	public void excluirProduto(com.serratec.classes.Produto prod) {
+		int i = -1;
+		produtos = new ListaProdutos(con, schema);
+		for (Produto prod1 : produtos.getListaProdutos()) {
+			if (prod1.getIdproduto() == prod.getIdproduto())
+				i = clientes.getListacliente().lastIndexOf(prod1);
+		}
+		
+		if (i >= 0)
+			this.produto.remove(i);
+	}
+	
+	@SuppressWarnings("unlikely-arg-type")
+	public void excluirProduto(com.serratec.classes.Produto prod) {
+		int i = -1;
+		produtos = new ListaProdutos(con, schema);
+		for (Produto prod1 : produtos.getListaProdutos()) {
+			if (prod1.getIdproduto() == prod.getIdproduto())
+				i = clientes.getListacliente().lastIndexOf(prod1);
+		}
+		
+		if (i >= 0)
+			this.produto.remove(i);
+	}
+	
+	
+	//------------------------------------------------------------------------
+ 	public Pedido cadastrarPedido() {
+ 		com.serratec.classes.Pedido pd = new com.serratec.classes.Pedido();
+ 	    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");  
+ 	    LocalDateTime nowt = LocalDateTime.now();  
+ 	    LocalDate now = LocalDate.now();  
 		@SuppressWarnings("resource")
 		Scanner in = new Scanner(System.in);
 

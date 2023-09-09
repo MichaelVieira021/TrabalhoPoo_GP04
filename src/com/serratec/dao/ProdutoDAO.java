@@ -13,12 +13,15 @@ public class ProdutoDAO {
 	
 	PreparedStatement pInclusao;
 	PreparedStatement pAlteracao;
+	PreparedStatement pExclusao;
 	
+	//constructor
 	public ProdutoDAO(Conexao conexao, String schema) { 
 		this.conexao = conexao;
 		this.schema = schema;
 		prepararSqlInclusao();
 		prepararSqlAlteracao();
+		prepararSqlExclusao();
 	}
 	
 	//------------------------------------------------------------
@@ -54,6 +57,19 @@ public class ProdutoDAO {
 		}
 	}
 
+	@SuppressWarnings("unused")
+	private void prepararSqlExclusao() {
+		String sql = "delete from "+ this.schema + ".produto";
+		sql += " where idproduto = ?" ;
+		
+		try {
+			this.pExclusao = conexao.getC().prepareStatement(sql);
+		} catch (Exception e) {
+			System.err.println(e);
+			e.printStackTrace();
+		}
+	}
+	
 	//------------------------------------------------------------
 	public int incluirProduto(Produto produto) {
 		try {		
@@ -91,6 +107,22 @@ public class ProdutoDAO {
 		} catch (Exception e) {
 			if (e.getLocalizedMessage().contains("is null")) {
 				System.err.println("\nProduto não alterado.\nVerifique se foi chamado o conect:\n" + e);				
+			} else {				
+				System.err.println(e);
+				e.printStackTrace();
+			}
+			return 0;
+		}
+	}
+	
+	public int excluirProduto(Produto produto) {		
+		try {
+			pExclusao.setInt(1, produto.getIdproduto());	
+			
+			return pExclusao.executeUpdate();
+		}catch  (Exception e) {
+			if (e.getLocalizedMessage().contains("is null")) {
+				System.err.println("\nProduto nao incluido.\nVerifique se foi chamado o conect:\n" + e);				
 			} else {				
 				System.err.println(e);
 				e.printStackTrace();
