@@ -224,10 +224,10 @@ public class Main {
 			}
 			if (i > 0) {
 				g4Tech.excluirPedido(pedi);
-				System.out.println("Produto excluido com sucesso.");
+				System.out.println("Pedido excluido com sucesso.");
 			}
 		} else
-			System.out.println("Produto não encontrado.");
+			System.out.println("Pedido não encontrado.");
 	}
 		
 }

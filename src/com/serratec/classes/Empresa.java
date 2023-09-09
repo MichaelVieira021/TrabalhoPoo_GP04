@@ -498,7 +498,7 @@ public class Empresa {
 				i = pedidos.getListapedidos().lastIndexOf(pedi);
 		}
 		if (i >= 0)
-			this.produto.remove(i);
+			this.pedido.remove(i);
 	}
 
 	// CARRINHO ---------------------------------------------------------------------
