@@ -162,7 +162,25 @@ public class Main {
 	}
 	
 	public static void excluirProduto() {
+		@SuppressWarnings("resource")
+		Scanner input = new Scanner(System.in);
+		int i = 0;
+		ProdutoDAO proddao = new ProdutoDAO(con, SCHEMA);
+		Produto prod = g4Tech.localizarProduto();
 		
+		if (prod != null) {		
+			Util.escrever("Deseja excluir o Produto: " + prod.getNome());
+			char s = input.next().charAt(0);
+			
+			if (s == 's' || s == 'S') {
+				i = proddao.excluirProduto(prod);
+			}
+			if (i > 0) {
+				g4Tech.excluirProduto(prod);
+				System.out.println("Produto excluido com sucesso.");
+			}
+		} else
+			System.out.println("Produto não encontrado.");
 	}
 		
 	//PEDIDO-----------------------------------------------

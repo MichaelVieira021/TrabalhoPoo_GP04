@@ -302,6 +302,19 @@ public class Empresa {
 		produtos.getListaProdutos().get(i).setIdcategoria(proddao.getIdcategoria());
 	}
 	
+	@SuppressWarnings("unlikely-arg-type")
+	public void excluirProduto(com.serratec.classes.Produto prod) {
+		int i = -1;
+		produtos = new ListaProdutos(con, schema);
+		for (Produto prod1 : produtos.getListaProdutos()) {
+			if (prod1.getIdproduto() == prod.getIdproduto())
+				i = clientes.getListacliente().lastIndexOf(prod1);
+		}
+		
+		if (i >= 0)
+			this.produto.remove(i);
+	}
+	
 	
 	//------------------------------------------------------------------------
  	public Pedido cadastrarPedido() {
