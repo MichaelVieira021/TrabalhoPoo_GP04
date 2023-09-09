@@ -127,30 +127,45 @@ public class ProdutoCarrinhoDAO {
 		
 	}
 	
-	public ArrayList <ProdutoCarrinho> carregarProdutoMenu2(int id) {
+	public ArrayList <ProdutoCarrinho> carregarProdutoMenuItems(int id) {
 		ArrayList <ProdutoCarrinho> produtoC = new ArrayList<>();
-		
-        String sql = "SELECT idpedido, idproduto, quantidade FROM " + this.schema + ".pedido_produto where idpedido = "+id;
 
+
+        String sql = "SELECT " + this.schema + ".pedido_produto.idpedido, " + this.schema + ".pedido_produto.idproduto, " + this.schema + ".pedido_produto.quantidade,";
+		sql += " " + this.schema + ".produto.nome, " + this.schema + ".produto.qtd_estoque ";
+		sql += " FROM " + this.schema + ".pedido_produto INNER JOIN " + this.schema + ".produto";
+		sql += " ON " + this.schema + ".pedido_produto.idproduto = " + this.schema + ".produto.idproduto";
+		sql += " WHERE grupo04.pedido_produto.idpedido = "+id;
+        
+		// TABELA PRODUTO_PEDIDO
+        //String sql = "SELECT idpedido, idproduto, quantidade" ;
+        //sql += " FROM " + this.schema + ".pedido_produto where idpedido = "+id;
         ResultSet tabela = conexao.query(sql);
-        ProdutoCarrinho teste = new ProdutoCarrinho();
-
         try {
             while (tabela.next()) {
+                ProdutoCarrinho pc = new ProdutoCarrinho();
             	int  idPedido = tabela.getInt("idpedido");
             	int  idProduto = tabela.getInt("idproduto");
-            	int  qtd = tabela.getInt("quantidade");                
-            	teste.setIdpedido(idPedido);
-            	teste.setIdproduto(idProduto);
-            	teste.setQuantidade(qtd);
-            	
-            	produtoC.add(teste);
-            	
+            	int  qtd = tabela.getInt("quantidade");   
+            	String nome = tabela.getString("nome");
+                int estoque = tabela.getInt("qtd_estoque");
+            	pc.setIdpedido(idPedido);
+            	pc.setIdproduto(idProduto);
+            	pc.setQuantidade(qtd);
+            	pc.setNome(nome);
+                pc.setQtd_estoque(estoque);
+
+            	/*System.out.println(pc.getIdpedido());
+            	System.out.println(pc.getIdproduto());
+            	System.out.println(pc.getQuantidade());
+            	System.out.println(pc.getNome());
+            	System.out.println(pc.getQtd_estoque());*/
+                
+            	produtoC.add(pc);    		
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return produtoC;
     }
 	

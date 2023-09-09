@@ -87,10 +87,10 @@ public class Menus {
 		ProdutoCarrinhoDAO e  = new ProdutoCarrinhoDAO(Main.con, Main.SCHEMA);
 		
 		System.out.println("╔═══════════════════════════════════╗");
-		System.out.println("║             PEDIDOS              ║");
+		System.out.println("║         CARRINHO PEDIDO           ║");
 		System.out.println("║-----------------------------------║");
-		for(ProdutoCarrinho c : e.carregarProdutoMenu2(pd.getIdpedido())) {
-        	System.out.println("║        ["+c.getIdpedidoitem()+"] - "+ c.getNome()+ " - \t\t" + c.getQuantidade());
+		for(ProdutoCarrinho c : e.carregarProdutoMenuItems(pd.getIdpedido())) {
+        	System.out.println("║        ["+c.getIdproduto()+"] - "+ c.getNome()+ " - \t\t" + c.getQuantidade());
         }
 		System.out.println("║                                   ");
 		System.out.println("║-----------------------------------║");

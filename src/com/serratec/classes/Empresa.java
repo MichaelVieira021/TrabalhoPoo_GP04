@@ -306,32 +306,26 @@ public class Empresa {
 	}
 		
 	// PEDIDO ------------------------------------------------------------------------
- 	public Pedido cadastrarPedido() {
- 		com.serratec.classes.Pedido pd = new com.serratec.classes.Pedido();
- 	    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");  
- 	    LocalDateTime nowt = LocalDateTime.now();  
- 	    LocalDate now = LocalDate.now();  
+	public Pedido cadastrarPedido() {
+		com.serratec.classes.Pedido pd = new com.serratec.classes.Pedido();
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+		LocalDateTime nowt = LocalDateTime.now();
+		LocalDate now = LocalDate.now();
 		@SuppressWarnings("resource")
 		Scanner in = new Scanner(System.in);
-		
+
 		System.out.println(Util.LINHA);
 		System.out.println("Cadastro de pedido: ");
 		System.out.println(Util.LINHA);
-		
+
 		Util.br();
-		System.out.println("Data de Emissão: " + dtf.format(nowt));				
+		System.out.println("Data de Emissão: " + dtf.format(nowt));
 		pd.setDt_emissao(now);
-		
+
 		pd.setIdcliente(Menus.menuClientes());
-		
-		//PedidoDAO pddao = new PedidoDAO(con, com.serratec.main.Main.SCHEMA);
-		//pddao.incluirPedido(pd);
-		
-		inserirNoBd(inserirProdutoCarrinho(pd),pedidocarrinho);
-		
-		//Menus.menuProdutos();
-		//pd.setIdcliente(Util.validarInteiro("Id do cliente: "));
-		
+
+		inserirNoBd(inserirProdutoCarrinho(pd), pedidocarrinho);
+
 		return pd;
 	}
  	
@@ -342,17 +336,9 @@ public class Empresa {
 	public Pedido inserirProdutoCarrinho(Pedido pd) {
 		@SuppressWarnings("resource")
 		Scanner in = new Scanner(System.in);
-		
-		//ArrayList<ProdutoCarrinho> Pedidocarrinho = new ArrayList<>();
-		
+
 		ProdutoCarrinho teste = new ProdutoCarrinho();
-		//int idped = -1;
-		//pedidos = new ListaPedidos(con, schema);
-		
-		//for (Pedido c : pedidos.getListapedidos()) {
-		//	idped = pedidos.getListapedidos().lastIndexOf(c)+1;
-		//}
-		
+
 		int quant;
 		int opcao = 1;
 		boolean verEstoque = false, prIgual = true;
@@ -363,34 +349,31 @@ public class Empresa {
 		do {
 			do {
 				idprod = Menus.menuProdutos();
-				for(ProdutoCarrinho pr : pedidocarrinho) {
-					if(pr.getPr().getIdproduto() == idprod) { 
+				for (ProdutoCarrinho pr : pedidocarrinho) {
+					if (pr.getPr().getIdproduto() == idprod) {
 						pedidocarrinho.remove(pedidocarrinho.indexOf(pr));
 						prIgual = true;
 						break;
-					}else prIgual = false;
+					} else
+						prIgual = false;
 				}
 				prIgual = false;
-			}while(prIgual);
-			
-			quant = Util.validarInteiro("Digite a quantidade a ser adicionada: ");			
+			} while (prIgual);
+
+			quant = Util.validarInteiro("Digite a quantidade a ser adicionada: ");
 			verEstoque = verificarEstoque(idprod, quant);
-			
+
 			if (!verEstoque) {
 				Util.escrever("Produto fora de estoque!");
 				opcao = 1;
 			} else {
 				System.out.println("Produto adicionado com Sucesso!");
 				System.out.println("Digite 1 para adicionar outro produto.");
-				opcao = in.nextInt();	
+				opcao = in.nextInt();
 			}
-			
-			
-				
-		} while (opcao==1);
-		
-		
-		
+
+		} while (opcao == 1);
+
 		System.out.println("Pedido realizado com Sucesso!");
 		return pd;
 	}
@@ -480,41 +463,28 @@ public class Empresa {
 	}
 
 	public com.serratec.classes.Pedido localizarPedido() {
-
-		@SuppressWarnings("resource")
 		com.serratec.classes.Pedido pd = new com.serratec.classes.Pedido();
-		
-		PedidoDAO pdao = new PedidoDAO(con,schema);
-		
+
 		int i = -1;
-				
-		 
+
 		int s = Util.validarInteiro("Digite o código: ");
 		pedidos = new ListaPedidos(con, schema, 1);
-		pedidos2 = new ListaPedidos(con, schema, 2);
-		
-		//pedido = pdao.carregarPedidos ();
-		
-		for (Pedido pd1 : pedidos.getListapedidos()) {
-			if (pd1.getIdpedido() == s) {
-				i = pedidos.getListapedidos().lastIndexOf(pd1);
+
+		for (Pedido p : pedidos.getListapedidos()) {
+			if (p.getIdpedido() == s) {
+				i = pedidos.getListapedidos().lastIndexOf(p);
 				break;
 			}
 		}
-		
-		
+
 		if (i >= 0) {
-			Pedido ped = new Pedido ();
-			
-			ped = pedidos.getListapedidos().get(i);
-			
-			pd.setIdpedido(ped.getIdpedido());
-			pd.setDt_emissao(ped.getDt_emissao());
-			pd.setIdcliente(ped.getIdcliente());
-			
-			Menus.menuProdutosCarrinho(pd);
-			
-			return pd;	
+			pedidos.getListapedidos().get(i);
+
+			pd.setIdpedido(pedidos.getListapedidos().get(i).getIdpedido());
+			pd.setDt_emissao(pedidos.getListapedidos().get(i).getDt_emissao());
+			pd.setIdcliente(pedidos.getListapedidos().get(i).getIdcliente());
+
+			return pd;
 		} else
 			return null;
 	}

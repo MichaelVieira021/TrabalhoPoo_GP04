@@ -11,6 +11,7 @@ import com.serratec.uteis.Util;
 import com.serratec.dao.CreateDAO;
 import com.serratec.dao.ClienteDAO;
 import com.serratec.dao.ProdutoDAO;
+import com.serratec.dao.PedidoDAO;
 import com.serratec.dao.ProdutoCarrinhoDAO;
 import com.serratec.classes.ListaPedidos;
 
@@ -173,14 +174,16 @@ public class Main {
 	}
 		
 	public static void alterarPedido() {
-		Pedido pd = new Pedido();
-		ProdutoCarrinhoDAO prodC = new ProdutoCarrinhoDAO(con, SCHEMA);
+		Pedido pd = g4Tech.localizarPedido();
 		ListaPedidos l = new ListaPedidos(con, SCHEMA, 2);
-		
-		pd = g4Tech.localizarPedido ();
-		l.carregarListaPedidosCarrinho();
-		//prodC.carregarProdutoMenu2(pd.getIdpedido());
+
+		pd.dadosPedidos();
+		pd.alterarPedido();
 		Menus.menuProdutosCarrinho(pd);
+		
+		//l.carregarListaPedidosCarrinho();
+		//prodC.carregarProdutoMenu2(pd.getIdpedido());
+		//Menus.menuProdutosCarrinho(pd);
 	}
 		
 	public static void imprimirPedido() {

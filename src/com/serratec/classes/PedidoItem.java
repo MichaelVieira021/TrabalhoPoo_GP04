@@ -2,6 +2,9 @@ package com.serratec.classes;
 
 public class PedidoItem {
 	private int idpedido_item;
+	private int idpedido;
+	private int idproduto;
+	private int quantidade;
 	private Pedido pedido;
 	private Produto produto;
 	
@@ -34,5 +37,31 @@ public class PedidoItem {
 	public void setProduto(Produto produto) {
 		this.produto = produto;
 	}
+
+	public int getIdpedido() {
+		return idpedido;
+	}
+
+	public void setIdpedido(int idpedido) {
+		this.idpedido = idpedido;
+	}
+
+	public int getIdproduto() {
+		return idproduto;
+	}
+
+	public void setIdproduto(int idproduto) {
+		this.idproduto = idproduto;
+	}
+
+	public int getQuantidade() {
+		return quantidade;
+	}
+
+	public void setQuantidade(int quantidade) {
+		this.quantidade = quantidade;
+	}
+	
+	
 	
 }

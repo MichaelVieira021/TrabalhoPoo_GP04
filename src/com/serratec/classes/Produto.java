@@ -58,7 +58,6 @@ public class Produto {
 		this.setIdcategoria(id);
 	}
 
-	
 	public int getIdcategoria() {
 		return idcategoria;
 	}

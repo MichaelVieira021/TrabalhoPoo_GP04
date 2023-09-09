@@ -9,6 +9,16 @@ public class Pedido {
 	private int idcliente;
 	private ArrayList<Produto> pedidoitem = new ArrayList<>();
 
+	public void dadosPedidos() {
+		System.out.println("ID Pedido: " + this.getIdcliente());
+		System.out.println("Emissao: " + this.getDt_emissao());
+		System.out.println("ID Cliente: " + this.getIdcliente());
+	}
+	
+	public void alterarPedido(){
+		
+	}
+	
 	public int getIdpedido() {
 		return idpedido;
 	}
@@ -40,8 +50,6 @@ public class Pedido {
 	public void setPedidoitem(ArrayList<Produto> pedidoitem) {
 		this.pedidoitem = pedidoitem;
 	}
-
-	
 
 
 }

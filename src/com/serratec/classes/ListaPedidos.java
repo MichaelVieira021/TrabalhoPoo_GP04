@@ -22,8 +22,6 @@ public class ListaPedidos {
 		
 		if(i == 1) carregarListaPedidos();
 		else carregarListaPedidosCarrinho();
-		
-		
 	}
 	
 

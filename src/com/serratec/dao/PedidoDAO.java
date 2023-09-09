@@ -6,8 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.serratec.classes.Pedido;
+import com.serratec.classes.PedidoItem;
 import com.serratec.conexao.Conexao;
 
 public class PedidoDAO {
@@ -125,4 +127,55 @@ public class PedidoDAO {
 
 	    return ultimoIdPedido;
 	}
+
+
+    public Pedido getPedido(int id) throws SQLException {
+        String sql = "SELECT idpedido FROM " + schema + ".pedido WHERE id = ?";
+        PreparedStatement stmt = conexao.getC().prepareStatement(sql);
+        stmt.setInt(1, id);
+        ResultSet rs = stmt.executeQuery();
+        
+        if (rs.next()) {
+            Pedido pedido = new Pedido();
+            pedido.setIdpedido(rs.getInt("idpedido"));
+            
+            // obtém os itens do pedido
+            //pedido.setItens(getPedidoItens(pedido.getIdpedido()));
+            
+            rs.close();
+            stmt.close();
+            
+            return pedido;
+			
+        } else {
+            rs.close();
+            stmt.close();
+            
+            return null;
+        }
+    }
+
+    public List<PedidoItem> getPedidoItens(int pedidoId) throws SQLException {
+        List<PedidoItem> itens = new ArrayList<>();
+        
+        String sql = "SELECT idproduto_pedido, idproduto, idpedido"; 
+        sql += " FROM " + this.schema + ".pedido_produto WHERE pedidoId = ?";
+        PreparedStatement stmt = conexao.getC().prepareStatement(sql);
+        stmt.setInt(1, pedidoId);
+        ResultSet rs = stmt.executeQuery();
+        
+        while (rs.next()) {
+            PedidoItem item = new PedidoItem();
+            item.setIdpedido_item(rs.getInt("idproduto_pedido"));
+            item.setIdproduto(rs.getInt("idproduto"));
+            item.setIdpedido(rs.getInt("idpedido"));
+            item.setQuantidade(rs.getInt("quantidade"));
+            itens.add(item);
+        }
+        
+        rs.close();
+        stmt.close();
+        
+        return itens;
+    }
 }
