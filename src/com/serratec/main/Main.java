@@ -205,7 +205,7 @@ public class Main {
 	}
 		
 	public static void imprimirPedido() {
-		
+		g4Tech.listarDadosPedidos();
 	}
 	
 	public static void excluirPedido() {

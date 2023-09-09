@@ -314,7 +314,6 @@ public class Empresa {
 		System.out.println("NOME\tDESCRIÇÃO\tVL_CUSTO\tVL_VENDA\tQTD ESTOQUE\tIDCATEGORIA");
 		System.out.println("------------------------------------------------------------------------------------");
 		for (Produto prod : produtos.getListaProdutos()) {
-		
 			System.out.printf(prod.getNome()+"\t");
 			System.out.print(prod.getDescricao()+"\t");
 			System.out.print(prod.getVl_custo()+"\t");
@@ -471,6 +470,24 @@ public class Empresa {
 			}
 		}
 		return retorno;	
+	}
+	
+	public void listarDadosPedidos() {
+		
+		pedidos = new ListaPedidos(con, schema, 1);
+		
+		System.out.println("\n====================================================================================");
+		System.out.println("                               LISTAGEM DE PEDIDOS                               ");
+		System.out.println("====================================================================================");
+		System.out.println("IDPEDIDO\tDATA EMISSAO\tIDCLIENTE");
+		System.out.println("------------------------------------------------------------------------------------");
+		for (Pedido pedi : pedidos.getListapedidos()) {
+			System.out.printf(pedi.getIdpedido()+"\t");
+			System.out.print(pedi.getDt_emissao()+"\t");
+			System.out.print(pedi.getIdcliente()+"\t");
+			System.out.println();
+		}
+		System.out.println();
 	}
 	
 	public void excluirPedido(com.serratec.classes.Pedido pedi) {
