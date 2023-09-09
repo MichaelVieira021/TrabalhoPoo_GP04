@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-<<<<<<< HEAD
 	<classpathentry kind="lib" path="C:/Users/Lucas Caldas/Downloads/postgresql-42.6.0.jar">
-=======
-	<classpathentry kind="lib" path="D:/SERRATEC/poo-java/postgresql-42.3.4.jar">
->>>>>>> refs/heads/feature/Adilson-Fernando-Neves-Ornellas
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
