@@ -3,10 +3,13 @@ package com.serratec.uteis;
 import java.util.Scanner;
 import com.serratec.classes.Categoria;
 import com.serratec.classes.Cliente;
+import com.serratec.classes.Empresa.ProdutoCarrinho;
+import com.serratec.classes.Pedido;
 import com.serratec.classes.Produto;
 import com.serratec.dao.ClienteDAO;
 import com.serratec.dao.CategoriaDAO;
 import com.serratec.dao.ProdutoDAO;
+import com.serratec.dao.ProdutoCarrinhoDAO;
 import com.serratec.main.Main;
 public class Menus {
 	
@@ -80,6 +83,22 @@ public class Menus {
 		return cat;
 	}
 
+	public static int menuProdutosCarrinho(Pedido pd) {
+		ProdutoCarrinhoDAO e  = new ProdutoCarrinhoDAO(Main.con, Main.SCHEMA);
+		
+		System.out.println("╔═══════════════════════════════════╗");
+		System.out.println("║             PEDIDOS              ║");
+		System.out.println("║-----------------------------------║");
+		for(ProdutoCarrinho c : e.carregarProdutoMenu2(pd.getIdpedido())) {
+        	System.out.println("║        ["+c.getIdpedidoitem()+"] - "+ c.getNome()+ " - \t\t" + c.getQuantidade());
+        }
+		System.out.println("║                                   ");
+		System.out.println("║-----------------------------------║");
+		System.out.println("║                                   ║");
+		System.out.print  ("╚═══════════════════════════════════╝\n> ");
+		int cat = Util.validarInteiro("Produto: ");
+		return cat;
+	}
 	
 	//-----------------------------------------
 	public static void menuPrincipal() {

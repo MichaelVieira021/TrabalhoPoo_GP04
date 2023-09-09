@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 import com.serratec.classes.Pedido;
 import com.serratec.conexao.Conexao;
@@ -81,6 +83,31 @@ public class PedidoDAO {
 		return tabela;
 	}
 	
+	public ArrayList<Pedido> carregarPedidos() {
+        ArrayList<Pedido> pedidos = new ArrayList<>();
+        String sql = "SELECT idpedido, dt_emissao, idcliente FROM " + this.schema + ".pedido ORDER BY idproduto";
+
+        ResultSet tabela = conexao.query(sql);
+
+        try {
+            while (tabela.next()) {
+                int  idpedido = tabela.getInt("idpedido");
+                LocalDate dtEmissao = tabela.getDate("dt_emissao").toLocalDate();
+                int idcliente = tabela.getInt("idcliente");
+                Pedido pedido = new Pedido();
+                pedido.setIdpedido(idpedido);
+                pedido.setDt_emissao(dtEmissao);
+                pedido.setIdcliente(idcliente);
+                //Produto produto = new Produto(idProduto, nomeProduto, qtdEstoque);
+                pedidos.add(pedido);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return pedidos;
+    }
+    
 	public int ultimoIdPedido() {
 	    int ultimoIdPedido = -1;
 

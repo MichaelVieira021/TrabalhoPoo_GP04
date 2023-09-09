@@ -19,7 +19,8 @@ public class Empresa {
 	//private String cnpj = "34554354";
 	public static ListaClientes clientes; 
 	public static ListaProdutos produtos; 
-	public static ListaPedidos pedidos; 
+	public static ListaPedidos pedidos;
+	public static ListaPedidos pedidos2;
 	
 	private ArrayList<com.serratec.classes.Cliente> cliente = new ArrayList<>();
 	private ArrayList<com.serratec.classes.Produto> produto = new ArrayList<>();
@@ -491,8 +492,51 @@ public class Empresa {
 		return produto;
 	}*/
  	
- 	
- 	/*public com.serratec.classes.Endereco adicionarEndereco(com.serratec.classes.Endereco endereco) {
+	public com.serratec.classes.Pedido localizarPedido() {
+
+		@SuppressWarnings("resource")
+		Scanner in = new Scanner(System.in);
+		com.serratec.classes.Pedido pd = new com.serratec.classes.Pedido();
+		
+		PedidoDAO pdao = new PedidoDAO(con,schema);
+		
+		int i = -1;
+				
+		 
+		int s = Util.validarInteiro("Digite o código: ");
+		pedidos = new ListaPedidos(con, schema, 1);
+		pedidos2 = new ListaPedidos(con, schema, 2);
+		
+		//pedido = pdao.carregarPedidos ();
+		
+		for (Pedido pd1 : pedidos.getListapedidos()) {
+			if (pd1.getIdpedido() == s) {
+				i = pedidos.getListapedidos().lastIndexOf(pd1);
+				break;
+			}
+		}
+		
+		
+		if (i >= 0) {
+			Pedido ped = new Pedido ();
+			
+			ped = pedidos.getListapedidos().get(i);
+			
+			pd.setIdpedido(ped.getIdpedido());
+			pd.setDt_emissao(ped.getDt_emissao());
+			pd.setIdcliente(ped.getIdcliente());
+			
+			Menus.menuProdutosCarrinho(pd);
+			
+			return pd;	
+		} else
+			return null;
+	}
+
+	public void imprimirProdutoCarrinho (Pedido pd) {
+		
+	}
+	/*public com.serratec.classes.Endereco adicionarEndereco(com.serratec.classes.Endereco endereco) {
  		com.serratec.classes.Endereco c = new com.serratec.classes.Endereco();
 		
 		c.setCep(endereco.getCep());

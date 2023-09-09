@@ -12,6 +12,8 @@ import com.serratec.dao.CreateDAO;
 import com.serratec.dao.PedidoDAO;
 import com.serratec.dao.ClienteDAO;
 import com.serratec.dao.ProdutoDAO;
+import com.serratec.dao.ProdutoCarrinhoDAO;
+import com.serratec.classes.ListaPedidos;
 
 public class Main {
 	public static Empresa g4Tech;
@@ -176,11 +178,18 @@ public class Main {
 		
 		//adicionar produtos ao pedido
 		//g4Tech.teste();
-		//g4Tech.inserirProdutoCarrinho();
+		//g4Tech.inserirProdutoCarrinho(pd);
 	}
 		
 	public static void alterarPedido() {
-
+		Pedido pd = new Pedido();
+		ProdutoCarrinhoDAO prodC = new ProdutoCarrinhoDAO(con, SCHEMA);
+		ListaPedidos l = new ListaPedidos(con, SCHEMA, 2);
+		
+		pd = g4Tech.localizarPedido ();
+		l.carregarListaPedidosCarrinho();
+		//prodC.carregarProdutoMenu2(pd.getIdpedido());
+		Menus.menuProdutosCarrinho(pd);
 	}
 		
 	public static void imprimirPedido() {

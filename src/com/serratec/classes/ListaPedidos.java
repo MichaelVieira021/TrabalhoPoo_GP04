@@ -7,24 +7,40 @@ import java.util.ArrayList;
 
 import com.serratec.conexao.Conexao;
 import com.serratec.dao.PedidoDAO;
+import com.serratec.dao.ProdutoCarrinhoDAO;
+import com.serratec.classes.Empresa.ProdutoCarrinho;
 
 public class ListaPedidos {
 	private Conexao con;
 	private String schema;
 	private ArrayList<Pedido> listapedidos = new ArrayList<>();
+	private ArrayList<ProdutoCarrinho> listaCarrinho = new ArrayList<>();
 	
-	public ListaPedidos(Conexao con, String schema) {
+	public ListaPedidos(Conexao con, String schema, int i) {
 		this.con = con;
 		this.schema = schema;
 		
-		carregarListaPedidos();
+		if(i == 1) carregarListaPedidos();
+		else carregarListaPedidosCarrinho();
+		
 		
 	}
+	
 
 	
  	public ArrayList<Pedido> getListapedidos() {
 		return listapedidos;
 	}
+
+	public ArrayList<ProdutoCarrinho> getListaCarrinho() {
+		return listaCarrinho;
+	}
+
+
+	public void setListaCarrinho(ArrayList<ProdutoCarrinho> listaCarrinho) {
+		this.listaCarrinho = listaCarrinho;
+	}
+
 
 	public void setListapedidos(ArrayList<Pedido> listapedidos) {
 		this.listapedidos = listapedidos;
@@ -52,6 +68,49 @@ public class ListaPedidos {
 			e.printStackTrace();
 		}
 	}
+	
+	public void carregarListaPedidosCarrinho() {
+ 		ProdutoCarrinhoDAO peddao = new ProdutoCarrinhoDAO(con, schema);
+		
+		ResultSet tabela = peddao.carregarProdutoCarrinho();
+		this.listaCarrinho.clear();
+		
+		try {
+			tabela.beforeFirst();
+			
+			while (tabela.next()) {							
+				this.listaCarrinho.add(dadosCarrinho(tabela));				
+			}
+			
+			tabela.close();
+		
+		} catch (Exception e) {
+			System.err.println(e);
+			e.printStackTrace();
+		}
+	}
+	
+	private ProdutoCarrinho dadosCarrinho(ResultSet tabela) { 
+		ProdutoCarrinho p = new ProdutoCarrinho();
+		 
+
+		try {
+			int idpedido = tabela.getInt("idpedido");
+			int idproduto = tabela.getInt("idproduto");
+			int quantidade = tabela.getInt("quantidade");
+			
+			
+			p.setIdpedidoitem(idpedido);
+			p.setIdproduto(idproduto);
+			p.setQuantidade(quantidade);
+			
+			
+			return p;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
  	
 	private Pedido dadosPedido(ResultSet tabela) { 
 		Pedido p = new Pedido();
@@ -70,5 +129,6 @@ public class ListaPedidos {
 			return null;
 		}
 	}
-		
+	
+	
 }
