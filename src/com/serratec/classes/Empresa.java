@@ -416,7 +416,9 @@ public class Empresa {
 	
 	public void inserirNoBd(Pedido pd, ArrayList<ProdutoCarrinho> pc) {
 		PedidoDAO pddao = new PedidoDAO(con, com.serratec.main.Main.SCHEMA);
+		
 		ProdutoCarrinhoDAO pcdao = new ProdutoCarrinhoDAO(con, com.serratec.main.Main.SCHEMA);
+		ProdutoCarrinhoDAO pcdaoe = new ProdutoCarrinhoDAO(con, com.serratec.main.Main.SCHEMA, 2);
 		
 		pddao.incluirPedido(pd);
 		int idPedido = pddao.ultimoIdPedido();		
@@ -424,17 +426,29 @@ public class Empresa {
 		for (ProdutoCarrinho pdc : pedidocarrinho) {
 				pdc.setIdpedido(idPedido);
 				pcdao.incluirProdutoCarrinho(pdc);
-				pcdao.alterarEstoque(pdc.getPr());
+				pcdaoe.alterarEstoque(pdc.getPr());
 		}
 		pedidocarrinho.clear();
 	}
 	
 	public void inserirAlteracaoNoBd(Pedido pd, ProdutoCarrinho pc) {
 		ProdutoCarrinhoDAO pcdao2 = new ProdutoCarrinhoDAO(con, com.serratec.main.Main.SCHEMA);
-		ProdutoCarrinhoDAO pcdao3 = new ProdutoCarrinhoDAO(con, com.serratec.main.Main.SCHEMA);
+		ProdutoCarrinhoDAO pcdao3 = new ProdutoCarrinhoDAO(con, com.serratec.main.Main.SCHEMA, 2);
+
+		//BUSCAS PEDIDO ANTERIOR
+		ProdutoDAO prdao = new ProdutoDAO(con, com.serratec.main.Main.SCHEMA);
+		ProdutoCarrinho qtdPrAnterior = pcdao2.carregarProdutoCarrinho(pc.getIdpedidoitem());
+		Produto ori = prdao.carregarProdutoMenu2(qtdPrAnterior.getIdproduto());
+		ori.setQtd_estoque(ori.getQtd_estoque()+ qtdPrAnterior.getQuantidade());
+		//pc.getPr().setQtd_estoque(ori.getQtd_estoque());
 		
-		pcdao2.alterarPedidoItem(pc);
+		//ALTERAR PEDIDO ATUALIZADO
+		pcdao2.alterarPedidoItem(pc); 
 		pcdao3.alterarEstoque(pc.getPr()); 
+		pcdao3.alterarEstoque(ori);
+		
+
+
 	}
 
 	public static boolean verificarEstoque(int idprod, int quant) {

@@ -171,27 +171,12 @@ public class ProdutoDAO {
 
         try {
             while (tabela.next()) {
-            	int  idProduto = tabela.getInt("idproduto");
-                String nomeProduto = tabela.getString("nome");
-                //String desc = tabela.getString("descricao");
-                //double vlc = tabela.getDouble("vl_custo");
-                //double vlv = tabela.getDouble("vl_venda");
-                int qtdEstoque = tabela.getInt("qtd_estoque");
-               // int  idCategoria = tabela.getInt("idcategoria");
-                //produto.setIdproduto(tabela.getInt("idproduto"));
-                //produto.setNome(tabela.getString("nome"));
-                //produto.setDescricao(tabela.getString("descricao"));
-                //produto.setVl_custo(tabela.getDouble("vl_custo"));
-                //produto.setVl_venda(tabela.getDouble("vl_venda"));
-                //produto.setQtd_estoque(tabela.getInt("qtd_estoque"));
-                //produto.setIdcategoria(tabela.getInt("idcategoria"));
-                produto.setIdproduto(idProduto);
-                produto.setNome(nomeProduto);
-                //produto.setDescricao(desc);
-               // produto.setVl_custo(vlc);
-                //produto.setVl_venda(vlv);
-                produto.setQtd_estoque(qtdEstoque);
-                //produto.setIdcategoria(idCategoria);
+            	//int  idProduto = tabela.getInt("idproduto");
+                //String nomeProduto = tabela.getString("nome");
+                //int qtdEstoque = tabela.getInt("qtd_estoque");
+                produto.setIdproduto(tabela.getInt("idproduto"));
+                produto.setNome(tabela.getString("nome"));
+                produto.setQtd_estoque(tabela.getInt("qtd_estoque"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

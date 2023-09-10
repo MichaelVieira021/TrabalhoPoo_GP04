@@ -23,6 +23,12 @@ public class ProdutoCarrinhoDAO {
 		this.schema = schema;
 		prepararSqlInclusaoProdutoCarrinho();
 		prepararSqlAlteracao();
+	}
+	
+	public ProdutoCarrinhoDAO(Conexao conexao, String schema, int i) { 
+		this.conexao = conexao;
+		this.schema = schema;
+		prepararSqlInclusaoProdutoCarrinho();
 		prepararSqlAlteracaoEstoque();
 	}
 
@@ -143,6 +149,26 @@ public class ProdutoCarrinhoDAO {
 		
 	}
 	
+	public ProdutoCarrinho carregarProdutoCarrinho(int id) {
+				
+		String sql = "select quantidade, idpedido_produto, idproduto from " + this.schema + ".pedido_produto where idpedido_produto = "+id;
+		
+		ResultSet tabela = conexao.query(sql);
+		ProdutoCarrinho teste = new ProdutoCarrinho();
+		
+		try {
+			while (tabela.next()) {
+				teste.setQuantidade(tabela.getInt("quantidade"));
+				teste.setIdpedidoitem(tabela.getInt("idpedido_produto"));
+				teste.setIdproduto(tabela.getInt("idproduto"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return teste;
+	}
+	
 	public ArrayList <ProdutoCarrinho> carregarProdutoMenuItems(int id) {
 		ArrayList <ProdutoCarrinho> produtoC = new ArrayList<>();
 
@@ -181,7 +207,7 @@ public class ProdutoCarrinhoDAO {
 		sql += " " + this.schema + ".pedido_produto.quantidade,";
 		sql += " " + this.schema + ".produto.vl_venda,";
 		sql += " " + this.schema + ".produto.vl_venda * " + this.schema + ".pedido_produto.quantidade as \"vl_total\"";
-		sql += " FROM " + this.schema + ".pedido_produto";
+		sql += " FROM " + this.schema + ".pedido_produto pp";
 		sql += " INNER JOIN " + this.schema + ".produto ON " + this.schema + ".pedido_produto.idproduto = " + this.schema + ".produto.idproduto";
 		sql += " INNER JOIN " + this.schema + ".pedido  ON " + this.schema + ".pedido_produto.idpedido  = " + this.schema + ".pedido.idpedido";
 		sql += " WHERE "+this.schema+".pedido_produto.idpedido = " + id;
