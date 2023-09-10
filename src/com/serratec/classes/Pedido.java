@@ -1,6 +1,7 @@
 package com.serratec.classes;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Pedido {
@@ -9,10 +10,12 @@ public class Pedido {
 	private int idcliente;
 	private ArrayList<Produto> pedidoitem = new ArrayList<>();
 
-	public void dadosPedidos() {
-		System.out.println("ID Pedido: " + this.getIdcliente());
-		System.out.println("Emissao: " + this.getDt_emissao());
-		System.out.println("ID Cliente: " + this.getIdcliente());
+	public void dadosPedidos(Pedido pd) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		
+		System.out.println("ID Pedido: " + pd.getIdpedido());
+		System.out.println("Emissao: " + pd.getDt_emissao().format(formatter));
+		System.out.println("ID Cliente: " + pd.getIdcliente());
 	}
 	
 	public void alterarPedido(){

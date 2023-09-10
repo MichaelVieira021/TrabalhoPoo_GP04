@@ -583,11 +583,12 @@ public class Empresa {
 		}
 
 		if (i >= 0) {
-			pedidos.getListapedidos().get(i);
+			Pedido pedidoEncontrado = new Pedido();
+			pedidoEncontrado = pedidos.getListapedidos().get(i);
 
-			pd.setIdpedido(pedidos.getListapedidos().get(i).getIdpedido());
-			pd.setDt_emissao(pedidos.getListapedidos().get(i).getDt_emissao());
-			pd.setIdcliente(pedidos.getListapedidos().get(i).getIdcliente());
+			pd.setIdpedido(pedidoEncontrado.getIdpedido());
+			pd.setDt_emissao(pedidoEncontrado.getDt_emissao());
+			pd.setIdcliente(pedidoEncontrado.getIdcliente());
 
 			return pd;
 		} else

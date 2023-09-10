@@ -83,13 +83,14 @@ public class Menus {
 		return cat;
 	}
 
-	public static int menuProdutosCarrinho(Pedido pd) {
+	public static int menuProdutosCarrinho(int idpd) {
 		ProdutoCarrinhoDAO e  = new ProdutoCarrinhoDAO(Main.con, Main.SCHEMA);
+		
 		
 		System.out.println("╔═══════════════════════════════════╗");
 		System.out.println("║         CARRINHO PEDIDO           ║");
 		System.out.println("║-----------------------------------║");
-		for(ProdutoCarrinho c : e.carregarProdutoMenuItems(pd.getIdpedido())) {
+		for(ProdutoCarrinho c : e.carregarProdutoMenuItems(idpd)) {
         	System.out.println("║        ["+c.getIdproduto()+"] - "+ c.getNome()+ " - \t\t" + c.getQuantidade());
         }
 		System.out.println("║                                   ");

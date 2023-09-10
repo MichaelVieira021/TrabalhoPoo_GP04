@@ -193,11 +193,11 @@ public class Main {
 		
 	public static void alterarPedido() {
 		Pedido pd = g4Tech.localizarPedido();
-		ListaPedidos l = new ListaPedidos(con, SCHEMA, 2);
+		//ListaPedidos l = new ListaPedidos(con, SCHEMA, 2);
 
-		pd.dadosPedidos();
+		pd.dadosPedidos(pd);
 		pd.alterarPedido();
-		Menus.menuProdutosCarrinho(pd);
+		Menus.menuProdutosCarrinho(pd.getIdpedido());
 		
 		//l.carregarListaPedidosCarrinho();
 		//prodC.carregarProdutoMenu2(pd.getIdpedido());
