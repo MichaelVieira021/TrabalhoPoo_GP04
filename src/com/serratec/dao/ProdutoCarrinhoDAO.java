@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.serratec.conexao.Conexao;
+import com.serratec.classes.Pedido;
 import com.serratec.classes.Produto;
 //import com.serratec.classes.PedidoItem;
 import com.serratec.classes.Empresa.ProdutoCarrinho;
@@ -167,6 +168,49 @@ public class ProdutoCarrinhoDAO {
             e.printStackTrace();
         }
         return produtoC;
+    }
+	
+    public ArrayList <ProdutoCarrinho> listarProdutosNoPedidoSelecionado(int id) {
+		ArrayList <ProdutoCarrinho> ArrayProduto = new ArrayList<>();
+
+		String sql = "SELECT " + this.schema + ".pedido.idpedido,";
+		sql += " " + this.schema + ".produto.idproduto,";
+		sql += " " + this.schema + ".produto.nome,";
+		sql += " " + this.schema + ".pedido_produto.quantidade,";
+		sql += " " + this.schema + ".produto.vl_venda,";
+		sql += " " + this.schema + ".produto.vl_venda * " + this.schema + ".pedido_produto.quantidade as \"vl_total\"";
+		sql += " FROM " + this.schema + ".pedido_produto";
+		sql += " INNER JOIN " + this.schema + ".produto ON " + this.schema + ".pedido_produto.idproduto = " + this.schema + ".produto.idproduto";
+		sql += " INNER JOIN " + this.schema + ".pedido  ON " + this.schema + ".pedido_produto.idpedido  = " + this.schema + ".pedido.idpedido";
+		sql += " WHERE "+this.schema+".pedido_produto.idpedido = " + id;
+    	
+        ResultSet tabela = conexao.query(sql);
+        try {
+            while (tabela.next()) {
+                ProdutoCarrinho pc = new ProdutoCarrinho();
+            	int  idPedido = tabela.getInt("idpedido");
+            	int  idProduto = tabela.getInt("idproduto");
+            	int  qtd = tabela.getInt("quantidade");   
+            	String nome = tabela.getString("nome");
+                double vl_venda = tabela.getDouble("vl_venda");
+                pc.setIdpedido(idPedido);
+            	pc.setIdproduto(idProduto);
+            	pc.setQuantidade(qtd);
+            	pc.setNome(nome);
+                pc.setVl_venda(vl_venda);
+
+            	/*System.out.println(pc.getIdpedido());
+            	System.out.println(pc.getIdproduto());
+            	System.out.println(pc.getQuantidade());
+            	System.out.println(pc.getNome());
+            	System.out.println(pc.getVl_venda());*/
+                
+                ArrayProduto.add(pc);    		
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ArrayProduto;
     }
 	
 }

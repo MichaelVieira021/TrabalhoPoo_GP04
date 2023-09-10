@@ -159,4 +159,47 @@ public class ClienteDAO {
 
         return clientes;
     }
+	
+    public Cliente buscarClientePorIdCliente(int id) {		
+		String sql = "SELECT nome";
+		sql += " FROM " + this.schema + ".cliente";
+		sql += " WHERE idcliente = " + id;
+        Cliente c = new Cliente();   
+        ResultSet tabela = conexao.query(sql);
+		try {
+			while (tabela.next()){
+		        String nome = tabela.getString("nome");
+		    	c.setNome(nome);
+			}
+		} catch (SQLException e) {
+		    e.printStackTrace();
+		}
+        return c;
+    }
+
+    public Cliente buscarClientePorIdPedido(int id) {		
+        String sql = "SELECT " 
+        			+ this.schema + ".pedido.dt_emissao, " 
+        			+ this.schema + ".cliente.nome, " 
+        			+ this.schema + ".cliente.endereco";
+		sql += " FROM " + this.schema + ".pedido INNER JOIN " + this.schema + ".cliente";
+		sql += " ON " + this.schema + ".pedido.idcliente = " + this.schema + ".cliente.idcliente";
+		sql += " WHERE idpedido = "+id;
+        Cliente c = new Cliente();   
+        //Pedido ped = new Pedido();   
+        ResultSet tabela = conexao.query(sql);
+		try {
+			while (tabela.next()){
+		        String nome = tabela.getString("nome");
+		        String dt_emissao = tabela.getString("dt_emissao");
+		        String endereco = tabela.getString("endereco");
+		    	c.setNome(nome);
+		    	c.setEndereco(endereco);
+		    	//ped.setNome(nome);
+			}
+		} catch (SQLException e) {
+		    e.printStackTrace();
+		}
+        return c;
+    }
 }

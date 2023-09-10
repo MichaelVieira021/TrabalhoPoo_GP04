@@ -1,6 +1,8 @@
 package com.serratec.classes;
 
 import java.util.Scanner;
+
+import com.serratec.classes.Empresa.ProdutoCarrinho;
 import com.serratec.conexao.Conexao;
 import com.serratec.dao.ClienteDAO;
 import com.serratec.dao.PedidoDAO;
@@ -475,18 +477,59 @@ public class Empresa {
 	public void listarDadosPedidos() {
 		
 		pedidos = new ListaPedidos(con, schema, 1);
-		
 		System.out.println("\n====================================================================================");
 		System.out.println("                               LISTAGEM DE PEDIDOS                               ");
 		System.out.println("====================================================================================");
-		System.out.println("IDPEDIDO\tDATA EMISSAO\tIDCLIENTE");
+		System.out.println("\tIDPEDIDO\tDATA DE EMISSAO\t\tCLIENTE\t");
 		System.out.println("------------------------------------------------------------------------------------");
 		for (Pedido pedi : pedidos.getListapedidos()) {
+			System.out.printf("\t"+pedi.getIdpedido()+"\t\t");
+			System.out.print(pedi.getDt_emissao()+"\t\t");
+			ClienteDAO clienteDAO = new ClienteDAO(con,schema);
+			Cliente c = clienteDAO.buscarClientePorIdCliente(pedi.getIdcliente());
+			System.out.print(c.getNome()+"\t");
+			System.out.println();
+		}
+		System.out.println();
+		int i = com.serratec.uteis.Util.validarInteiro("Digite o codigo do produto: ");
+		listarPedidosComProdutos(i);
+	}
+	
+	public void listarPedidosComProdutos(int idprod) {
+		pedidos = new ListaPedidos(con, schema, 1);
+		ProdutoCarrinhoDAO e  = new ProdutoCarrinhoDAO(Main.con, Main.SCHEMA);
+		ClienteDAO clienteDAO = new ClienteDAO(con,schema);
+		Cliente cli = clienteDAO.buscarClientePorIdPedido(idprod);
+		System.out.println("\n====================================================================================");
+		System.out.println("                    		  NOTA FISCAL											");
+		System.out.println("====================================================================================");
+		System.out.println("CLIENTE: "+cli.getNome()+"\t\tDATA DE EMISSÃO: "+"");
+		System.out.println("------------------------------------------------------------------------------------");
+		System.out.println("ENDEREÇO DE ENTREGA: "+cli.getEndereco());
+		System.out.println("------------------------------------------------------------------------------------");
+		System.out.println("IDPEDIDO\t\tIDPRODUTO\tPRODUTO\t\tQUANTIDADE\tVALOR UNITÁRIO\tVALOR FINAL");
+		System.out.println("------------------------------------------------------------------------------------");
+		double total = 0;
+		for(ProdutoCarrinho c : e.listarProdutosNoPedidoSelecionado(idprod)) {
+        	System.out.printf(c.getIdpedido()+"\t");
+        	System.out.printf(c.getIdproduto()+"\t");
+        	System.out.printf(c.getNome()+"\t");
+        	System.out.printf(c.getQuantidade()+"\t");
+        	System.out.printf("R$"+c.getVl_venda()+"\t\t");
+        	System.out.printf("R$"+c.getVl_venda()*c.getQuantidade()+"\t");
+    		System.out.println();
+    		total += (c.getVl_venda()*c.getQuantidade());
+		}
+		
+		/*for (Pedido pedi : pedidos.getListapedidos()) {
 			System.out.printf(pedi.getIdpedido()+"\t");
 			System.out.print(pedi.getDt_emissao()+"\t");
 			System.out.print(pedi.getIdcliente()+"\t");
 			System.out.println();
-		}
+		}*/
+		System.out.println("------------------------------------------------------------------------------------");
+		System.out.println("VALOR TOTAL: R$" + total);
+		System.out.println("------------------------------------------------------------------------------------");
 		System.out.println();
 	}
 	
