@@ -29,6 +29,7 @@ public class Empresa {
 	private ArrayList<com.serratec.classes.Produto> produto = new ArrayList<>();
 	private ArrayList<com.serratec.classes.Pedido> pedido = new ArrayList<>();
 	private static ArrayList<ProdutoCarrinho> pedidocarrinho = new ArrayList<>();
+	private static ProdutoCarrinho pedidoAlterado = new ProdutoCarrinho();
 	
 	private static Conexao con; 
 	private static String schema;
@@ -427,39 +428,21 @@ public class Empresa {
 		}
 		pedidocarrinho.clear();
 	}
+	
+	public void inserirAlteracaoNoBd(Pedido pd, ProdutoCarrinho pc) {
+		ProdutoCarrinhoDAO pcdao2 = new ProdutoCarrinhoDAO(con, com.serratec.main.Main.SCHEMA);
+		ProdutoCarrinhoDAO pcdao3 = new ProdutoCarrinhoDAO(con, com.serratec.main.Main.SCHEMA);
+		
+		pcdao2.alterarPedidoItem(pc);
+		pcdao3.alterarEstoque(pc.getPr()); 
+	}
 
 	public static boolean verificarEstoque(int idprod, int quant) {
 		boolean retorno = false;
-		int i = -1;
-		int j = -1;
-		
-		//pedidos = new ListaPedidos(con, schema);
-		//produtos = new ListaProdutos(con, schema);
 		com.serratec.classes.Produto prod = new com.serratec.classes.Produto();
 		ProdutoDAO e  = new ProdutoDAO(Main.con, Main.SCHEMA);
-		//com.serratec.classes.Pedido ped = new com.serratec.classes.Pedido();
 		prod = e.carregarProdutoMenu2(idprod);
-		/*for (Produto c : e.carregarProdutoMenu()) {
-			if (c.getIdproduto() == idprod) {
-				i = c.getIdproduto();
-				prod.setIdproduto(c.getIdproduto());
-				prod.setQtd_estoque(c.getQtd_estoque());
-				System.out.println("---------------");
-				System.out.println("Produto c ID: " + prod.getIdproduto());
-				System.out.println("Produto c Estoque: " + prod.getQtd_estoque());
-				break;
-			}
-		}*/
-		
-		/*for (Pedido c : pedidos.getListapedidos()) {
-			if (c.getIdpedido() == idped) {
-				j = pedidos.getListapedidos().lastIndexOf(c);
-				ped.setIdpedido(pedidos.getListapedidos().get(j).getIdpedido());
-				System.out.println("Pedido c ID: " + ped.getIdpedido());
-				break;
-			}
-		}*/
-		
+
 		if (prod.getQtd_estoque() > 0 && prod.getQtd_estoque() >= quant) {
 			prod.setQtd_estoque(prod.getQtd_estoque()-quant);
 			adicionarProdutoCarrinho(prod, quant);
@@ -549,10 +532,15 @@ public class Empresa {
 		ProdutoCarrinho le = new ProdutoCarrinho();
 		ProdutoDAO pddao = new ProdutoDAO(con, schema);
 		
+		//PARA CADASTRAR PEDIDO-----------
 		le.setIdproduto(l.getIdproduto());
 		le.setQtd_estoque(l.getQtd_estoque());
 		le.setQuantidade(quant);
 		le.setPr(l);
+		
+		//PARA ALTERAR PEDIDO---------
+		pedidoAlterado = le;
+
 		//c.setIdpedido(c.getIdpedido()+1);
 		System.out.println("---------------");
 		System.out.println("ID do produto: " + le.getIdproduto());
@@ -598,4 +586,17 @@ public class Empresa {
 	public void imprimirProdutoCarrinho (Pedido pd) {
 		
 	}	
+	
+	public ProdutoCarrinho atualizarPedidoItem(ProdutoCarrinho pc) {
+		pc.setIdproduto(pedidoAlterado.getIdproduto());
+		pc.setQuantidade(pedidoAlterado.getQuantidade());
+		pc.setPr(pedidoAlterado.getPr());
+		
+		return pc;
+	}	 
+	
+	public void alterarPedidoItem(ProdutoCarrinho pc, Pedido pd) {
+		
+		inserirAlteracaoNoBd(inserirProdutoCarrinho(pd), atualizarPedidoItem(pc));
+	}
 }

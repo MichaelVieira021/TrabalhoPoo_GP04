@@ -1,8 +1,10 @@
 package com.serratec.uteis;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 import com.serratec.classes.Categoria;
 import com.serratec.classes.Cliente;
+import com.serratec.classes.Empresa;
 import com.serratec.classes.Empresa.ProdutoCarrinho;
 import com.serratec.classes.Pedido;
 import com.serratec.classes.Produto;
@@ -35,7 +37,7 @@ public class Menus {
 	
 	public static int menuClientes() {
 		ClienteDAO e  = new ClienteDAO(Main.con, Main.SCHEMA);
-		
+
 		int teste = 0;
 		
 		System.out.println("╔═══════════════════════════════════╗");
@@ -83,22 +85,36 @@ public class Menus {
 		return cat;
 	}
 
-	public static int menuProdutosCarrinho(int idpd) {
-		ProdutoCarrinhoDAO e  = new ProdutoCarrinhoDAO(Main.con, Main.SCHEMA);
+	public static ProdutoCarrinho menuProdutosCarrinho(int pd) {
+		ProdutoCarrinhoDAO e = new ProdutoCarrinhoDAO(Main.con, Main.SCHEMA);
+		ArrayList<ProdutoCarrinho> produtoC = new ArrayList<>();
 		
+		produtoC = e.carregarProdutoMenuItems(pd);
 		
 		System.out.println("╔═══════════════════════════════════╗");
-		System.out.println("║         CARRINHO PEDIDO           ║");
+		System.out.println("║             PEDIDOS               ║");
 		System.out.println("║-----------------------------------║");
-		for(ProdutoCarrinho c : e.carregarProdutoMenuItems(idpd)) {
-        	System.out.println("║        ["+c.getIdproduto()+"] - "+ c.getNome()+ " - \t\t" + c.getQuantidade());
+		System.out.println("║id             produto         qtd ║");
+		for(ProdutoCarrinho c : produtoC) {
+        	System.out.println("║["+c.getIdpedidoitem()+"] - "+ c.getPr().getNome()+ " - \t" + c.getQuantidade());
         }
 		System.out.println("║                                   ");
 		System.out.println("║-----------------------------------║");
 		System.out.println("║                                   ║");
 		System.out.print  ("╚═══════════════════════════════════╝\n> ");
+		ProdutoCarrinho editar = new ProdutoCarrinho();
+		
 		int cat = Util.validarInteiro("Produto: ");
-		return cat;
+		
+		for(ProdutoCarrinho c : produtoC) {
+			if(c.getIdpedidoitem() == cat) {
+				editar.setIdpedidoitem(c.getIdpedidoitem());
+				editar.setIdpedido(c.getIdpedido());
+				editar.setQuantidade(c.getQuantidade());
+				editar.setPr(c.getPr());
+			}
+        }
+		return editar;
 	}
 	
 	//-----------------------------------------

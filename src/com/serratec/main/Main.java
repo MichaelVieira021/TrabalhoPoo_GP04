@@ -4,6 +4,7 @@ import java.util.Scanner;
 import com.serratec.classes.Cliente;
 import com.serratec.classes.Produto;
 import com.serratec.classes.Empresa;
+import com.serratec.classes.Empresa.ProdutoCarrinho;
 import com.serratec.classes.Pedido;
 import com.serratec.conexao.*;
 import com.serratec.uteis.Menus;
@@ -187,21 +188,15 @@ public class Main {
 		
 	//PEDIDO-----------------------------------------------
 	public static void cadastrarPedido() {
-		Pedido pd = new Pedido();
-		pd = g4Tech.cadastrarPedido();
+		g4Tech.cadastrarPedido();
 	}
 		
 	public static void alterarPedido() {
 		Pedido pd = g4Tech.localizarPedido();
-		//ListaPedidos l = new ListaPedidos(con, SCHEMA, 2);
-
 		pd.dadosPedidos(pd);
 		pd.alterarPedido();
-		Menus.menuProdutosCarrinho(pd.getIdpedido());
-		
-		//l.carregarListaPedidosCarrinho();
-		//prodC.carregarProdutoMenu2(pd.getIdpedido());
-		//Menus.menuProdutosCarrinho(pd);
+		ProdutoCarrinho pdItemEscolhido = Menus.menuProdutosCarrinho(pd.getIdpedido());
+		g4Tech.alterarPedidoItem(pdItemEscolhido, pd);
 	}
 		
 	public static void imprimirPedido() {
