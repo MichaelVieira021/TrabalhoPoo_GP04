@@ -63,17 +63,12 @@ public class Menus {
 		System.out.print  ("╚═══════════════════════════════════╝\n> ");
 		int opcao = Util.validarInteiro("");
 		System.out.print(cliente);
-		do {
-			if(opcao < 0 || opcao > teste) {
-				opcao = teste+1;
-			}else {
-				if(opcao == 0) {
-					Main.cadastrarCliente();
-					opcao = teste+1;
-					break;
-				}
-			}
-		}while(opcao < 0 || opcao > teste);
+		if(opcao == 0) {
+			Main.cadastrarCliente();
+			opcao = teste+1;
+		}else {
+			cliente=opcao;
+		}
 
 		return cliente;
 	}
