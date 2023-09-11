@@ -106,28 +106,42 @@ public class Menus {
 		ArrayList<ProdutoCarrinho> produtoC = new ArrayList<>();
 		
 		produtoC = e.carregarProdutoMenuItems(pd);
-		
-		System.out.println("╔═══════════════════════════════════╗");
-		System.out.println("║             PEDIDOS               ║");
-		System.out.println("║-----------------------------------║");
-		System.out.println("║id             produto         qtd ║");
+
+		System.out.println("║__________________________________________║");
+		System.out.println("║ CODIGO        PRODUTO         QUANTIDADE ║");
+		System.out.println("║——————————————————————————————————————————║");
 		for(ProdutoCarrinho c : produtoC) {
-        	System.out.println("║["+c.getIdpedidoitem()+"] - "+ c.getPr().getNome()+ " - \t" + c.getQuantidade());
+			System.out.print(Util.preencherEspacos(9, "║  ["+c.getIdproduto()+"] "));
+			System.out.print(Util.preencherEspacos(21, "| "+ c.getPr().getNome()+ " "));
+			System.out.print(Util.preencherEspacos(13, "|     " + c.getQuantidade()));System.out.println("║");
+			System.out.println("║------------------------------------------║");
         }
-		System.out.println("║                                   ");
-		System.out.println("║-----------------------------------║");
-		System.out.println("║                                   ║");
-		System.out.print  ("╚═══════════════════════════════════╝\n> ");
+		System.out.println("║                                          ║");
+		System.out.println("║         Digite '0' para [Sair]           ║");
+		System.out.println("╚══════════════════════════════════════════╝");
 		ProdutoCarrinho editar = new ProdutoCarrinho();
-		
-		int cat = Util.validarInteiro("Produto: ");
+		boolean prEncontrado = false;
+		int cat;
+		do {
+			cat = Util.validarInteiro("> ");
+			for(ProdutoCarrinho c : produtoC) {
+				if(cat == c.getIdproduto()) {
+					prEncontrado = true;
+					break;
+				}else if(cat == 0) {
+					Menus.menuPrincipal();
+					break;
+				}
+			}
+			if (!prEncontrado) {
+			    System.err.println("Erro: Produto não encontrado!");
+			}
+		}while(!prEncontrado);
+
 		
 		for(ProdutoCarrinho c : produtoC) {
-			if(c.getIdpedidoitem() == cat) {
-				editar.setIdpedidoitem(c.getIdpedidoitem());
-				editar.setIdpedido(c.getIdpedido());
-				editar.setQuantidade(c.getQuantidade());
-				editar.setPr(c.getPr());
+			if(c.getIdproduto() == cat) {
+				editar = c;
 			}
         }
 		return editar;
@@ -139,20 +153,20 @@ public class Menus {
 		int opcao = 0;
 		
 		do {	
-			System.out.println("╔═══════════════════════════════════╗");
-			System.out.println("║                MENU               ║");
-			System.out.println("║-----------------------------------║");
-			System.out.println("║                                   ║");
-			System.out.println("║        [1] - Cadastrar            ║");
-			System.out.println("║        [2] - Alterar              ║");
-			System.out.println("║        [3] - Imprimir             ║");
-			System.out.println("║        [4] - Excluir              ║");
-			System.out.println("║                                   ║");
-			System.out.println("║-----------------------------------║");
-			System.out.println("║      Digite '0' para [Sair]       ║");
-			System.out.print  ("╚═══════════════════════════════════╝\n> ");
+			System.out.println("╔══════════════════════════════════════════╗");
+			System.out.println("║                  MENU                    ║");
+			System.out.println("║------------------------------------------║");
+			System.out.println("║                                          ║");
+			System.out.println("║           [1] - Cadastrar                ║");
+			System.out.println("║           [2] - Alterar                  ║");
+			System.out.println("║           [3] - Imprimir                 ║");
+			System.out.println("║           [4] - Excluir                  ║");
+			System.out.println("║                                          ║");
+			System.out.println("║------------------------------------------║");
+			System.out.println("║          Digite '0' para [Sair]          ║");
+			System.out.println("╚══════════════════════════════════════════╝");
 			
-			opcao = Util.validarInteiro("Informe uma opcao: ");
+			opcao = Util.validarInteiro("> ");
 			
 			escolherMenu(opcao);
 			
@@ -163,23 +177,26 @@ public class Menus {
 		int opcao = 0;
 		
 		do {
-			Util.escrever(Util.LINHA);
-			
+			System.out.println("╔══════════════════════════════════════════╗");
 			switch (tipoCrud) {
-			case CADASTRAR: Util.escrever("CADASTRAR"); break;
-			case ALTERAR: Util.escrever("ALTERAR"); break;
-			case IMPRIMIR: Util.escrever("IMPRIMIR"); break;
-			case EXCLUIR: Util.escrever("EXCLUIR"); break;
+			case CADASTRAR: Util.escrever("║                CADASTRAR                 ║"); break;
+			case ALTERAR: Util.escrever("║                 ALTERAR                  ║"); break;
+			case IMPRIMIR: Util.escrever("║                 IMPRIMIR                 ║"); break;
+			case EXCLUIR: Util.escrever("║                  EXCLUIR                 ║"); break;
 			}
 					
-			Util.escrever(Util.LINHA);
-			Util.escrever("[1]- Cliente");
-			Util.escrever("[2]- Produto");
-			Util.escrever("[3]- Pedidos");
-			Util.escrever("[0]- Voltar");
-			Util.escrever(Util.LINHA);
+			System.out.println("║------------------------------------------║");
+			System.out.println("║                                          ║");
+			System.out.println("║           [1] - Cliente                  ║");
+			System.out.println("║           [2] - Produto                  ║");
+			System.out.println("║           [3] - Pedidos                  ║");
+			System.out.println("║           [4] - Excluir                  ║");
+			System.out.println("║                                          ║");
+			System.out.println("║------------------------------------------║");
+			System.out.println("║          Digite '0' para [voltar]        ║");
+			System.out.println("╚══════════════════════════════════════════╝");
 			
-			opcao = Util.validarInteiro("Informe uma opcao: ");			
+			opcao = Util.validarInteiro("> ");			
 			
 			switch (tipoCrud) {
 			case CADASTRAR: escolherMenuCadastrar(opcao); break;

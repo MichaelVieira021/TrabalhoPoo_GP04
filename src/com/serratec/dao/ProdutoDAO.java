@@ -171,9 +171,6 @@ public class ProdutoDAO {
 
         try {
             while (tabela.next()) {
-            	//int  idProduto = tabela.getInt("idproduto");
-                //String nomeProduto = tabela.getString("nome");
-                //int qtdEstoque = tabela.getInt("qtd_estoque");
                 produto.setIdproduto(tabela.getInt("idproduto"));
                 produto.setNome(tabela.getString("nome"));
                 produto.setQtd_estoque(tabela.getInt("qtd_estoque"));

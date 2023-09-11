@@ -415,6 +415,38 @@ public class Empresa {
 		return pd;
 	}
 	
+	public Pedido alterarProdutoCarrinho(Pedido pd) {
+		int quant;
+		boolean verEstoque = false, prIgual = true;
+		System.out.println("=====================================");
+		System.out.println("	   SELECIONE O NOVO PRODUTO");
+		System.out.println("=====================================");
+		int idprod;
+
+		do {
+			idprod = Menus.menuProdutos();
+			for (ProdutoCarrinho pr : pedidocarrinho) {
+				if (pr.getPr().getIdproduto() == idprod) {
+					pedidocarrinho.remove(pedidocarrinho.indexOf(pr));
+					prIgual = true;
+					break;
+				} else
+					prIgual = false;
+				}
+			prIgual = false;
+		} while (prIgual);
+
+		quant = Util.validarInteiro("Digite a quantidade a ser adicionada: ");
+		verEstoque = verificarEstoque(idprod, quant);
+
+		if (!verEstoque) {
+			Util.escrever("Produto fora de estoque!");
+		} else {
+			System.out.println("Produto alterado com Sucesso!");
+		}
+		return pd;
+	}
+	
 	public void inserirNoBd(Pedido pd, ArrayList<ProdutoCarrinho> pc) {
 		PedidoDAO pddao = new PedidoDAO(con, com.serratec.main.Main.SCHEMA);
 		
@@ -440,16 +472,18 @@ public class Empresa {
 		ProdutoDAO prdao = new ProdutoDAO(con, com.serratec.main.Main.SCHEMA);
 		ProdutoCarrinho qtdPrAnterior = pcdao2.carregarProdutoCarrinho(pc.getIdpedidoitem());
 		Produto ori = prdao.carregarProdutoMenu2(qtdPrAnterior.getIdproduto());
-		ori.setQtd_estoque(ori.getQtd_estoque()+ qtdPrAnterior.getQuantidade());
-		//pc.getPr().setQtd_estoque(ori.getQtd_estoque());
 		
 		//ALTERAR PEDIDO ATUALIZADO
-		pcdao2.alterarPedidoItem(pc); 
-		pcdao3.alterarEstoque(pc.getPr()); 
-		pcdao3.alterarEstoque(ori);
-		
-
-
+		if(ori.getIdproduto() == pc.getIdproduto()) {
+			pc.setQuantidade(pc.getQuantidade()+qtdPrAnterior.getQuantidade());
+			pcdao2.alterarPedidoItem(pc);
+			pcdao3.alterarEstoque(pc.getPr());
+		}else {
+			ori.setQtd_estoque(ori.getQtd_estoque()+ qtdPrAnterior.getQuantidade());
+			pcdao2.alterarPedidoItem(pc); 
+			pcdao3.alterarEstoque(pc.getPr()); 
+			pcdao3.alterarEstoque(ori);
+		}
 	}
 
 	public static boolean verificarEstoque(int idprod, int quant) {
@@ -572,30 +606,61 @@ public class Empresa {
 
 	public com.serratec.classes.Pedido localizarPedido() {
 		com.serratec.classes.Pedido pd = new com.serratec.classes.Pedido();
-
-		int i = -1;
-
-		int s = Util.validarInteiro("Digite o código: ");
 		pedidos = new ListaPedidos(con, schema, 1);
+		int s;
+		boolean pdEncontrado = false;
+		//int i = -1;
+		
+		System.out.println("╔══════════════════════════════════════════╗");
+		System.out.println("║              ALTERAR PEDIDO              ║");
+		System.out.println("║------------------------------------------║");
+		System.out.println("║       Informe [CODIGO] do pedido         ║");
+		System.out.println("║         Digite '0' para [Sair]           ║");
+		System.out.println("╚══════════════════════════════════════════╝");
 
-		for (Pedido p : pedidos.getListapedidos()) {
+		
+		do {
+			s = Util.validarInteiro("[CÓDIGO]> ");
+			for(Pedido c : pedidos.getListapedidos()) { 
+				if(s == c.getIdpedido()) {
+					pdEncontrado = true;
+					pd = c;
+					pd.dadosPedidos(pd);
+					//pd.setIdpedido(c.getIdpedido());
+					//pd.setDt_emissao(c.getDt_emissao());
+					//pd.setIdcliente(c.getIdcliente());
+					break;
+				}else if(s == 0) {
+					Menus.menuPrincipal();
+					break;
+				}
+			}
+			if (!pdEncontrado) {
+			    System.err.println("Erro: Pedido não encontrado!");
+			}
+		}while(!pdEncontrado);
+		
+		/*for (Pedido p : pedidos.getListapedidos()) {
 			if (p.getIdpedido() == s) {
 				i = pedidos.getListapedidos().lastIndexOf(p);
 				break;
 			}
-		}
+		}*/
 
-		if (i >= 0) {
+		/*if (i >= 0) {
 			Pedido pedidoEncontrado = new Pedido();
-			pedidoEncontrado = pedidos.getListapedidos().get(i);
+			pedidoEncontrado = pedidos.getListapedidos().get(i); 
 
 			pd.setIdpedido(pedidoEncontrado.getIdpedido());
 			pd.setDt_emissao(pedidoEncontrado.getDt_emissao());
-			pd.setIdcliente(pedidoEncontrado.getIdcliente());
+			pd.setIdcliente(pedidoEncontrado.getIdcliente()); 
+			
+			pd.dadosPedidos(pd);
 
 			return pd;
 		} else
-			return null;
+			return null;*/
+		return pd;
 	}
 
 	public void imprimirProdutoCarrinho (Pedido pd) {
@@ -612,7 +677,9 @@ public class Empresa {
 	
 	public void alterarPedidoItem(ProdutoCarrinho pc, Pedido pd) {
 		
-		inserirAlteracaoNoBd(inserirProdutoCarrinho(pd), atualizarPedidoItem(pc));
+		inserirAlteracaoNoBd(alterarProdutoCarrinho(pd), atualizarPedidoItem(pc));
+		pd.dadosPedidos(pd);
+		Menus.menuProdutosCarrinho(pd.getIdpedido());
 	}
 	
 	// CATEGORIA ----------------------------------------------------------------------

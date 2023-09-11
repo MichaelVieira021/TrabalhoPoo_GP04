@@ -194,9 +194,9 @@ public class Main {
 	}
 		
 	public static void alterarPedido() {
-		Pedido pd = g4Tech.localizarPedido();
-		pd.dadosPedidos(pd);
-		pd.alterarPedido();
+		Pedido pd = g4Tech.localizarPedido(); 
+		//pd.dadosPedidos(pd);
+		//pd.alterarPedido();
 		ProdutoCarrinho pdItemEscolhido = Menus.menuProdutosCarrinho(pd.getIdpedido());
 		g4Tech.alterarPedidoItem(pdItemEscolhido, pd);
 	}

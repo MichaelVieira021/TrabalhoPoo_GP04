@@ -25,6 +25,26 @@ public class Util {
 		System.out.println(mensagem);
 	}
 	
+	public void preencherEspaco(String teste) {
+		for(int i = 0; i < teste.length(); i++) {
+			
+		}
+	}
+	
+	   public static String preencherEspacos(int tamanho, String texto) {
+	        StringBuilder resultado = new StringBuilder(texto);
+	        
+	        int preencher = tamanho - texto.length();
+	        
+	        for (int i = 0; i < preencher; i++) {
+	            resultado.append(" ");
+	        }
+	        
+	        //resultado.append("║");
+	        
+	        return resultado.toString();
+	    }
+	
 	public static LocalDate validarData(String mensagem) {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDate dataConvertida = null;
@@ -57,7 +77,7 @@ public class Util {
 				numero = Integer.parseInt(s);
 				validado = true;
 			} catch (Exception e) {
-				System.out.println("Informe um numero valido - " + e.getMessage());
+				System.err.println("Informe um numero valido - " + e.getMessage());
 			}
 		} while (!validado);
 		

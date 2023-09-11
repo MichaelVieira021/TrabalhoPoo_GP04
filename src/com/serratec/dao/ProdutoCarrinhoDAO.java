@@ -174,7 +174,7 @@ public class ProdutoCarrinhoDAO {
 
 		String sql = "SELECT pp.idpedido_produto, pp.idpedido, pp.idproduto, pp.quantidade, p.nome FROM " + this.schema + ".pedido_produto pp"
 				+ " LEFT JOIN " + this.schema + ".produto  p ON p.idproduto = pp.idproduto"
-				+ " where idpedido = "+id+" ORDER BY idpedido_produto";
+				+ " where idpedido = "+id+" ORDER BY p.nome";
         
         ResultSet tabela = conexao.query(sql);
         try {

@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import com.serratec.uteis.Util;
+
 public class Pedido {
 	private int idpedido;
 	private LocalDate dt_emissao;
@@ -12,10 +14,18 @@ public class Pedido {
 
 	public void dadosPedidos(Pedido pd) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		System.out.println("╔══════════════════════════════════════════╗");
+		System.out.println("║             PEDIDO ENCONTRADO            ║");
+		System.out.println("║             ¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨            ║");
+		System.out.print(Util.preencherEspacos(31, "║ PEDIDO Nº"+ pd.getIdpedido()));
+		System.out.println(" "+pd.getDt_emissao().format(formatter)+" ║");
+		//System.out.println("║******************************************║");
+		//System.out.println("║ CODIGO                           DATA    ║");
+		//System.out.print(Util.preencherEspacos(31, "║Codigo Pedido: " + pd.getIdpedido()));
+		//System.out.println(pd.getDt_emissao().format(formatter)+"║");
+		//System.out.println("║Cliente: " + pd.getIdcliente());
 		
-		System.out.println("ID Pedido: " + pd.getIdpedido());
-		System.out.println("Emissao: " + pd.getDt_emissao().format(formatter));
-		System.out.println("ID Cliente: " + pd.getIdcliente());
+		
 	}
 	
 	public void alterarPedido(){
