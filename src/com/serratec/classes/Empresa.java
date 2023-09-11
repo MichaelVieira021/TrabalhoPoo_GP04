@@ -671,7 +671,7 @@ public class Empresa {
 			s = Util.validarInteiro("[CÓDIGO]> ");
 			if(s==0) {
 				pdEncontrado = true;
-				Menus.menuPrincipal();
+				//Menus.menuPrincipal();
 				break;
 			}
 			for(Pedido c : pedidos.getListapedidos()) { 
