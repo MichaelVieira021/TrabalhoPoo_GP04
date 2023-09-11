@@ -39,12 +39,10 @@ public class Menus {
 		if(opcao == 0) {
 			Main.cadastrarCategoria();
 			opcao = teste+1;
-		}
-		if(opcao==0) {
-			return cat;
 		}else {
-			return opcao;
+			cat=opcao;
 		}
+		return cat;
 	}
 	
 	public static int menuClientes() {
