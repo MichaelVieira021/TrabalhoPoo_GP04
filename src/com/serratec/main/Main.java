@@ -198,6 +198,7 @@ public class Main {
 		//pd.dadosPedidos(pd);
 		//pd.alterarPedido();
 		ProdutoCarrinho pdItemEscolhido = Menus.menuProdutosCarrinho(pd.getIdpedido());
+		g4Tech.alterarQtdOuProduto(pdItemEscolhido, pd);
 		g4Tech.alterarPedidoItem(pdItemEscolhido, pd);
 	}
 		

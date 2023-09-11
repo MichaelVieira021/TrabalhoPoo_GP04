@@ -415,12 +415,52 @@ public class Empresa {
 		return pd;
 	}
 	
+	public void alterarQtdOuProduto(ProdutoCarrinho pc,Pedido pd) {
+		//ProdutoCarrinho pc = new ProdutoCarrinho();
+		//Pedido pd = new Pedido();
+		System.out.println("╔══════════════════════════════════════════╗");
+		System.out.println("║      [1] -   ALTERAR QUANTIDADE          ║");
+		System.out.println("║      [2] -   ALTERAR PRODUTO             ║");
+		System.out.println("║                                          ║");
+		System.out.println("║------------------------------------------║");
+		System.out.println("║         Digite '0' para [Sair]           ║");
+		System.out.println("╚══════════════════════════════════════════╝");
+		
+		boolean opcQtdOuPr = false;
+		
+		do {
+			int opcao = Util.validarInteiro("> ");
+			switch(opcao) {
+				case 1:
+					alterarQtdPedidoItem(pc, pd);
+					opcQtdOuPr = true;
+					break;
+				case 2:
+					alterarPedidoItem(pc, pd);
+					opcQtdOuPr = true;
+					break;
+				case 0:
+					System.err.println("Alteração cancelada!");
+					opcQtdOuPr = true;
+					break;
+				default:
+					System.err.println("Erro: Opção não encontrada!");
+					opcQtdOuPr = false;
+					break;
+			}
+		}while(!opcQtdOuPr);
+
+	}
+	
 	public Pedido alterarProdutoCarrinho(Pedido pd) {
 		int quant;
 		boolean verEstoque = false, prIgual = true;
-		System.out.println("=====================================");
-		System.out.println("	   SELECIONE O NOVO PRODUTO");
-		System.out.println("=====================================");
+		System.out.println("╔══════════════════════════════════════════╗");
+		System.out.println("║        ************************          ║");
+		System.out.println("║        SELECIONE O NOVO PRODUTO          ║");
+		System.out.println("║        ************************          ║");
+		System.out.println("╚══════════════════════════════════════════╝");
+
 		int idprod;
 
 		do {
@@ -673,10 +713,17 @@ public class Empresa {
 		pc.setPr(pedidoAlterado.getPr());
 		
 		return pc;
-	}	 
+	}
+	
+	public void alterarQtdPedidoItem(ProdutoCarrinho pc, Pedido pd) {
+		//alterarQtdOuProduto(pd);
+		inserirAlteracaoNoBd(alterarProdutoCarrinho(pd), atualizarPedidoItem(pc));
+		pd.dadosPedidos(pd);
+		Menus.menuProdutosCarrinho(pd.getIdpedido());
+	}
 	
 	public void alterarPedidoItem(ProdutoCarrinho pc, Pedido pd) {
-		
+		//alterarQtdOuProduto(pd);
 		inserirAlteracaoNoBd(alterarProdutoCarrinho(pd), atualizarPedidoItem(pc));
 		pd.dadosPedidos(pd);
 		Menus.menuProdutosCarrinho(pd.getIdpedido());

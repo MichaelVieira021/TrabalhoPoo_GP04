@@ -87,16 +87,22 @@ public class Menus {
 	public static int menuProdutos() {
 		ProdutoDAO e  = new ProdutoDAO(Main.con, Main.SCHEMA);
 		
-		System.out.println("╔═══════════════════════════════════╗");
-		System.out.println("║             PRODUTOS              ║");
-		System.out.println("║-----------------------------------║");
+		System.out.println("╔══════════════════════════════════════════╗");
+		System.out.println("║                 PRODUTOS                 ║");
+		System.out.println("║--------┬--------------------┬------------║");
 		for(Produto ct : e.carregarProdutoMenu()) {
-        	System.out.println("║        ["+ct.getIdcategoria()+"] - "+ ct.getNome()+ " - \t\t" + ct.getQtd_estoque());
+        	System.out.print(Util.preencherEspacos(9, "║  ["+ct.getIdcategoria()+"] "));
+        	System.out.print(Util.preencherEspacos(21, "| "+ ct.getNome()+" "));
+        	if(ct.getQtd_estoque() == 0) {
+        		System.out.print(Util.preencherEspacos(18, "|     "+"\u001B[31m" + ct.getQtd_estoque()));System.out.println("\u001B[0m"+"║");
+        	}else {
+        		System.out.print(Util.preencherEspacos(13, "|     " + ct.getQtd_estoque()));System.out.println("║");
+        	}
+        	System.out.println("║--------|--------------------|------------║");
         }
-		System.out.println("║                                   ");
-		System.out.println("║-----------------------------------║");
-		System.out.println("║                                   ║");
-		System.out.print  ("╚═══════════════════════════════════╝\n> ");
+		System.out.println("║                                          ║");
+		System.out.println("║         Digite '0' para [Sair]           ║");
+		System.out.println("╚══════════════════════════════════════════╝");
 		int cat = Util.validarInteiro("Produto: ");
 		return cat;
 	}

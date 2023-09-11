@@ -15,8 +15,9 @@ public class Pedido {
 	public void dadosPedidos(Pedido pd) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		System.out.println("╔══════════════════════════════════════════╗");
+		System.out.println("║             *****************            ║");
 		System.out.println("║             PEDIDO ENCONTRADO            ║");
-		System.out.println("║             ¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨            ║");
+		System.out.println("║             *****************            ║");
 		System.out.print(Util.preencherEspacos(31, "║ PEDIDO Nº"+ pd.getIdpedido()));
 		System.out.println(" "+pd.getDt_emissao().format(formatter)+" ║");
 		//System.out.println("║******************************************║");

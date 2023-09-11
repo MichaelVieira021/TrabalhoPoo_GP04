@@ -143,7 +143,7 @@ public class ProdutoDAO {
 	
 	public ArrayList<Produto> carregarProdutoMenu() {
         ArrayList<Produto> produtos = new ArrayList<>();
-        String sql = "SELECT idproduto, nome, qtd_estoque FROM " + this.schema + ".produto ORDER BY idproduto";
+        String sql = "SELECT idproduto, nome, qtd_estoque FROM " + this.schema + ".produto ORDER BY qtd_estoque DESC";
 
         ResultSet tabela = conexao.query(sql);
 
