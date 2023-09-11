@@ -386,37 +386,39 @@ public class Empresa {
 		
 		idprod = Menus.menuProdutos();
 		
-		if(idprod==0) {
-			Menus.menuPrincipal();
-		}
+	
 		do {
-			do {
-				for (ProdutoCarrinho pr : pedidocarrinho) {
-					if (pr.getPr().getIdproduto() == idprod) {
-						pedidocarrinho.remove(pedidocarrinho.indexOf(pr));
-						prIgual = true;
-						break;
-					} else
-						prIgual = false;
-				}
-				prIgual = false;
-			} while (prIgual);
-
-			quant = Util.validarInteiro("Digite a quantidade a ser adicionada: ");
-			verEstoque = verificarEstoque(idprod, quant);
-
-			if (!verEstoque) {
-				Util.escrever("Produto fora de estoque!");
+			if(idprod==0) {
 				opcao = 1;
-			} else {
-				System.out.println("Produto adicionado com Sucesso!");
-				System.out.println("Digite 1 para adicionar outro produto.");
-				opcao = in.nextInt();
-			}
+				break;
+			}else {
+				do {
+					for (ProdutoCarrinho pr : pedidocarrinho) {
+						if (pr.getPr().getIdproduto() == idprod) {
+							pedidocarrinho.remove(pedidocarrinho.indexOf(pr));
+							prIgual = true;
+							break;
+						} else
+							prIgual = false;
+					}
+					prIgual = false;
+				} while (prIgual);
 
-		} while (opcao == 1);
+				quant = Util.validarInteiro("Digite a quantidade a ser adicionada: ");
+				verEstoque = verificarEstoque(idprod, quant);
+
+				if (!verEstoque) {
+					Util.escrever("Produto fora de estoque!");
+					opcao = 1;
+				} else {
+					System.out.println("Produto adicionado com Sucesso!");
+					System.out.println("Digite 1 para adicionar outro produto.");
+					opcao = in.nextInt();
+				}
+			}
+			System.out.println("Pedido realizado com Sucesso!");
+		}while (opcao == 1);
 			
-		System.out.println("Pedido realizado com Sucesso!");
 		return pd;
 	}
 	
