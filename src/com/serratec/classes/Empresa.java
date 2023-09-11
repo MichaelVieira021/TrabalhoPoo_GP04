@@ -607,7 +607,7 @@ public class Empresa {
 	
 	public void excluirPedido(com.serratec.classes.Pedido pedi) {
 		int i = -1;
-		produtos = new ListaProdutos(con, schema);
+		pedidos = new ListaPedidos(con, schema, 1);
 		for (Pedido pedi1 : pedidos.getListapedidos()) {
 			if (pedi1.getIdpedido() == pedi.getIdpedido())
 				i = pedidos.getListapedidos().lastIndexOf(pedi);

@@ -185,7 +185,7 @@ public class Menus {
 			System.out.println("║           [1] - Cliente                  ║");
 			System.out.println("║           [2] - Produto                  ║");
 			System.out.println("║           [3] - Pedidos                  ║");
-			System.out.println("║           [4] - Excluir                  ║");
+//			System.out.println("║           [4] - Excluir                  ║");
 			System.out.println("║                                          ║");
 			System.out.println("║------------------------------------------║");
 			System.out.println("║          Digite '0' para [voltar]        ║");
