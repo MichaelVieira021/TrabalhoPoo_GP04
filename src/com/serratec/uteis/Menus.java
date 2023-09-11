@@ -21,17 +21,33 @@ public class Menus {
 	public static int menuCategorias() {
 		CategoriaDAO e  = new CategoriaDAO(Main.con, Main.SCHEMA);
 		
+		int teste = 0;
+		int cat = 1 ;
+		
 		System.out.println("╔═══════════════════════════════════╗");
 		System.out.println("║            CATEGORIAS             ║");
 		System.out.println("║-----------------------------------║");
 		for(Categoria ct : e.carregarCategoriaMenu()) {
         	System.out.println("║        ["+ct.getIdcategoria()+"] - "+ ct.getNm_categoria());
+        	cat++;
         }
 		System.out.println("║                                   ");
 		System.out.println("║-----------------------------------║");
 		System.out.println("║    [0] -[CRIAR NOVA CATEGORIA]    ║");
 		System.out.print  ("╚═══════════════════════════════════╝\n> ");
-		int cat = Util.validarInteiro("Categoria: ");
+		int opcao = Util.validarInteiro("");;
+		do {
+			if(opcao < 0 || opcao > teste) {
+				opcao = teste+1;
+			}else {
+				if(opcao == 0) {
+					Main.cadastrarCategoria();
+					opcao = teste+1;
+					break;
+				}
+			}
+		}while(opcao < 0 || opcao > teste);
+
 		return cat;
 	}
 	
@@ -39,33 +55,33 @@ public class Menus {
 		ClienteDAO e  = new ClienteDAO(Main.con, Main.SCHEMA);
 
 		int teste = 0;
-		
+		int cliente = 1;
 		System.out.println("╔═══════════════════════════════════╗");
 		System.out.println("║            CLIENTES               ║");
 		System.out.println("║-----------------------------------║");
 		for(Cliente cl : e.carregarClienteMenu()) {
-			teste++;
         	System.out.println("║        ["+cl.getIdcliente()+"] - "+ cl.getNome());
+        	cliente++;
         }
 		System.out.println("║                                   ");
 		System.out.println("║-----------------------------------║");
 		System.out.println("║    [0] -[CRIAR NOVO CLIENTE]      ║");
 		System.out.print  ("╚═══════════════════════════════════╝\n> ");
-		
-		int cat;
+		int opcao = Util.validarInteiro("");
+		System.out.print(cliente);
 		do {
-			cat = Util.validarInteiro("");
-			if(cat < 0 || cat > teste) {
-				System.out.println("Opção inválida!");
+			if(opcao < 0 || opcao > teste) {
+				opcao = teste+1;
 			}else {
-				if(cat == 0) {
+				if(opcao == 0) {
 					Main.cadastrarCliente();
-					cat = teste+1;
+					opcao = teste+1;
 					break;
 				}
 			}
-		}while(cat < 0 || cat > teste);
-		return cat;
+		}while(opcao < 0 || opcao > teste);
+
+		return cliente;
 	}
 	
 	public static int menuProdutos() {

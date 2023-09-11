@@ -2,6 +2,7 @@ package com.serratec.main;
 
 import java.util.Scanner;
 import com.serratec.classes.Cliente;
+import com.serratec.classes.Categoria;
 import com.serratec.classes.Produto;
 import com.serratec.classes.Empresa;
 import com.serratec.classes.Empresa.ProdutoCarrinho;
@@ -13,6 +14,7 @@ import com.serratec.dao.CreateDAO;
 import com.serratec.dao.ClienteDAO;
 import com.serratec.dao.ProdutoDAO;
 import com.serratec.dao.PedidoDAO;
+import com.serratec.dao.CategoriaDAO;
 import com.serratec.dao.ProdutoCarrinhoDAO;
 import com.serratec.classes.ListaPedidos;
 
@@ -223,6 +225,20 @@ public class Main {
 			}
 		} else
 			System.out.println("Pedido não encontrado.");
+	}
+	
+	//CATEGORIA--------------------------------------------
+	public static void cadastrarCategoria() {
+		Categoria cat = new Categoria();
+		CategoriaDAO catdao = new CategoriaDAO(con, SCHEMA);
+			
+		cat = g4Tech.cadastrarCategoria();		
+		int retorno = catdao.incluirCategoria(cat);
+			
+		if (retorno > 0) {
+			Util.escrever("Categoria criada com sucesso.");
+			g4Tech.adicionarCategoria(cat);
+		}
 	}
 		
 }

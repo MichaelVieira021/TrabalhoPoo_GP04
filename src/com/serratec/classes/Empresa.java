@@ -28,6 +28,7 @@ public class Empresa {
 	private ArrayList<com.serratec.classes.Cliente> cliente = new ArrayList<>();
 	private ArrayList<com.serratec.classes.Produto> produto = new ArrayList<>();
 	private ArrayList<com.serratec.classes.Pedido> pedido = new ArrayList<>();
+	private ArrayList<com.serratec.classes.Categoria> categoria = new ArrayList<>();
 	private static ArrayList<ProdutoCarrinho> pedidocarrinho = new ArrayList<>();
 	private static ProdutoCarrinho pedidoAlterado = new ProdutoCarrinho();
 	
@@ -613,4 +614,40 @@ public class Empresa {
 		
 		inserirAlteracaoNoBd(inserirProdutoCarrinho(pd), atualizarPedidoItem(pc));
 	}
+	
+	// CATEGORIA ----------------------------------------------------------------------
+	
+ 	public com.serratec.classes.Categoria cadastrarCategoria() {
+ 		
+ 		com.serratec.classes.Categoria cat = new com.serratec.classes.Categoria();
+		
+		@SuppressWarnings("resource")
+		Scanner in = new Scanner(System.in);
+		
+		System.out.println(Util.LINHA);
+		System.out.println("Cadastro de categoria: ");
+		System.out.println(Util.LINHA);
+		
+		Util.br();
+		
+		System.out.println("Informe o nome : ");
+		String s = in.nextLine();
+		cat.setNm_categoria(s);
+		
+		System.out.println("Informe a Descrição : ");
+		s = in.nextLine();
+		cat.setDescricao(s);
+		
+		return cat;
+	}
+ 	public com.serratec.classes.Categoria adicionarCategoria(com.serratec.classes.Categoria categoria) {
+ 		com.serratec.classes.Categoria cat = new com.serratec.classes.Categoria();
+		
+		cat.setNm_categoria(categoria.getNm_categoria());
+		cat.setDescricao(categoria.getDescricao());
+		
+		this.categoria.add(cat);
+		
+		return categoria;
+	}	
 }

@@ -84,7 +84,7 @@ public class ProdutoDAO {
 			return pInclusao.executeUpdate();
 		} catch (Exception e) {
 			if (e.getLocalizedMessage().contains("is null")) {
-				System.err.println("\nLivro nao incluido.\nVerifique se foi chamado o conect:\n" + e);				
+				System.err.println("\nPeoduto não incluido.\nVerifique se foi chamado o conect:\n" + e);				
 			} else {				
 				System.err.println(e);
 				e.printStackTrace();

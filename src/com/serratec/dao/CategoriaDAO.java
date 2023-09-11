@@ -58,12 +58,11 @@ public class CategoriaDAO {
 							
 			pInclusao.setString(1, categoria.getNm_categoria());
 			pInclusao.setString(2, categoria.getDescricao());
-			pInclusao.setInt(3, categoria.getIdcategoria());
-			
+			//pInclusao.setInt(3, categoria.getIdcategoria());
 			return pInclusao.executeUpdate();
 		} catch (Exception e) {
 			if (e.getLocalizedMessage().contains("is null")) {
-				System.err.println("\nLivro nao incluido.\nVerifique se foi chamado o conect:\n" + e);				
+				System.err.println("\nCategoria não incluida.\nVerifique se foi chamado o conect:\n" + e);				
 			} else {				
 				System.err.println(e);
 				e.printStackTrace();
@@ -76,7 +75,7 @@ public class CategoriaDAO {
 		try {
 			pAlteracao.setString(1, categoria.getNm_categoria());
 			pAlteracao.setString(2, categoria.getDescricao());
-			pAlteracao.setInt(3, categoria.getIdcategoria());
+			//pAlteracao.setInt(3, categoria.getIdcategoria());
 
 			return pAlteracao.executeUpdate();
 		} catch (Exception e) {
