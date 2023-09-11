@@ -132,7 +132,7 @@ public class CreateDAO {
 			}
 
 			if (estrangeiro) {
-				sql += "references " + schema + "." + entidadeEstrangeira + "(" + atributoEstrangeiro + ")";
+				sql += "references " + schema + "." + entidadeEstrangeira + "(" + atributoEstrangeiro + ") on delete cascade";
 			}
 
 			con.query(sql);

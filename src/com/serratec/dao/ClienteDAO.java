@@ -60,7 +60,7 @@ public class ClienteDAO {
 	
 	private void prepararSqlExclusao() {
 		String sql = "delete from "+ this.schema + ".cliente";
-		sql += " where idcliente = ?";
+		sql += " where idcliente = ? ";
 		
 		try {
 			this.pExclusao = conexao.getC().prepareStatement(sql);

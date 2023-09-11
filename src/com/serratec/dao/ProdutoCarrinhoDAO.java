@@ -207,7 +207,7 @@ public class ProdutoCarrinhoDAO {
 		sql += " " + this.schema + ".pedido_produto.quantidade,";
 		sql += " " + this.schema + ".produto.vl_venda,";
 		sql += " " + this.schema + ".produto.vl_venda * " + this.schema + ".pedido_produto.quantidade as \"vl_total\"";
-		sql += " FROM " + this.schema + ".pedido_produto pp";
+		sql += " FROM " + this.schema + ".pedido_produto";
 		sql += " INNER JOIN " + this.schema + ".produto ON " + this.schema + ".pedido_produto.idproduto = " + this.schema + ".produto.idproduto";
 		sql += " INNER JOIN " + this.schema + ".pedido  ON " + this.schema + ".pedido_produto.idpedido  = " + this.schema + ".pedido.idpedido";
 		sql += " WHERE "+this.schema+".pedido_produto.idpedido = " + id;
