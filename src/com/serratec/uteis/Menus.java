@@ -62,7 +62,6 @@ public class Menus {
 		System.out.println("║    [0] -[CRIAR NOVO CLIENTE]      ║");
 		System.out.print  ("╚═══════════════════════════════════╝\n> ");
 		int opcao = Util.validarInteiro("");
-		System.out.print(cliente);
 		if(opcao == 0) {
 			Main.cadastrarCliente();
 			opcao = teste+1;

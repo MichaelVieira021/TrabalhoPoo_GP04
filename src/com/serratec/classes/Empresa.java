@@ -383,9 +383,14 @@ public class Empresa {
 		System.out.println("	   INSERIR PRODUTOS");
 		System.out.println("=====================================");
 		int idprod;
+		
+		idprod = Menus.menuProdutos();
+		
+		if(idprod==0) {
+			Menus.menuPrincipal();
+		}
 		do {
 			do {
-				idprod = Menus.menuProdutos();
 				for (ProdutoCarrinho pr : pedidocarrinho) {
 					if (pr.getPr().getIdproduto() == idprod) {
 						pedidocarrinho.remove(pedidocarrinho.indexOf(pr));
@@ -410,7 +415,7 @@ public class Empresa {
 			}
 
 		} while (opcao == 1);
-
+			
 		System.out.println("Pedido realizado com Sucesso!");
 		return pd;
 	}
