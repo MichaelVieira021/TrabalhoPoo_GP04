@@ -114,6 +114,7 @@ public class Menus {
 		System.out.println("║                                          ║");
 		System.out.println("║         Digite '0' para [Sair]           ║");
 		System.out.println("╚══════════════════════════════════════════╝");
+		System.out.print("Digite o codigo do produto: ");
 		ProdutoCarrinho editar = new ProdutoCarrinho();
 		boolean prEncontrado = false;
 		int cat;

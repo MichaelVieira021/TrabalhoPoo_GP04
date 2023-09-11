@@ -658,9 +658,15 @@ public class Empresa {
 		System.out.println("║         Digite '0' para [Sair]           ║");
 		System.out.println("╚══════════════════════════════════════════╝");
 
+	
 		
-		do {
+	do {
 			s = Util.validarInteiro("[CÓDIGO]> ");
+			if(s==0) {
+				pdEncontrado = true;
+				Menus.menuPrincipal();
+				break;
+			}
 			for(Pedido c : pedidos.getListapedidos()) { 
 				if(s == c.getIdpedido()) {
 					pdEncontrado = true;
@@ -670,15 +676,13 @@ public class Empresa {
 					//pd.setDt_emissao(c.getDt_emissao());
 					//pd.setIdcliente(c.getIdcliente());
 					break;
-				}else if(s == 0) {
-					Menus.menuPrincipal();
-					break;
 				}
 			}
 			if (!pdEncontrado) {
 			    System.err.println("Erro: Pedido não encontrado!");
 			}
-		}while(!pdEncontrado);
+
+	}while(!pdEncontrado);
 		
 		/*for (Pedido p : pedidos.getListapedidos()) {
 			if (p.getIdpedido() == s) {

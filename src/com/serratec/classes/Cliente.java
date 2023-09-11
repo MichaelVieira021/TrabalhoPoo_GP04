@@ -54,6 +54,17 @@ public class Cliente extends Pessoa{
 		if (!s.isEmpty() && !s.isBlank() && s != null)
 			this.cpf = s;
 	
+		System.out.println("Digite seu EMAIL: ");
+		s = in.nextLine();
+		
+		if (!s.isEmpty() && !s.isBlank() && s != null)
+			this.email = s;
+		
+		System.out.println("Digite seu TELEFONE: ");
+		s = in.nextLine();
+		
+		if (!s.isEmpty() && !s.isBlank() && s != null)
+			this.telefone = s;
 		
 		System.out.println("Digite seu CEP: ");
 		s = in.nextLine();
