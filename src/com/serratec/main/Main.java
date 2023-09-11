@@ -19,6 +19,7 @@ import com.serratec.dao.ProdutoCarrinhoDAO;
 import com.serratec.classes.ListaPedidos;
 
 public class Main {
+	
 	public static Empresa g4Tech;
 	public static Conexao con;
 	public static DadosConexao dadosCon = new DadosConexao();
@@ -197,9 +198,11 @@ public class Main {
 		Pedido pd = g4Tech.localizarPedido(); 
 		//pd.dadosPedidos(pd);
 		//pd.alterarPedido();
-		ProdutoCarrinho pdItemEscolhido = Menus.menuProdutosCarrinho(pd.getIdpedido());
-		g4Tech.alterarQtdOuProduto(pdItemEscolhido, pd);
-		g4Tech.alterarPedidoItem(pdItemEscolhido, pd);
+		if(pd != null) {
+			ProdutoCarrinho pdItemEscolhido = Menus.menuProdutosCarrinho(pd.getIdpedido());
+			g4Tech.alterarQtdOuProduto(pdItemEscolhido, pd);
+			g4Tech.alterarPedidoItem(pdItemEscolhido, pd);
+		}
 	}
 		
 	public static void imprimirPedido() {
@@ -213,19 +216,21 @@ public class Main {
 		PedidoDAO pedidao = new PedidoDAO(con, SCHEMA);
 		Pedido pedi = g4Tech.localizarPedido();
 		
-		if (pedi != null) {		
-			Util.escrever("Deseja excluir o Pedido n°: "  + pedi.getIdpedido() + " Feito no dia: " + pedi.getDt_emissao());
-			char s = input.next().charAt(0);
-			
-			if (s == 's' || s == 'S') {
-				i = pedidao.excluirPedido(pedi);
-			}
-			if (i > 0) {
-				g4Tech.excluirPedido(pedi);
-				System.out.println("Pedido excluido com sucesso.");
-			}
-		} else
-			System.out.println("Pedido não encontrado.");
+		if(pedi !=null) {
+			if (pedi != null) {		
+				Util.escrever("Deseja excluir o Pedido n°: "  + pedi.getIdpedido() + " Feito no dia: " + pedi.getDt_emissao());
+				char s = input.next().charAt(0);
+				
+				if (s == 's' || s == 'S') {
+					i = pedidao.excluirPedido(pedi);
+				}
+				if (i > 0) {
+					g4Tech.excluirPedido(pedi);
+					System.out.println("Pedido excluido com sucesso.");
+				}
+			} else
+				System.out.println("Pedido não encontrado.");
+		}
 	}
 	
 	//CATEGORIA--------------------------------------------

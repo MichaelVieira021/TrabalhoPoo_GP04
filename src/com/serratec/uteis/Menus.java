@@ -117,23 +117,21 @@ public class Menus {
 		ProdutoCarrinho editar = new ProdutoCarrinho();
 		boolean prEncontrado = false;
 		int cat;
+		cat = Util.validarInteiro("> ");
 		do {
-			cat = Util.validarInteiro("> ");
-			for(ProdutoCarrinho c : produtoC) {
-				if(cat == c.getIdproduto()) {
-					prEncontrado = true;
-					break;
-				}else if(cat == 0) {
-					Menus.menuPrincipal();
-					break;
+				for(ProdutoCarrinho c : produtoC) {
+					if(cat == c.getIdproduto()) {
+						prEncontrado = true;
+						break;
+					}
 				}
-			}
-			if (!prEncontrado) {
-			    System.err.println("Erro: Produto não encontrado!");
-			}
+				if (!prEncontrado) {
+					System.err.println("Erro: Produto não encontrado!");
+				}
+				prEncontrado = true;
+				break;
 		}while(!prEncontrado);
 
-		
 		for(ProdutoCarrinho c : produtoC) {
 			if(c.getIdproduto() == cat) {
 				editar = c;

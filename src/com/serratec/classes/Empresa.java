@@ -659,7 +659,7 @@ public class Empresa {
 		//int i = -1;
 		
 		System.out.println("╔══════════════════════════════════════════╗");
-		System.out.println("║              ALTERAR PEDIDO              ║");
+		System.out.println("║             LOCALIZAR PEDIDO             ║");
 		System.out.println("║------------------------------------------║");
 		System.out.println("║       Informe [CODIGO] do pedido         ║");
 		System.out.println("║         Digite '0' para [Sair]           ║");
@@ -671,7 +671,7 @@ public class Empresa {
 			s = Util.validarInteiro("[CÓDIGO]> ");
 			if(s==0) {
 				pdEncontrado = true;
-				//Menus.menuPrincipal();
+				pd = null;
 				break;
 			}
 			for(Pedido c : pedidos.getListapedidos()) { 
@@ -679,9 +679,6 @@ public class Empresa {
 					pdEncontrado = true;
 					pd = c;
 					pd.dadosPedidos(pd);
-					//pd.setIdpedido(c.getIdpedido());
-					//pd.setDt_emissao(c.getDt_emissao());
-					//pd.setIdcliente(c.getIdcliente());
 					break;
 				}
 			}
