@@ -35,20 +35,16 @@ public class Menus {
 		System.out.println("║-----------------------------------║");
 		System.out.println("║    [0] -[CRIAR NOVA CATEGORIA]    ║");
 		System.out.print  ("╚═══════════════════════════════════╝\n> ");
-		int opcao = Util.validarInteiro("");;
-		do {
-			if(opcao < 0 || opcao > teste) {
-				opcao = teste+1;
-			}else {
-				if(opcao == 0) {
-					Main.cadastrarCategoria();
-					opcao = teste+1;
-					break;
-				}
-			}
-		}while(opcao < 0 || opcao > teste);
-
-		return cat;
+		int opcao = Util.validarInteiro("");
+		if(opcao == 0) {
+			Main.cadastrarCategoria();
+			opcao = teste+1;
+		}
+		if(opcao==0) {
+			return cat;
+		}else {
+			return opcao;
+		}
 	}
 	
 	public static int menuClientes() {
