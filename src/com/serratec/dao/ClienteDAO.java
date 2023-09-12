@@ -176,23 +176,4 @@ public class ClienteDAO {
         return c;
     }
 
-    public Cliente buscarClientePorIdPedido(int id) {		
-        String sql = "SELECT " 
-        			+ this.schema + ".cliente.nome, " 
-        			+ this.schema + ".cliente.endereco";
-		sql += " FROM " + this.schema + ".pedido INNER JOIN " + this.schema + ".cliente";
-		sql += " ON " + this.schema + ".pedido.idcliente = " + this.schema + ".cliente.idcliente";
-		sql += " WHERE idpedido = "+id;
-        Cliente c = new Cliente();    
-        ResultSet tabela = conexao.query(sql);
-		try {
-			while (tabela.next()){
-		    	c.setNome(tabela.getString("nome"));
-		    	c.setEndereco(tabela.getString("endereco"));
-			}
-		} catch (SQLException e) {
-		    e.printStackTrace();
-		}
-        return c;
-    }
 }

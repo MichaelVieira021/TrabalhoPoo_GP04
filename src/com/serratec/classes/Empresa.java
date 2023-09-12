@@ -569,14 +569,16 @@ public class Empresa {
 	public void listarPedidosComProdutos(int idprod) {
 		pedidos = new ListaPedidos(con, schema, 1);
 		ProdutoCarrinhoDAO e  = new ProdutoCarrinhoDAO(Main.con, Main.SCHEMA);
-		ClienteDAO clienteDAO = new ClienteDAO(con,schema);
-		Cliente cli = clienteDAO.buscarClientePorIdPedido(idprod);
+		com.serratec.dao.PedidoDAO pedidoDAO = new com.serratec.dao.PedidoDAO(con,schema);
+		Pedido ped = pedidoDAO.retornarPedidoComCliente(idprod);
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		String emissao = format.format(ped.getDt_emissao());
 		System.out.println("\n====================================================================================");
 		System.out.println("                    		  NOTA FISCAL											");
 		System.out.println("====================================================================================");
-		System.out.println("CLIENTE: "+cli.getNome()+"\t\tDATA DE EMISSÃO: "+"");
+		System.out.println("CLIENTE: "+ped.getCliente().getNome()+"\t\tDATA DE EMISSÃO: " + emissao);
 		System.out.println("------------------------------------------------------------------------------------");
-		System.out.println("ENDEREÇO DE ENTREGA: "+cli.getEndereco());
+		System.out.println("ENDEREÇO DE ENTREGA: "+ped.getCliente().getEndereco());
 		System.out.println("------------------------------------------------------------------------------------");
 		System.out.println("IDPEDIDO\t\tIDPRODUTO\tPRODUTO\t\tQUANTIDADE\tVALOR UNITÁRIO\tVALOR FINAL");
 		System.out.println("------------------------------------------------------------------------------------");

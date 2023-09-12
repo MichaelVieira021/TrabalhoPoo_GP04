@@ -10,6 +10,7 @@ public class Pedido {
 	private int idpedido;
 	private LocalDate dt_emissao;
 	private int idcliente;
+	private Cliente cliente;
 	private ArrayList<Produto> pedidoitem = new ArrayList<>();
 
 	public void dadosPedidos(Pedido pd) {
@@ -54,5 +55,14 @@ public class Pedido {
 		this.pedidoitem = pedidoitem;
 	}
 
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+	
+	
 
 }

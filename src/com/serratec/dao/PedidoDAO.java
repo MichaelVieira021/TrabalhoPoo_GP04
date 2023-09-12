@@ -4,7 +4,11 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+
+import com.serratec.classes.Cliente;
 import com.serratec.classes.Pedido;
 import com.serratec.conexao.Conexao;
 
@@ -184,6 +188,30 @@ public class PedidoDAO {
         
         return itens;
     }*/
+	
+	public Pedido retornarPedidoComCliente(int id) {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String sql = "SELECT " + this.schema + ".cliente.nome, " + this.schema + ".cliente.endereco, "
+				+ this.schema + ".pedido.dt_emissao";
+		sql += " FROM " + this.schema + ".pedido INNER JOIN " + this.schema + ".cliente";
+		sql += " ON " + this.schema + ".pedido.idcliente = " + this.schema + ".cliente.idcliente";
+		sql += " WHERE idpedido = " + id;
+		Pedido p = new Pedido();
+		Cliente c = new Cliente();
+		ResultSet tabela = conexao.query(sql);
+		try {
+			while (tabela.next()) {
+				c.setNome(tabela.getString("nome"));
+				c.setEndereco(tabela.getString("endereco"));
+				p.setCliente(c);
+				LocalDate emissao = LocalDate.parse(tabela.getString("dt_emissao"), dtf);
+				p.setDt_emissao(emissao);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return p;
+	}
     
 	public int excluirPedido(Pedido pedido) {		
 		try {
