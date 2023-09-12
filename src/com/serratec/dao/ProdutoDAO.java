@@ -57,7 +57,6 @@ public class ProdutoDAO {
 		}
 	}
 
-	@SuppressWarnings("unused")
 	private void prepararSqlExclusao() {
 		String sql = "delete from "+ this.schema + ".produto";
 		sql += " where idproduto = ?" ;
@@ -84,7 +83,7 @@ public class ProdutoDAO {
 			return pInclusao.executeUpdate();
 		} catch (Exception e) {
 			if (e.getLocalizedMessage().contains("is null")) {
-				System.err.println("\nPeoduto não incluido.\nVerifique se foi chamado o conect:\n" + e);				
+				System.err.println("\nProduto não incluído.\nVerifique se foi chamado o conect:\n" + e);				
 			} else {				
 				System.err.println(e);
 				e.printStackTrace();
@@ -122,7 +121,7 @@ public class ProdutoDAO {
 			return pExclusao.executeUpdate();
 		}catch  (Exception e) {
 			if (e.getLocalizedMessage().contains("is null")) {
-				System.err.println("\nProduto nao incluido.\nVerifique se foi chamado o conect:\n" + e);				
+				System.err.println("\nProduto nao incluído.\nVerifique se foi chamado o conect:\n" + e);				
 			} else {				
 				System.err.println(e);
 				e.printStackTrace();
@@ -149,10 +148,7 @@ public class ProdutoDAO {
 
         try {
             while (tabela.next()) {
-            	int  idProduto = tabela.getInt("idproduto");
-                String nomeProduto = tabela.getString("nome");
-                int qtdEstoque = tabela.getInt("qtd_estoque");
-                Produto produto = new Produto(idProduto, nomeProduto, qtdEstoque);
+                Produto produto = new Produto(tabela.getInt("idproduto"), tabela.getString("nome"), tabela.getInt("qtd_estoque"));
                 produtos.add(produto);
             }
         } catch (SQLException e) {
@@ -167,7 +163,6 @@ public class ProdutoDAO {
         String sql = "SELECT idproduto, nome, qtd_estoque FROM " + this.schema + ".produto where idproduto = "+id;
 
         ResultSet tabela = conexao.query(sql);
-        Produto teste = new Produto();
 
         try {
             while (tabela.next()) {

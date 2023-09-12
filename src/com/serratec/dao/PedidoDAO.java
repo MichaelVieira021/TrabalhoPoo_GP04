@@ -4,15 +4,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
-
 import com.serratec.classes.Pedido;
-import com.serratec.classes.PedidoItem;
-import com.serratec.classes.Produto;
-import com.serratec.classes.Empresa.ProdutoCarrinho;
 import com.serratec.conexao.Conexao;
 
 public class PedidoDAO {
@@ -60,7 +53,6 @@ public class PedidoDAO {
 		}
 	}
 	
-	@SuppressWarnings("unused")
 	private void prepararSqlExclusao() {
 		String sql = "delete from "+ this.schema + ".pedido";
 		sql += " where idpedido = ?" ;
@@ -111,14 +103,10 @@ public class PedidoDAO {
 
         try {
             while (tabela.next()) {
-                int  idpedido = tabela.getInt("idpedido");
-                LocalDate dtEmissao = tabela.getDate("dt_emissao").toLocalDate();
-                int idcliente = tabela.getInt("idcliente");
                 Pedido pedido = new Pedido();
-                pedido.setIdpedido(idpedido);
-                pedido.setDt_emissao(dtEmissao);
-                pedido.setIdcliente(idcliente);
-                //Produto produto = new Produto(idProduto, nomeProduto, qtdEstoque);
+                pedido.setIdpedido(tabela.getInt("idpedido"));
+                pedido.setDt_emissao(tabela.getDate("dt_emissao").toLocalDate());
+                pedido.setIdcliente(tabela.getInt("idcliente"));
                 pedidos.add(pedido);
             }
         } catch (SQLException e) {
@@ -147,7 +135,7 @@ public class PedidoDAO {
 	}
 
 
-    public Pedido getPedido(int id) throws SQLException {
+    /*public Pedido getPedido(int id) throws SQLException {
         String sql = "SELECT idpedido FROM " + schema + ".pedido WHERE id = ?";
         PreparedStatement stmt = conexao.getC().prepareStatement(sql);
         stmt.setInt(1, id);
@@ -171,9 +159,9 @@ public class PedidoDAO {
             
             return null;
         }
-    }
+    }*/
 
-    public List<PedidoItem> getPedidoItens(int pedidoId) throws SQLException {
+   /* public List<PedidoItem> getPedidoItens(int pedidoId) throws SQLException {
         List<PedidoItem> itens = new ArrayList<>();
         
         String sql = "SELECT idproduto_pedido, idproduto, idpedido"; 
@@ -195,7 +183,7 @@ public class PedidoDAO {
         stmt.close();
         
         return itens;
-    }
+    }*/
     
 	public int excluirPedido(Pedido pedido) {		
 		try {
@@ -204,7 +192,7 @@ public class PedidoDAO {
 			return pExclusao.executeUpdate();
 		}catch  (Exception e) {
 			if (e.getLocalizedMessage().contains("is null")) {
-				System.err.println("\nProduto nao incluido.\nVerifique se foi chamado o conect:\n" + e);				
+				System.err.println("\nProduto nao incluído.\nVerifique se foi chamado o conect:\n" + e);				
 			} else {				
 				System.err.println(e);
 				e.printStackTrace();

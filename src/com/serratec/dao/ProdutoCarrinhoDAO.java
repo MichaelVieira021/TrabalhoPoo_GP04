@@ -4,11 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import com.serratec.conexao.Conexao;
-import com.serratec.classes.Pedido;
 import com.serratec.classes.Produto;
-//import com.serratec.classes.PedidoItem;
 import com.serratec.classes.Empresa.ProdutoCarrinho;
 
 public class ProdutoCarrinhoDAO {
@@ -146,7 +143,6 @@ public class ProdutoCarrinhoDAO {
 		tabela = conexao.query(sql);
 		
 		return tabela;
-		
 	}
 	
 	public ProdutoCarrinho carregarProdutoCarrinho(int id) {
@@ -163,7 +159,6 @@ public class ProdutoCarrinhoDAO {
 				teste.setIdproduto(tabela.getInt("idproduto"));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return teste;
@@ -216,23 +211,11 @@ public class ProdutoCarrinhoDAO {
         try {
             while (tabela.next()) {
                 ProdutoCarrinho pc = new ProdutoCarrinho();
-            	int  idPedido = tabela.getInt("idpedido");
-            	int  idProduto = tabela.getInt("idproduto");
-            	int  qtd = tabela.getInt("quantidade");   
-            	String nome = tabela.getString("nome");
-                double vl_venda = tabela.getDouble("vl_venda");
-                pc.setIdpedido(idPedido);
-            	pc.setIdproduto(idProduto);
-            	pc.setQuantidade(qtd);
-            	pc.setNome(nome);
-                pc.setVl_venda(vl_venda);
-
-            	/*System.out.println(pc.getIdpedido());
-            	System.out.println(pc.getIdproduto());
-            	System.out.println(pc.getQuantidade());
-            	System.out.println(pc.getNome());
-            	System.out.println(pc.getVl_venda());*/
-                
+                pc.setIdpedido(tabela.getInt("idpedido"));
+            	pc.setIdproduto(tabela.getInt("idproduto"));
+            	pc.setQuantidade(tabela.getInt("quantidade"));
+            	pc.setNome(tabela.getString("nome"));
+                pc.setVl_venda(tabela.getDouble("vl_venda"));
                 ArrayProduto.add(pc);    		
             }
         } catch (SQLException e) {

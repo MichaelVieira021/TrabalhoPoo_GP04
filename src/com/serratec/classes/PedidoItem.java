@@ -14,7 +14,7 @@ public class PedidoItem {
 			teste.setQtd_estoque(teste.getQtd_estoque()-qtd);
 			return true;
 		}else {
-			System.out.println("Quantidade invalida.");
+			System.err.println("Erro: Quantidade inválida!");
 			return false;
 		}
 	}
@@ -60,8 +60,5 @@ public class PedidoItem {
 
 	public void setQuantidade(int quantidade) {
 		this.quantidade = quantidade;
-	}
-	
-	
-	
+	}	
 }

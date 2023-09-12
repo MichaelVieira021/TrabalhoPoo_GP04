@@ -15,8 +15,6 @@ import com.serratec.dao.ClienteDAO;
 import com.serratec.dao.ProdutoDAO;
 import com.serratec.dao.PedidoDAO;
 import com.serratec.dao.CategoriaDAO;
-import com.serratec.dao.ProdutoCarrinhoDAO;
-import com.serratec.classes.ListaPedidos;
 
 public class Main {
 	
@@ -196,8 +194,6 @@ public class Main {
 		
 	public static void alterarPedido() {
 		Pedido pd = g4Tech.localizarPedido(); 
-		//pd.dadosPedidos(pd);
-		//pd.alterarPedido();
 		if(pd != null) {
 			ProdutoCarrinho pdItemEscolhido = Menus.menuProdutosCarrinho(pd.getIdpedido());
 			g4Tech.alterarQtdOuProduto(pdItemEscolhido, pd);
@@ -216,20 +212,18 @@ public class Main {
 		PedidoDAO pedidao = new PedidoDAO(con, SCHEMA);
 		Pedido pedi = g4Tech.localizarPedido();
 		
-		if(pedi !=null) {
-			if (pedi != null) {		
-				Util.escrever("Deseja excluir o Pedido n°: "  + pedi.getIdpedido() + " Feito no dia: " + pedi.getDt_emissao());
-				char s = input.next().charAt(0);
+
+		if (pedi != null) {		
+			Util.escrever("Deseja excluir o Pedido n°: "  + pedi.getIdpedido() + " Feito no dia: " + pedi.getDt_emissao());
+			char s = input.next().charAt(0);
 				
-				if (s == 's' || s == 'S') {
-					i = pedidao.excluirPedido(pedi);
-				}
-				if (i > 0) {
-					g4Tech.excluirPedido(pedi);
-					System.out.println("Pedido excluido com sucesso.");
-				}
-			} else
-				System.out.println("Pedido não encontrado.");
+			if (s == 's' || s == 'S') {
+				i = pedidao.excluirPedido(pedi);
+			}
+			if (i > 0) {
+				g4Tech.excluirPedido(pedi);
+				System.out.println("Pedido excluído com sucesso.");
+			}
 		}
 	}
 	

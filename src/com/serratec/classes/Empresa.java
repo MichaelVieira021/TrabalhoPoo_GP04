@@ -2,7 +2,6 @@ package com.serratec.classes;
 
 import java.util.Scanner;
 
-import com.serratec.classes.Empresa.ProdutoCarrinho;
 import com.serratec.conexao.Conexao;
 import com.serratec.dao.ClienteDAO;
 import com.serratec.dao.PedidoDAO;
@@ -99,9 +98,7 @@ public class Empresa {
 		String s = in.nextLine();
 		c.setNome(s);
 		
-		System.out.println("Informe o CPF (somente números): ");
-		s = in.nextLine();
-		c.setCpf(s);
+		c.setCpf(Util.validarCPF()); 
 			
 		System.out.println("Informe o Email: ");
 		s = in.nextLine();
@@ -113,10 +110,7 @@ public class Empresa {
 		
 		c.setDt_nascimento(Util.validarData("Informe a data de nascimento (dd/MM/yyyy): "));
 	
-		System.out.println("Informe o CEP: ");
-		s = in.nextLine();
-		c.setEndereco(com.serratec.uteis.BuscarCEP.buscarCep(s));
-		//in.close();
+		c.setEndereco(Util.buscarCep());
 		
 		return c;
 	}
@@ -130,6 +124,7 @@ public class Empresa {
 		c.setEmail(cliente.getEmail());
 		c.setTelefone(cliente.getTelefone());
 		c.setEndereco(cliente.getEndereco());
+		//c = cliente;
 		
 		this.cliente.add(c);
 		
@@ -177,7 +172,7 @@ public class Empresa {
 				break;
 			}
 		}
-		
+		//tester
 		clientes.getListacliente().get(i).setNome(cl.getNome());
 		clientes.getListacliente().get(i).setCpf(cl.getCpf());
 		clientes.getListacliente().get(i).setEndereco(cl.getEndereco());
@@ -249,7 +244,6 @@ public class Empresa {
 		c.setQtd_estoque(qtd);
 		
 		int cat = Menus.menuCategorias();
-		//int cat = Util.validarInteiro("Categoria: ");
 		c.setIdcategoria(cat);
 		
 		return c;
@@ -348,12 +342,10 @@ public class Empresa {
  	    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");  
  	    LocalDateTime nowt = LocalDateTime.now();  
  	    LocalDate now = LocalDate.now();  
-		@SuppressWarnings("resource")
-		Scanner in = new Scanner(System.in);
 
-		System.out.println(Util.LINHA);
+		//System.out.println(Util.LINHA);
 		System.out.println("Cadastro de pedido: ");
-		System.out.println(Util.LINHA);
+		//System.out.println(Util.LINHA);
 
 		Util.br();
 		System.out.println("Data de Emissão: " + dtf.format(nowt));
@@ -374,8 +366,6 @@ public class Empresa {
 		@SuppressWarnings("resource")
 		Scanner in = new Scanner(System.in);
 
-		ProdutoCarrinho teste = new ProdutoCarrinho();
-
 		int quant;
 		int opcao = 1;
 		boolean verEstoque = false, prIgual = true;
@@ -385,7 +375,6 @@ public class Empresa {
 		int idprod;
 		
 		idprod = Menus.menuProdutos();
-		
 	
 		do {
 			if(idprod==0) {
@@ -423,11 +412,10 @@ public class Empresa {
 	}
 	
 	public void alterarQtdOuProduto(ProdutoCarrinho pc,Pedido pd) {
-		//ProdutoCarrinho pc = new ProdutoCarrinho();
-		//Pedido pd = new Pedido();
 		System.out.println("╔══════════════════════════════════════════╗");
 		System.out.println("║      [1] -   ALTERAR QUANTIDADE          ║");
 		System.out.println("║      [2] -   ALTERAR PRODUTO             ║");
+		System.out.println("║      [3] -   EXCLUIR PRODUTO             ║");
 		System.out.println("║                                          ║");
 		System.out.println("║------------------------------------------║");
 		System.out.println("║         Digite '0' para [Sair]           ║");
@@ -444,6 +432,10 @@ public class Empresa {
 					break;
 				case 2:
 					alterarPedidoItem(pc, pd);
+					opcQtdOuPr = true;
+					break;
+				case 3:
+					//alterarPedidoItem(pc, pd);
 					opcQtdOuPr = true;
 					break;
 				case 0:
@@ -626,7 +618,6 @@ public class Empresa {
 	// CARRINHO ---------------------------------------------------------------------
 	private static void adicionarProdutoCarrinho(Produto l, int quant) {
 		ProdutoCarrinho le = new ProdutoCarrinho();
-		ProdutoDAO pddao = new ProdutoDAO(con, schema);
 		
 		//PARA CADASTRAR PEDIDO-----------
 		le.setIdproduto(l.getIdproduto());
@@ -637,18 +628,13 @@ public class Empresa {
 		//PARA ALTERAR PEDIDO---------
 		pedidoAlterado = le;
 
-		//c.setIdpedido(c.getIdpedido()+1);
 		System.out.println("---------------");
 		System.out.println("ID do produto: " + le.getIdproduto());
 		System.out.println("Estoque do produto: " + le.getQtd_estoque());
 		System.out.println("Quantidade comprada do produto: " + le.getQuantidade());
-		//System.out.println("ID do Pedido: " + c.getIdpedido());
 		
 		pedidocarrinho.add(le);
-		
-		//PrepararSqlAlterarEstoque
-		//pddao.alterarEstoque(l);	
-		//pddao.incluirProdutoCarrinho(le,c);
+
 	}
 
 	public com.serratec.classes.Pedido localizarPedido() {
@@ -656,7 +642,6 @@ public class Empresa {
 		pedidos = new ListaPedidos(con, schema, 1);
 		int s;
 		boolean pdEncontrado = false;
-		//int i = -1;
 		
 		System.out.println("╔══════════════════════════════════════════╗");
 		System.out.println("║             LOCALIZAR PEDIDO             ║");
@@ -664,9 +649,7 @@ public class Empresa {
 		System.out.println("║       Informe [CODIGO] do pedido         ║");
 		System.out.println("║         Digite '0' para [Sair]           ║");
 		System.out.println("╚══════════════════════════════════════════╝");
-
 	
-		
 	do {
 			s = Util.validarInteiro("[CÓDIGO]> ");
 			if(s==0) {
@@ -687,33 +670,9 @@ public class Empresa {
 			}
 
 	}while(!pdEncontrado);
-		
-		/*for (Pedido p : pedidos.getListapedidos()) {
-			if (p.getIdpedido() == s) {
-				i = pedidos.getListapedidos().lastIndexOf(p);
-				break;
-			}
-		}*/
-
-		/*if (i >= 0) {
-			Pedido pedidoEncontrado = new Pedido();
-			pedidoEncontrado = pedidos.getListapedidos().get(i); 
-
-			pd.setIdpedido(pedidoEncontrado.getIdpedido());
-			pd.setDt_emissao(pedidoEncontrado.getDt_emissao());
-			pd.setIdcliente(pedidoEncontrado.getIdcliente()); 
-			
-			pd.dadosPedidos(pd);
-
-			return pd;
-		} else
-			return null;*/
-		return pd;
+	
+	return pd;
 	}
-
-	public void imprimirProdutoCarrinho (Pedido pd) {
-		
-	}	
 	
 	public ProdutoCarrinho atualizarPedidoItem(ProdutoCarrinho pc) {
 		pc.setIdproduto(pedidoAlterado.getIdproduto());
@@ -725,13 +684,13 @@ public class Empresa {
 	
 	public void alterarQtdPedidoItem(ProdutoCarrinho pc, Pedido pd) {
 		//alterarQtdOuProduto(pd);
+		//----------------------------
 		inserirAlteracaoNoBd(alterarProdutoCarrinho(pd), atualizarPedidoItem(pc));
 		pd.dadosPedidos(pd);
 		Menus.menuProdutosCarrinho(pd.getIdpedido());
 	}
 	
 	public void alterarPedidoItem(ProdutoCarrinho pc, Pedido pd) {
-		//alterarQtdOuProduto(pd);
 		inserirAlteracaoNoBd(alterarProdutoCarrinho(pd), atualizarPedidoItem(pc));
 		pd.dadosPedidos(pd);
 		Menus.menuProdutosCarrinho(pd.getIdpedido());

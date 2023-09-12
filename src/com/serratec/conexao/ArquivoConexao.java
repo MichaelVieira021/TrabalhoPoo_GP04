@@ -7,42 +7,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
-import com.serratec.conexao.DadosConexao;
-
 public class ArquivoConexao {
-	
 	private String nmArquivo;
 	File Arquivo;
 	private DadosConexao data = new DadosConexao();	
-	
-	/**
-	 * 
-	 * @author Ricardo de Jesus Oliveira
-	 * @return Retorna os dados de conexão
-	 */
+
 	public DadosConexao getData() {
 		return data;
 	}
-	
-	/**
-	 *  Construtor da classe
-	 *  
-	 *  @autor Ricardo de Jesus Oliveira
-	 *  
-	 */
+
 	public ArquivoConexao(String nmArquivo) {
 		this.nmArquivo = nmArquivo;
 		File Arq = new File(nmArquivo);
 		Arquivo = Arq;
 	}
-	
-	/**
-	 * Cria um novo arquivo, se não existir.
-	 * 
-	 * 
-	 * @author Ricardo de Jesus Oliveira
-	 * @return Retorna verdadeiro se o arquivo for criado ou se já existir.
-	 */
+
 	public boolean criarArquivo() {
 		try {
 			Arquivo.createNewFile();		
@@ -143,13 +122,7 @@ public class ArquivoConexao {
 		
 		return result;
 	}
-	
-	/**
-	 * Exclui um arquivo existente
-	 * 
-	 * @author Ricardo de Jesus Oliveira
-	 * @return Retorna verdadeiro se a exclusão for realizada.
-	 */
+
 	public boolean apagarArquivo() {
 		return Arquivo.delete();
 	}

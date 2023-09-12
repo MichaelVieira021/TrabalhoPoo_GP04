@@ -18,8 +18,6 @@ public class ListaProdutos {
 		carregarListaProdutos();
 	}
 
-
-	//methods------------------------------------------
 	public void adicionarProdutoLista(Produto prod) {
 		this.listaProdutos.add(prod);
 	}
@@ -58,9 +56,8 @@ public class ListaProdutos {
 	}
 	
 	private Produto dadosProduto(ResultSet tabela) { 
-		Produto prod = new Produto();
-
 		try {
+			Produto prod = new Produto();
 			prod.setNome(tabela.getString("nome"));
 			prod.setDescricao(tabela.getString("descricao"));
 			prod.setVl_custo(tabela.getDouble("vl_custo"));			
@@ -76,7 +73,6 @@ public class ListaProdutos {
 		}
 	}
 
-	//get e set---------------------------------------- 
 	public Conexao getCon() {
 		return con;
 	}

@@ -64,12 +64,12 @@ public class ListaClientes {
 			dtNasc = tabela.getString("dt_nascimento");
 			if (dtNasc != null)
 				c.setDt_nascimento(LocalDate.parse(dtNasc));
-			c.setNome(tabela.getString("nome"));
-			c.setEndereco(tabela.getString("endereco"));
-			c.setCpf(tabela.getString("cpf"));			
-			c.setEmail(tabela.getString("email"));
-			c.setTelefone(tabela.getString("telefone"));
-			c.setIdcliente(tabela.getInt("idcliente"));
+				c.setNome(tabela.getString("nome"));
+				c.setEndereco(tabela.getString("endereco"));
+				c.setCpf(tabela.getString("cpf"));			
+				c.setEmail(tabela.getString("email"));
+				c.setTelefone(tabela.getString("telefone"));
+				c.setIdcliente(tabela.getInt("idcliente"));
 
 			return c;
 		} catch (SQLException e) {

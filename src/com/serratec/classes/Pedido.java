@@ -20,17 +20,6 @@ public class Pedido {
 		System.out.println("║             *****************            ║");
 		System.out.print(Util.preencherEspacos(31, "║ PEDIDO Nº"+ pd.getIdpedido()));
 		System.out.println(" "+pd.getDt_emissao().format(formatter)+" ║");
-		//System.out.println("║******************************************║");
-		//System.out.println("║ CODIGO                           DATA    ║");
-		//System.out.print(Util.preencherEspacos(31, "║Codigo Pedido: " + pd.getIdpedido()));
-		//System.out.println(pd.getDt_emissao().format(formatter)+"║");
-		//System.out.println("║Cliente: " + pd.getIdcliente());
-		
-		
-	}
-	
-	public void alterarPedido(){
-		
 	}
 	
 	public int getIdpedido() {

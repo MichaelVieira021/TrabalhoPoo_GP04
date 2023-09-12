@@ -83,7 +83,7 @@ public class ClienteDAO {
 			return pInclusao.executeUpdate();
 		} catch (Exception e) {
 			if (e.getLocalizedMessage().contains("is null")) {
-				System.err.println("\nCliente nao incluido.\nVerifique se foi chamado o conect:\n" + e);				
+				System.err.println("\nCliente nao incluído.\nVerifique se foi chamado o conect:\n" + e);				
 			} else {				
 				System.err.println(e);
 				e.printStackTrace();
@@ -121,7 +121,7 @@ public class ClienteDAO {
 			return pExclusao.executeUpdate();
 		} catch  (Exception e) {
 			if (e.getLocalizedMessage().contains("is null")) {
-				System.err.println("\nCliente nao incluido.\nVerifique se foi chamado o conect:\n" + e);				
+				System.err.println("\nCliente nao incluído.\nVerifique se foi chamado o conect:\n" + e);				
 			} else {				
 				System.err.println(e);
 				e.printStackTrace();
@@ -148,9 +148,7 @@ public class ClienteDAO {
 
         try {
             while (tabela.next()) {
-            	int  idcliente = tabela.getInt("idcliente");
-                String nomeCliente = tabela.getString("nome");
-                Cliente cliente = new Cliente(idcliente, nomeCliente);
+                Cliente cliente = new Cliente(tabela.getInt("idcliente"), tabela.getString("nome"));
                 clientes.add(cliente);
             }
         } catch (SQLException e) {
@@ -164,13 +162,14 @@ public class ClienteDAO {
 		String sql = "SELECT nome";
 		sql += " FROM " + this.schema + ".cliente";
 		sql += " WHERE idcliente = " + id;
+		
         Cliente c = new Cliente();   
         ResultSet tabela = conexao.query(sql);
 		try {
-			while (tabela.next()){
-		        String nome = tabela.getString("nome");
-		    	c.setNome(nome);
-			}
+			tabela.next();
+		    String nome = tabela.getString("nome");
+		    c.setNome(nome);
+		    
 		} catch (SQLException e) {
 		    e.printStackTrace();
 		}
@@ -179,23 +178,17 @@ public class ClienteDAO {
 
     public Cliente buscarClientePorIdPedido(int id) {		
         String sql = "SELECT " 
-        			+ this.schema + ".pedido.dt_emissao, " 
         			+ this.schema + ".cliente.nome, " 
         			+ this.schema + ".cliente.endereco";
 		sql += " FROM " + this.schema + ".pedido INNER JOIN " + this.schema + ".cliente";
 		sql += " ON " + this.schema + ".pedido.idcliente = " + this.schema + ".cliente.idcliente";
 		sql += " WHERE idpedido = "+id;
-        Cliente c = new Cliente();   
-        //Pedido ped = new Pedido();   
+        Cliente c = new Cliente();    
         ResultSet tabela = conexao.query(sql);
 		try {
 			while (tabela.next()){
-		        String nome = tabela.getString("nome");
-		        String dt_emissao = tabela.getString("dt_emissao");
-		        String endereco = tabela.getString("endereco");
-		    	c.setNome(nome);
-		    	c.setEndereco(endereco);
-		    	//ped.setNome(nome);
+		    	c.setNome(tabela.getString("nome"));
+		    	c.setEndereco(tabela.getString("endereco"));
 			}
 		} catch (SQLException e) {
 		    e.printStackTrace();

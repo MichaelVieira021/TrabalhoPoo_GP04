@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
+import com.serratec.uteis.Util;
+
 public class Cliente extends Pessoa{
 	private int idcliente;
 	private String email;
@@ -18,15 +20,14 @@ public class Cliente extends Pessoa{
 	}
 	
 	public void dadosPessoa() {
-		//DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy"); 			
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy"); 			
 		
 		System.out.println("");
 		System.out.println("Dados-------------------------------");
 		System.out.printf("Nome: %s%n", this.nome);
 		
 		if (dt_nascimento != null)
-			//System.out.printf("Data nasc.: %d%n", dt_nascimento.toString().formatted(dtf));
-			System.out.println("Data nasc.: VAI TER SUA DATA AQUI");
+			System.out.printf("Data nasc.: %d%n", dt_nascimento.toString().formatted(dtf));
 		else
 			System.out.printf("Data nasc.: %n");
 		
@@ -49,7 +50,7 @@ public class Cliente extends Pessoa{
 			this.nome = s;
 		
 		System.out.println("CPF: ");
-		s = in.nextLine();
+		s = (Util.validarCPF());
 		
 		if (!s.isEmpty() && !s.isBlank() && s != null)
 			this.cpf = s;
@@ -60,17 +61,14 @@ public class Cliente extends Pessoa{
 		if (!s.isEmpty() && !s.isBlank() && s != null)
 			this.email = s;
 		
+		//-----------14 digitos numericos
 		System.out.println("Digite seu TELEFONE: ");
 		s = in.nextLine();
 		
 		if (!s.isEmpty() && !s.isBlank() && s != null)
 			this.telefone = s;
 		
-		System.out.println("Digite seu CEP: ");
-		s = in.nextLine();
-		
-		if (!s.isEmpty() && !s.isBlank() && s != null)
-			this.endereco = com.serratec.uteis.BuscarCEP.buscarCep(s);
+		this.endereco = Util.buscarCep();
 		
 		System.out.println("Data nascimento (dd/MM/yyyy): ");
 		s = in.nextLine();

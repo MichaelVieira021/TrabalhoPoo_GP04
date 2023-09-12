@@ -25,8 +25,6 @@ public class ListaPedidos {
 		else carregarListaPedidosCarrinho();
 	}
 	
-
-	
  	public ArrayList<Pedido> getListapedidos() {
 		return listapedidos;
 	}
@@ -44,8 +42,6 @@ public class ListaPedidos {
 	public void setListapedidos(ArrayList<Pedido> listapedidos) {
 		this.listapedidos = listapedidos;
 	}
-
-
 
 	private void carregarListaPedidos() {
  		PedidoDAO peddao = new PedidoDAO(con, schema);
@@ -90,19 +86,11 @@ public class ListaPedidos {
 	}
 	
 	private ProdutoCarrinho dadosCarrinho(ResultSet tabela) { 
-		ProdutoCarrinho p = new ProdutoCarrinho();
-		 
-
 		try {
-			int idpedido = tabela.getInt("idpedido");
-			int idproduto = tabela.getInt("idproduto");
-			int quantidade = tabela.getInt("quantidade");
-			
-			
-			p.setIdpedidoitem(idpedido);
-			p.setIdproduto(idproduto);
-			p.setQuantidade(quantidade);
-			
+			ProdutoCarrinho p = new ProdutoCarrinho();
+			p.setIdpedidoitem(tabela.getInt("idpedido"));
+			p.setIdproduto(tabela.getInt("idproduto"));
+			p.setQuantidade(tabela.getInt("quantidade"));
 			
 			return p;
 		} catch (SQLException e) {
