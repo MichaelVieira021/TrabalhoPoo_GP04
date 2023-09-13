@@ -222,25 +222,24 @@ public class Empresa {
 		@SuppressWarnings("resource")
 		Scanner in = new Scanner(System.in);
 		
-		System.out.println(Util.LINHA);
-		System.out.println("Cadastro de produto: ");
-		System.out.println(Util.LINHA);
+		System.out.println("╔══════════════════════════════════════════╗");
+		System.out.println("║           CADASTRO DE PRODUTOS           ║");
+		System.out.println("║------------------------------------------║");
 		
-		Util.br();
 		
-		System.out.print("Produto: ");
+		System.out.print("║Produto: ");
 		String s = in.nextLine();
 		c.setNome(s);
 		
-		System.out.print("Descrição: ");
+		System.out.print("║Descrição: ");
 		s = in.nextLine();
 		c.setDescricao(s);
 		
-		double vl = Util.validarDouble("Valor custo: ");
+		double vl = Util.validarDouble("║Valor custo: ");
 		c.setVl_custo(vl);
 		c.setVl_venda(vl*1.15);
 			
-		int qtd = Util.validarInteiro("Quantidade: ");
+		int qtd = Util.validarInteiro("║Quantidade: ");
 		c.setQtd_estoque(qtd);
 		
 		int cat = Menus.menuCategorias();

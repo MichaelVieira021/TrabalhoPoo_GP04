@@ -103,7 +103,8 @@ public class Util {
 				numero = Double.parseDouble(s);
 				validado = true;
 			} catch (Exception e) {
-				System.out.println("Informe um numero valido - " + e.getMessage());
+				System.out.print("║");
+				System.err.println("Informe um numero valido - " + e.getMessage());
 			}
 		} while (!validado);
 		
