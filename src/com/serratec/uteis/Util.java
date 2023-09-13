@@ -135,6 +135,31 @@ public class Util {
         return cpf;
     }
     
+    public static String validarTelefone(){
+        String telefone;
+        //in.nextLine();
+
+        do {
+        	
+            
+            try {
+            	Thread.sleep(500);
+            	System.out.print("║Telefone: ");
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+            telefone = in.next();
+            
+            if (!verificarNumerico(telefone) || telefone.length() != 11) {
+            	System.out.print("║");
+                System.err.println("Erro: Telefone inválido. Por favor, digite o telefone com DDD.");
+
+            }
+        } while (!verificarNumerico(telefone) || telefone.length() != 11);
+        return telefone;
+    }
+    
     public static boolean verificarNumerico(String str) {
         return str.matches("\\d+");
     }

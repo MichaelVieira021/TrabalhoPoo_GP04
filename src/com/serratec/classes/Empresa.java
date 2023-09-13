@@ -103,14 +103,13 @@ public class Empresa {
 		info = in.nextLine();
 		c.setEmail(info);
 		
-		System.out.print("║Telefone: ");
-		info = in.nextLine();
-		c.setTelefone(info);
+		
+		c.setTelefone(Util.validarTelefone());
 		
 		c.setDt_nascimento(Util.validarData("║Data nasc.(dd/MM/yyyy): "));
 		System.out.println("║------------------------------------------");	
+		System.out.println("║ 		ENDEREÇO            	           ");
 		System.out.println("║                                          ");	
-		System.out.println("║ ENDEREÇO                                 ");
 		c.setEndereco(Util.buscarCep());
 		
 		return c;
