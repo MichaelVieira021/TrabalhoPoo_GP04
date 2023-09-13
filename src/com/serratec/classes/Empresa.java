@@ -377,10 +377,9 @@ public class Empresa {
 		System.out.println("	   INSERIR PRODUTOS");
 		System.out.println("=====================================");
 		int idprod;
-		
-		idprod = Menus.menuProdutos();
 	
 		do {
+			idprod = Menus.menuProdutos();
 			if(idprod==0) {
 				opcao = 1;
 				break;
@@ -400,17 +399,12 @@ public class Empresa {
 				quant = Util.validarInteiro("Digite a quantidade a ser adicionada: ");
 				verEstoque = verificarEstoque(idprod, quant);
 
-				if (!verEstoque) {
-					Util.escrever("Produto fora de estoque!");
-					opcao = 1;
-				} else {
-					System.out.println("Produto adicionado com Sucesso!");
-					System.out.println("Digite 1 para adicionar outro produto ou 0 para concluir o pedido.");
-					opcao = in.nextInt();
-				}
+				System.out.println("Produto adicionado com Sucesso!");
+				System.out.println("Digite 1 para adicionar outro produto ou 0 para concluir o pedido.");
+				opcao = in.nextInt();
 			}
-			System.out.println("Pedido realizado com Sucesso!");
 		}while (opcao == 1);
+		System.out.println("Pedido realizado com Sucesso!");
 			
 		return pd;
 	}

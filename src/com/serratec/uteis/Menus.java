@@ -82,13 +82,15 @@ public class Menus {
 	public static int menuProdutos() {
 		ProdutoDAO e  = new ProdutoDAO(Main.con, Main.SCHEMA);
 		
+		boolean prEncontrado = false;
+		
 		System.out.println("╔══════════════════════════════════════════╗");
 		System.out.println("║                 PRODUTOS                 ║");
 		System.out.println("║------------------------------------------║");
 		System.out.println("║ CODIGO |        NOME          | ESTOQUE  ║");
 		System.out.println("║--------┬--------------------┬------------║");
 		for(Produto ct : e.carregarProdutoMenu()) {
-        	System.out.print(Util.preencherEspacos(9, "║  ["+ct.getIdcategoria()+"] "));
+        	System.out.print(Util.preencherEspacos(9, "║  ["+ct.getIdproduto()+"] "));
         	System.out.print(Util.preencherEspacos(21, "| "+ ct.getNome()+" "));
         	if(ct.getQtd_estoque() == 0) {
         		System.out.print(Util.preencherEspacos(18, "|     "+"\u001B[31m" + ct.getQtd_estoque()));System.out.println("\u001B[0m"+"║");
@@ -100,7 +102,20 @@ public class Menus {
 		System.out.println("║                                          ║");
 		System.out.println("║         Digite '0' para [Sair]           ║");
 		System.out.println("╚══════════════════════════════════════════╝");
-		int cat = Util.validarInteiro("[CODIGO]> ");
+		int cat;
+		do {
+			cat = Util.validarInteiro("[CODIGO]> ");
+			for(Produto ct : e.carregarProdutoMenu()){
+				if(cat == ct.getIdproduto()) {
+					prEncontrado = true;
+					break;
+				}
+			}
+			if (!prEncontrado) {
+				System.err.println("Erro: Produto não encontrado!");
+			}
+		}while(!prEncontrado);
+
 		return cat;
 	}
 

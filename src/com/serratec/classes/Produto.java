@@ -14,7 +14,7 @@ public class Produto {
 	public Produto() {}
 
 	public Produto(int idproduto, String nome, int qtdEstoque) {
-		this.setIdcategoria(idproduto);
+		this.setIdproduto(idproduto);
 		this.setNome(nome);
 		this.setQtd_estoque(qtdEstoque);
 	}
