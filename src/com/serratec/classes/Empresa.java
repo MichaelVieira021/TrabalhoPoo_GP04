@@ -88,28 +88,29 @@ public class Empresa {
 		@SuppressWarnings("resource")
 		Scanner in = new Scanner(System.in);
 		
-		System.out.println(Util.LINHA);
-		System.out.println("Cadastro de cliente: ");
-		System.out.println(Util.LINHA);
-		
-		Util.br();
-		
-		System.out.println("Informe o nome: ");
-		String s = in.nextLine();
-		c.setNome(s);
-		
-		c.setCpf(Util.validarCPF()); 
-			
-		System.out.println("Informe o Email: ");
-		s = in.nextLine();
-		c.setEmail(s);
-		
-		System.out.println("Informe o Telefone: ");
-		s = in.nextLine();
-		c.setTelefone(s);
-		
-		c.setDt_nascimento(Util.validarData("Informe a data de nascimento (dd/MM/yyyy): "));
+		System.out.println("╔══════════════════════════════════════════╗");
+		System.out.println("║           CADASTRO DE CLIENTE            ║");
+		System.out.println("║------------------------------------------║");	
 	
+		System.out.print("║Nome: ");
+		String info = in.next();
+		c.setNome(info);
+
+		c.setCpf(Util.validarCPF()); 
+
+		System.out.print("║Email: ");
+		in.nextLine();
+		info = in.nextLine();
+		c.setEmail(info);
+		
+		System.out.print("║Telefone: ");
+		info = in.nextLine();
+		c.setTelefone(info);
+		
+		c.setDt_nascimento(Util.validarData("║Data nasc.(dd/MM/yyyy): "));
+		System.out.println("║------------------------------------------");	
+		System.out.println("║                                          ");	
+		System.out.println("║ ENDEREÇO                                 ");
 		c.setEndereco(Util.buscarCep());
 		
 		return c;

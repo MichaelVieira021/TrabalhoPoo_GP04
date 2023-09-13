@@ -96,11 +96,17 @@ public class Main {
 		Cliente c = new Cliente();
 		ClienteDAO cdao = new ClienteDAO(con, SCHEMA);
 			
-		c = g4Tech.cadastrarCliente();		
+		try {
+			c = g4Tech.cadastrarCliente();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
 		int retorno = cdao.incluirCliente(c);
 			
 		if (retorno > 0) {
-			Util.escrever("Cliente criado com sucesso.");
+			System.out.println("╔══════════════════════════════════════════╗");
+    		System.out.println("║"+"\u001B[32m"+"       Cliente criado com sucesso. "+"\u001B[0m"+"       ║");
+    		System.out.println("╚══════════════════════════════════════════╝");
 			g4Tech.adicionarCliente(c);
 		}
 	}

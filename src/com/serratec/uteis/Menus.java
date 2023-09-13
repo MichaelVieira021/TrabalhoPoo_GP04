@@ -19,21 +19,23 @@ public class Menus {
 	public static int menuCategorias() {
 		CategoriaDAO e  = new CategoriaDAO(Main.con, Main.SCHEMA);
 		
-		int teste = 0;
+		int teste = 0, tmh = e.carregarCategoriaMenu().size()+1;
 		int cat = 1 ;
 		
-		System.out.println("╔═══════════════════════════════════╗");
-		System.out.println("║            CATEGORIAS             ║");
-		System.out.println("║-----------------------------------║");
+		System.out.println("╔══════════════════════════════════════════╗");
+		System.out.println("║               CATEGORIAS                 ║");
+		System.out.println("║--------┬---------------------------------║");	
 		for(Categoria ct : e.carregarCategoriaMenu()) {
-        	System.out.println("║        ["+ct.getIdcategoria()+"] - "+ ct.getNm_categoria());
+        	System.out.print(Util.preencherEspacos(9, "║  ["+ct.getIdcategoria()+"] "));
+        	System.out.print(Util.preencherEspacos(34, "|        "+ ct.getNm_categoria()));System.out.println("║");
         	cat++;
+        	if(cat == tmh)System.out.println("║--------┴---------------------------------║");
+        	else System.out.println("║--------|---------------------------------║");
         }
-		System.out.println("║                                   ");
-		System.out.println("║-----------------------------------║");
-		System.out.println("║    [0] -[CRIAR NOVA CATEGORIA]    ║");
-		System.out.print  ("╚═══════════════════════════════════╝\n> ");
-		int opcao = Util.validarInteiro("");
+		System.out.println("║                                          ║");
+		System.out.println("║       [0] -[CRIAR NOVA CATEGORIA]        ║");
+		System.out.println("╚══════════════════════════════════════════╝");
+		int opcao = Util.validarInteiro("[CODIGO]>  ");
 		if(opcao == 0) {
 			Main.cadastrarCategoria();
 			opcao = teste+1;
@@ -46,20 +48,27 @@ public class Menus {
 	public static int menuClientes() {
 		ClienteDAO e  = new ClienteDAO(Main.con, Main.SCHEMA);
 
-		int teste = 0;
+		int teste = 0, tmh = e.carregarClienteMenu().size()+1;
 		int cliente = 1;
-		System.out.println("╔═══════════════════════════════════╗");
-		System.out.println("║            CLIENTES               ║");
-		System.out.println("║-----------------------------------║");
+		System.out.println("╔══════════════════════════════════════════╗");
+		System.out.println("║                 CLIENTES                 ║");
+		System.out.println("║——————————————————————————————————————————║");
+		System.out.println("║ CODIGO             NOME                  ║");
+		//System.out.println("║——————————————————————————————————————————║");
+		System.out.println("║--------┬---------------------------------║");	
 		for(Cliente cl : e.carregarClienteMenu()) {
-        	System.out.println("║        ["+cl.getIdcliente()+"] - "+ cl.getNome());
+        	System.out.print(Util.preencherEspacos(9, "║  ["+cl.getIdcliente()+"] "));
+        	System.out.print(Util.preencherEspacos(34, "|        "+ cl.getNome()));System.out.println("║");
+        	
         	cliente++;
+        	if(cliente == tmh)System.out.println("║--------┴---------------------------------║");
+        	else System.out.println("║--------|---------------------------------║");
+        	
         }
-		System.out.println("║                                   ");
-		System.out.println("║-----------------------------------║");
-		System.out.println("║    [0] -[CRIAR NOVO CLIENTE]      ║");
-		System.out.print  ("╚═══════════════════════════════════╝\n> ");
-		int opcao = Util.validarInteiro("");
+		System.out.println("║                                          ║");
+		System.out.println("║         Digite '0' para [Sair]           ║");
+		System.out.println("╚══════════════════════════════════════════╝");
+		int opcao = Util.validarInteiro("[CODIGO]> ");
 		if(opcao == 0) {
 			Main.cadastrarCliente();
 			opcao = teste+1;
@@ -89,7 +98,7 @@ public class Menus {
 		System.out.println("║                                          ║");
 		System.out.println("║         Digite '0' para [Sair]           ║");
 		System.out.println("╚══════════════════════════════════════════╝");
-		int cat = Util.validarInteiro("Produto: ");
+		int cat = Util.validarInteiro("[CODIGO]> ");
 		return cat;
 	}
 
@@ -148,10 +157,10 @@ public class Menus {
 			System.out.println("║                  MENU                    ║");
 			System.out.println("║------------------------------------------║");
 			System.out.println("║                                          ║");
-			System.out.println("║           [1] - Cadastrar                ║");
-			System.out.println("║           [2] - Alterar                  ║");
-			System.out.println("║           [3] - Imprimir                 ║");
-			System.out.println("║           [4] - Excluir                  ║");
+			System.out.println("║             [1] - Cadastrar              ║");
+			System.out.println("║             [2] - Alterar                ║");
+			System.out.println("║             [3] - Imprimir               ║");
+			System.out.println("║             [4] - Excluir                ║");
 			System.out.println("║                                          ║");
 			System.out.println("║------------------------------------------║");
 			System.out.println("║          Digite '0' para [Sair]          ║");
@@ -178,10 +187,10 @@ public class Menus {
 					
 			System.out.println("║------------------------------------------║");
 			System.out.println("║                                          ║");
-			System.out.println("║           [1] - Cliente                  ║");
-			System.out.println("║           [2] - Produto                  ║");
-			System.out.println("║           [3] - Pedidos                  ║");
-//			System.out.println("║           [4] - Excluir                  ║");
+			System.out.println("║             [1] - Cliente                ║");
+			System.out.println("║             [2] - Produto                ║");
+			System.out.println("║             [3] - Pedidos                ║");
+//			System.out.println("║             [4] - Excluir                ║");
 			System.out.println("║                                          ║");
 			System.out.println("║------------------------------------------║");
 			System.out.println("║          Digite '0' para [voltar]        ║");
