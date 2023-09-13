@@ -198,8 +198,11 @@ public class Main {
 				g4Tech.excluirProduto(prod);
 				System.out.println("Produto excluido com sucesso.");
 			}
-		} else
+		} else {
+			System.out.println("║                                          ║");
+			System.out.println("╚══════════════════════════════════════════╝");
 			System.out.println("Produto não encontrado.");
+		}
 	}
 		
 	//PEDIDO-----------------------------------------------

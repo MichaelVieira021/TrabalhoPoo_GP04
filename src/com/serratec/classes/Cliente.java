@@ -20,16 +20,17 @@ public class Cliente extends Pessoa{
 	}
 	
 	public void dadosPessoa() {
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy"); 			
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		String data = dtf.format(dt_nascimento);
 		
 		System.out.println("║");
 		System.out.println("║Dados-------------------------------");
 		System.out.printf("║Nome: %s%n", this.nome);
 		
-		//if (dt_nascimento != null)
-			//System.out.print("║Data nasc.: %d%n", dt_nascimento.toString().formatted(dtf));
-		//else
-			//System.out.printf("║Data nasc.: %n" + dtf);
+		if (dt_nascimento != null)
+			System.out.println("║Data nasc.: "+ data);
+		else
+			System.out.printf("║Data nasc.: %n" + dtf);
 		
 		System.out.printf("║CPF: %s%n", this.cpf);
 		System.out.printf("║Email: %s%n", this.email);

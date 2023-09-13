@@ -566,7 +566,7 @@ public class Empresa {
 			System.out.println();
 		}
 		System.out.println();
-		int i = com.serratec.uteis.Util.validarInteiro("Digite o codigo do produto: ");
+		int i = com.serratec.uteis.Util.validarInteiro("Digite o codigo do pedido: ");
 		listarPedidosComProdutos(i);
 	}
 	

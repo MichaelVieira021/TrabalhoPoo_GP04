@@ -66,7 +66,7 @@ public class Menus {
         	
         }
 		System.out.println("║                                          ║");
-		System.out.println("║         Digite '0' para [Sair]           ║");
+		System.out.println("║     Digite '0' para [NOVO CLIENTE]       ║");
 		System.out.println("╚══════════════════════════════════════════╝");
 		int opcao = Util.validarInteiro("[CODIGO]> ");
 		if(opcao == 0) {
@@ -84,6 +84,8 @@ public class Menus {
 		
 		System.out.println("╔══════════════════════════════════════════╗");
 		System.out.println("║                 PRODUTOS                 ║");
+		System.out.println("║------------------------------------------║");
+		System.out.println("║ CODIGO |        NOME          | ESTOQUE  ║");
 		System.out.println("║--------┬--------------------┬------------║");
 		for(Produto ct : e.carregarProdutoMenu()) {
         	System.out.print(Util.preencherEspacos(9, "║  ["+ct.getIdcategoria()+"] "));
