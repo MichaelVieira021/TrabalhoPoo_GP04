@@ -21,39 +21,38 @@ public class Produto {
 	
 	
 	public void dadosProdutos() {
-		System.out.println("Produto: " + this.getNome());
-		System.out.println("Descrição: " + this.getDescricao());
-		System.out.println("Valor: " + this.getVl_venda());
-		System.out.println("Quantidade: " + this.getQtd_estoque());
-		System.out.println("Categoria: " + this.getIdcategoria());
+		System.out.println("║Produto: " + this.getNome());
+		System.out.println("║Descrição: " + this.getDescricao());
+		System.out.println("║Valor: " + this.getVl_venda());
+		System.out.println("║Quantidade: " + this.getQtd_estoque());
+		System.out.println("║Categoria: " + this.getIdcategoria());
 	}
 	
 	public void alterarProduto() {
 		@SuppressWarnings("resource")
 		Scanner in = new Scanner(System.in);
 		
-		System.out.println("Alteracao de dados");
-		System.out.println("------------------------------------");
-		System.out.println("");
+		System.out.println("║Alteracao de dados");
+		System.out.println("║------------------------------------");
 		
-		System.out.println("Nome: ");
+		System.out.println("║Nome: ");
 		String s = in.nextLine();
 		this.setNome(s);
 		
-		System.out.println("Descrição: ");
+		System.out.println("║Descrição: ");
 		s = in.nextLine();
 		this.setDescricao(s);
 		
-		System.out.println("Valor Custo: ");
+		System.out.println("║Valor Custo: ");
 		double n = in.nextDouble();
 		this.setVl_custo(n);
 		this.setVl_venda(n*1.15);
 		
-		System.out.println("Quantidade Estoque ");
+		System.out.println("║Quantidade Estoque ");
 		int i= in.nextInt();
 		this.setQtd_estoque(i);
 		
-		System.out.println("Id da categoria: ");
+		System.out.println("║Id da categoria: ");
 		int id = in.nextInt();
 		this.setIdcategoria(id);
 	}

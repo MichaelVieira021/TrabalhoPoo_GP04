@@ -137,8 +137,10 @@ public class Empresa {
 		com.serratec.classes.Cliente cl = new com.serratec.classes.Cliente();
 		
 		int i = -1;
-				
-		System.out.println("Informe o CPF do cliente: ");
+		System.out.println("╔══════════════════════════════════════════╗");
+		System.out.println("║           LOCALIZAR DE CLIENTE           ║");
+		System.out.println("║------------------------------------------║");
+		System.out.print("║Informe o CPF do cliente: ");
 		String s = in.next();
 		clientes = new ListaClientes(con, schema);
 		
@@ -258,8 +260,11 @@ public class Empresa {
 		com.serratec.classes.Produto prod = new com.serratec.classes.Produto();
 		
 		int i = -1;
-				
-		System.out.println("Digite o Nome: "); 
+		
+		System.out.println("╔══════════════════════════════════════════╗");
+		System.out.println("║           LOCALIZAR DE PRODUTO           ║");
+		System.out.println("║------------------------------------------║");
+		System.out.print("║Digite o Nome: "); 
 		String s = in.nextLine();
 		produtos = new ListaProdutos(con, schema);
 		
@@ -400,7 +405,7 @@ public class Empresa {
 					opcao = 1;
 				} else {
 					System.out.println("Produto adicionado com Sucesso!");
-					System.out.println("Digite 1 para adicionar outro produto.");
+					System.out.println("Digite 1 para adicionar outro produto ou 0 para concluir o pedido.");
 					opcao = in.nextInt();
 				}
 			}

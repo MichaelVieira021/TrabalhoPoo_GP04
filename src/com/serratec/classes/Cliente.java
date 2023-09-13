@@ -22,47 +22,46 @@ public class Cliente extends Pessoa{
 	public void dadosPessoa() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy"); 			
 		
-		System.out.println("");
-		System.out.println("Dados-------------------------------");
-		System.out.printf("Nome: %s%n", this.nome);
+		System.out.println("║");
+		System.out.println("║Dados-------------------------------");
+		System.out.printf("║Nome: %s%n", this.nome);
 		
-		if (dt_nascimento != null)
-			System.out.printf("Data nasc.: %d%n", dt_nascimento.toString().formatted(dtf));
-		else
-			System.out.printf("Data nasc.: %n");
+		//if (dt_nascimento != null)
+			//System.out.print("║Data nasc.: %d%n", dt_nascimento.toString().formatted(dtf));
+		//else
+			//System.out.printf("║Data nasc.: %n" + dtf);
 		
-		System.out.printf("CPF: %s%n", this.cpf);
-		System.out.printf("Email: %s%n", this.email);
-		System.out.println("------------------------------------");
+		System.out.printf("║CPF: %s%n", this.cpf);
+		System.out.printf("║Email: %s%n", this.email);
+		System.out.println("║------------------------------------");
 	}
 	
 	public void alterarCliente() {
 		@SuppressWarnings("resource")
 		Scanner in = new Scanner(System.in);
 		
-		System.out.println("Alteracao de dados");
-		System.out.println("------------------------------------");
-		System.out.println("");
-		System.out.println("Nome: ");
+		System.out.println("║Alteracao de dados");
+		System.out.println("║------------------------------------");
+		System.out.println("║");
+		System.out.print("║Nome: ");
 		String s = in.nextLine();
 		
 		if (!s.isEmpty() && !s.isBlank() && s != null)
 			this.nome = s;
 		
-		System.out.println("CPF: ");
 		s = (Util.validarCPF());
 		
 		if (!s.isEmpty() && !s.isBlank() && s != null)
 			this.cpf = s;
 	
-		System.out.println("Digite seu EMAIL: ");
+		System.out.print("║Digite seu EMAIL: ");
 		s = in.nextLine();
 		
 		if (!s.isEmpty() && !s.isBlank() && s != null)
 			this.email = s;
 		
 		//-----------14 digitos numericos
-		System.out.println("Digite seu TELEFONE: ");
+		System.out.print("║Digite seu TELEFONE: ");
 		s = in.nextLine();
 		
 		if (!s.isEmpty() && !s.isBlank() && s != null)
@@ -70,7 +69,7 @@ public class Cliente extends Pessoa{
 		
 		this.endereco = Util.buscarCep();
 		
-		System.out.println("Data nascimento (dd/MM/yyyy): ");
+		System.out.print("Data nascimento (dd/MM/yyyy): ");
 		s = in.nextLine();
 		
 		if (!s.isEmpty() && !s.isBlank() && s != null) {

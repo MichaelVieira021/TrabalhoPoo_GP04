@@ -132,13 +132,17 @@ public class Main {
 		ClienteDAO cdao = new ClienteDAO(con, SCHEMA);
 		Cliente c = g4Tech.localizarCliente();
 		
-		if (c != null) {		
-			Util.escrever("Deseja excluir o cliente: " + c.getNome());
+		if (c != null) {
+			System.out.print("║Deseja excluir cliente "+ c.getNome()+" ?(S/N) " );
 			char s = input.next().charAt(0);
+			System.out.println("║                                          ║");
+			System.out.println("╚══════════════════════════════════════════╝");
 			
-			if (s == 's' || s == 'S')
+			if (s == 's' || s == 'S') {
 				i = cdao.excluirCliente(c);
-			System.out.println("i: " + i);
+			}else if (s == 'n' || s == 'N') {
+				System.out.println("Cliente não excluido.");
+			}
 			if (i > 0) {
 				g4Tech.excluirCliente(c);
 				System.out.println("Cliente excluido com sucesso.");
@@ -178,12 +182,17 @@ public class Main {
 		ProdutoDAO proddao = new ProdutoDAO(con, SCHEMA);
 		Produto prod = g4Tech.localizarProduto();
 		
-		if (prod != null) {		
-			Util.escrever("Deseja excluir o Produto: " + prod.getNome());
+		if (prod != null) {	
+			System.out.print("║Deseja excluir o Produto " + prod.getNome()+"?(S/N) ");
 			char s = input.next().charAt(0);
+			System.out.println("║                                          ║");
+			System.out.println("╚══════════════════════════════════════════╝");
 			
 			if (s == 's' || s == 'S') {
 				i = proddao.excluirProduto(prod);
+			
+			}else if (s == 'n' || s == 'N') {
+				System.out.println("Produto não excluido.");
 			}
 			if (i > 0) {
 				g4Tech.excluirProduto(prod);
@@ -220,11 +229,15 @@ public class Main {
 		
 
 		if (pedi != null) {		
-			Util.escrever("Deseja excluir o Pedido n°: "  + pedi.getIdpedido() + " Feito no dia: " + pedi.getDt_emissao());
+			System.out.print("║Excluir Pedido "  + pedi.getIdpedido() + " Do dia: " + pedi.getDt_emissao()+"?(S/N)");
 			char s = input.next().charAt(0);
+			System.out.println("║                                          ║");
+			System.out.println("╚══════════════════════════════════════════╝");
 				
 			if (s == 's' || s == 'S') {
 				i = pedidao.excluirPedido(pedi);
+			}else if (s == 'n' || s == 'N') {
+				System.out.println("Pedido não excluido.");
 			}
 			if (i > 0) {
 				g4Tech.excluirPedido(pedi);

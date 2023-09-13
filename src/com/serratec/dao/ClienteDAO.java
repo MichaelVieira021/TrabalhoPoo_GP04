@@ -101,7 +101,7 @@ public class ClienteDAO {
 			pAlteracao.setDate  (5, Date.valueOf(cliente.getDt_nascimento()));
 			pAlteracao.setString(6, cliente.getEndereco());
 			pAlteracao.setInt   (7, cliente.getIdcliente());
-			
+			System.out.println("Cliente alterado com Sucesso.");
 			return pAlteracao.executeUpdate();
 		} catch (Exception e) {
 			if (e.getLocalizedMessage().contains("is null")) {
