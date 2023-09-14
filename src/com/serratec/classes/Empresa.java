@@ -141,16 +141,22 @@ public class Empresa {
 		System.out.println("╔══════════════════════════════════════════╗");
 		System.out.println("║           LOCALIZAR DE CLIENTE           ║");
 		System.out.println("║------------------------------------------║");
-		System.out.print("║Informe o CPF do cliente: ");
-		String s = in.next();
-		clientes = new ListaClientes(con, schema);
 		
-		for (Cliente c : clientes.getListacliente()) {
-			if (c.getCpf().equals(s)) {
-				i = clientes.getListacliente().lastIndexOf(c);
-				break;
+		do {
+			System.out.print("║Informe o CPF do cliente: ");
+			String s = in.next();
+			clientes = new ListaClientes(con, schema);
+			for (Cliente c : clientes.getListacliente()) {
+				if (c.getCpf().equals(s)) {
+					i = clientes.getListacliente().lastIndexOf(c);
+					break;
+				}
+			}		
+			if (i == -1) {
+				System.out.println("║CPF Inválido");
 			}
-		}
+		} while (i == -1);
+
 		
 		if (i >= 0) {
 			cl.setNome(clientes.getListacliente().get(i).getNome());
@@ -265,16 +271,23 @@ public class Empresa {
 		System.out.println("╔══════════════════════════════════════════╗");
 		System.out.println("║           LOCALIZAR DE PRODUTO           ║");
 		System.out.println("║------------------------------------------║");
-		System.out.print("║Digite o Nome: "); 
-		String s = in.nextLine();
-		produtos = new ListaProdutos(con, schema);
 		
-		for (Produto c : produtos.getListaProdutos()) {
-			if (c.getNome().equals(s)) {
-				i = produtos.getListaProdutos().lastIndexOf(c);
-				break;
+		do {
+			System.out.print("║Digite o Nome: "); 
+			String s = in.nextLine();
+			produtos = new ListaProdutos(con, schema);
+			
+			for (Produto c : produtos.getListaProdutos()) {
+				if (c.getNome().equals(s)) {
+					i = produtos.getListaProdutos().lastIndexOf(c);
+					break;
+				}
 			}
-		}
+			if(i==-1) {
+				System.out.println("║Produto não encontrado.");
+			}
+		} while (i == -1);
+
 		
 		if (i >= 0) {
 			prod.setIdproduto(produtos.getListaProdutos().get(i).getIdproduto());
@@ -378,33 +391,34 @@ public class Empresa {
 		System.out.println("	   INSERIR PRODUTOS");
 		System.out.println("=====================================");
 		int idprod;
-	
+		//ADICIONADO CONTADOR PARA EVITAR A CRIACAO DE PEDIDOS VAZIOS
+		boolean contador = false;
+		
 		do {
-			idprod = Menus.menuProdutos();
-			if(idprod==0) {
-				opcao = 1;
-				break;
-			}else {
-				do {
-					for (ProdutoCarrinho pr : pedidocarrinho) {
-						if (pr.getPr().getIdproduto() == idprod) {
-							pedidocarrinho.remove(pedidocarrinho.indexOf(pr));
-							prIgual = true;
-							break;
-						} else
-							prIgual = false;
-					}
-					prIgual = false;
-				} while (prIgual);
+		    idprod = Menus.menuProdutos(contador);
+		    if(idprod==0) {
+		        opcao = 1;
+		        break;
+		    } else {
+		        prIgual = false;
+		        for (ProdutoCarrinho pr : pedidocarrinho) {
+		            if (pr.getPr().getIdproduto() == idprod) {
+		                pedidocarrinho.remove(pedidocarrinho.indexOf(pr));
+		                prIgual = true;
+		                break;
+		            }
+		        }
+		        if (!prIgual) {
+		            quant = Util.validarInteiro("Digite a quantidade a ser adicionada: ");
+		            verEstoque = verificarEstoque(idprod, quant);
+		            contador = true;
+		            System.out.println("Produto adicionado com Sucesso!");
+		        }
+		        System.out.println("Digite 1 para adicionar outro produto ou 0 para concluir o pedido.");
+		        opcao = in.nextInt();
+		    }
+		} while (opcao == 1);
 
-				quant = Util.validarInteiro("Digite a quantidade a ser adicionada: ");
-				verEstoque = verificarEstoque(idprod, quant);
-
-				System.out.println("Produto adicionado com Sucesso!");
-				System.out.println("Digite 1 para adicionar outro produto ou 0 para concluir o pedido.");
-				opcao = in.nextInt();
-			}
-		}while (opcao == 1);
 		System.out.println("Pedido realizado com Sucesso!");
 			
 		return pd;
@@ -469,7 +483,8 @@ public class Empresa {
 		int idprod;
 
 		do {
-			idprod = Menus.menuProdutos();
+			boolean contador = true;
+			idprod = Menus.menuProdutos(contador);
 			if(idprod == 0) {
 				pd = null;
 				return pd;

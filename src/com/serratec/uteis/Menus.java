@@ -79,7 +79,7 @@ public class Menus {
 		return cliente;
 	}
 	
-	public static int menuProdutos() {
+	public static int menuProdutos(boolean contador) {
 		ProdutoDAO e  = new ProdutoDAO(Main.con, Main.SCHEMA);
 		
 		boolean prEncontrado = false;
@@ -100,24 +100,31 @@ public class Menus {
         	System.out.println("║--------|--------------------|------------║");
         }
 		System.out.println("║                                          ║");
-		System.out.println("║         Digite '0' para [Sair]           ║");
+		System.out.println("║    Digite '0' para [Finalizar Pedido]    ║");
 		System.out.println("╚══════════════════════════════════════════╝");
 		int cat;
 		do {
 			cat = Util.validarInteiro("[CODIGO]> ");
-			if(cat == 0) {
-				break;
+			//MODIFICADO, ADICIONADO CONTADOR PARA EVITAR A CRIAÇÃO DE PEDIDOS VAZIOS
+			if(cat == 0 && contador == false) {
+				System.out.println("Carrinho Vazio! Por favor adicione um produto.");	
+				prEncontrado = false;
 			}
-			for(Produto ct : e.carregarProdutoMenu()){
-				if(cat == ct.getIdproduto()) {
-					prEncontrado = true;
-					break;
+			if(cat == 0 && contador == true) {
+				prEncontrado = true;
+			}
+			if(cat != 0) {
+				for(Produto ct : e.carregarProdutoMenu()){
+					if(cat == ct.getIdproduto()) {
+						prEncontrado = true;
+						break;
+					}
+				}
+				if (!prEncontrado) {
+					System.err.println("Erro: Produto não encontrado!");
 				}
 			}
-			if (!prEncontrado) {
-				System.err.println("Erro: Produto não encontrado!");
-			}
-		}while(!prEncontrado);
+		}while(prEncontrado == false);
 
 		return cat;
 	}
