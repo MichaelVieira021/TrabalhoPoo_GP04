@@ -105,6 +105,9 @@ public class Menus {
 		int cat;
 		do {
 			cat = Util.validarInteiro("[CODIGO]> ");
+			if(cat == 0) {
+				break;
+			}
 			for(Produto ct : e.carregarProdutoMenu()){
 				if(cat == ct.getIdproduto()) {
 					prEncontrado = true;
@@ -137,12 +140,18 @@ public class Menus {
 		System.out.println("║                                          ║");
 		System.out.println("║         Digite '0' para [Sair]           ║");
 		System.out.println("╚══════════════════════════════════════════╝");
-		System.out.print("Digite o codigo do produto: ");
+		
 		ProdutoCarrinho editar = new ProdutoCarrinho();
 		boolean prEncontrado = false;
 		int cat;
-		cat = Util.validarInteiro("> ");
+		
 		do {
+			cat = Util.validarInteiro("[CODIGO]> ");
+			if(cat ==0) {
+				editar = null;
+				//editar = null;
+				break;
+			}else {
 				for(ProdutoCarrinho c : produtoC) {
 					if(cat == c.getIdproduto()) {
 						prEncontrado = true;
@@ -152,13 +161,16 @@ public class Menus {
 				if (!prEncontrado) {
 					System.err.println("Erro: Produto não encontrado!");
 				}
-				prEncontrado = true;
-				break;
+			}
 		}while(!prEncontrado);
 
 		for(ProdutoCarrinho c : produtoC) {
 			if(c.getIdproduto() == cat) {
-				editar = c;
+				editar.setPr(c.getPr());
+				editar.setIdpedidoitem(c.getIdpedidoitem());
+				editar.setIdpedido(c.getIdpedido());
+				editar.setIdproduto(c.getIdproduto());
+				editar.setQuantidade(c.getQuantidade());
 			}
         }
 		return editar;

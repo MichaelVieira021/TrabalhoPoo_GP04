@@ -2,6 +2,7 @@ package com.serratec.classes;
 
 import java.util.Scanner;
 
+import com.serratec.classes.Empresa.ProdutoCarrinho;
 import com.serratec.conexao.Conexao;
 import com.serratec.dao.ClienteDAO;
 import com.serratec.dao.PedidoDAO;
@@ -449,6 +450,7 @@ public class Empresa {
 
 	}
 	
+	//ALTERAR OS PRODUTOS DENTRO DO PEDIDO
 	public Pedido alterarProdutoCarrinho(Pedido pd) {
 		int quant;
 		boolean verEstoque = false, prIgual = true;
@@ -462,6 +464,10 @@ public class Empresa {
 
 		do {
 			idprod = Menus.menuProdutos();
+			if(idprod == 0) {
+				pd = null;
+				return pd;
+			}
 			for (ProdutoCarrinho pr : pedidocarrinho) {
 				if (pr.getPr().getIdproduto() == idprod) {
 					pedidocarrinho.remove(pedidocarrinho.indexOf(pr));
@@ -472,9 +478,11 @@ public class Empresa {
 				}
 			prIgual = false;
 		} while (prIgual);
+		do {
+			quant = Util.validarInteiro("Digite a quantidade a ser adicionada: ");
+			verEstoque = verificarEstoque(idprod, quant);
+		}while(!verEstoque);
 
-		quant = Util.validarInteiro("Digite a quantidade a ser adicionada: ");
-		verEstoque = verificarEstoque(idprod, quant);
 
 		if (!verEstoque) {
 			Util.escrever("Produto fora de estoque!");
@@ -509,7 +517,7 @@ public class Empresa {
 		ProdutoDAO prdao = new ProdutoDAO(con, com.serratec.main.Main.SCHEMA);
 		ProdutoCarrinho qtdPrAnterior = pcdao2.carregarProdutoCarrinho(pc.getIdpedidoitem());
 		Produto ori = prdao.carregarProdutoMenu2(qtdPrAnterior.getIdproduto());
-		
+			
 		//ALTERAR PEDIDO ATUALIZADO
 		if(ori.getIdproduto() == pc.getIdproduto()) {
 			pc.setQuantidade(pc.getQuantidade()+qtdPrAnterior.getQuantidade());
@@ -538,6 +546,7 @@ public class Empresa {
 				System.out.println("Produto fora de estoque.");
 			} else {
 				System.out.println("A quantidade solicitada e superior a quantidade disponivel.");
+				System.out.println("Restam apenas ["+ prod.getQtd_estoque()+"] unidades.");
 			}
 		}
 		return retorno;	
@@ -641,7 +650,7 @@ public class Empresa {
 		com.serratec.classes.Pedido pd = new com.serratec.classes.Pedido();
 		pedidos = new ListaPedidos(con, schema, 1);
 		int s;
-		boolean pdEncontrado = false;
+		
 		
 		System.out.println("╔══════════════════════════════════════════╗");
 		System.out.println("║             LOCALIZAR PEDIDO             ║");
@@ -649,7 +658,7 @@ public class Empresa {
 		System.out.println("║       Informe [CODIGO] do pedido         ║");
 		System.out.println("║         Digite '0' para [Sair]           ║");
 		System.out.println("╚══════════════════════════════════════════╝");
-	
+		boolean pdEncontrado = false;
 	do {
 			s = Util.validarInteiro("[CÓDIGO]> ");
 			if(s==0) {
@@ -657,16 +666,22 @@ public class Empresa {
 				pd = null;
 				break;
 			}
+			
 			for(Pedido c : pedidos.getListapedidos()) { 
 				if(s == c.getIdpedido()) {
 					pdEncontrado = true;
-					pd = c;
+					pd.setDt_emissao(c.getDt_emissao());
+					pd.setIdcliente(c.getIdcliente());
+					pd.setIdpedido(c.getIdpedido());
 					pd.dadosPedidos(pd);
 					break;
+					
 				}
 			}
 			if (!pdEncontrado) {
 			    System.err.println("Erro: Pedido não encontrado!");
+			}else {
+				
 			}
 
 	}while(!pdEncontrado);
@@ -682,18 +697,80 @@ public class Empresa {
 		return pc;
 	}
 	
+	public void alterarQtdPedidoItens(ProdutoCarrinho pc) {
+		
+		System.out.println("╔══════════════════════════════════════════╗");
+		System.out.println("║    Contem ["+ pc.getQuantidade()+"] qtd! ║");
+		System.out.println("║------------------------------------------║");
+		System.out.println("║     Deseja remover ou adicionar qtd?     ║");
+		System.out.println("║                                          ║");
+		System.out.println("║            [1] - Adicionar               ║");
+		System.out.println("║            [2] - Remover                 ║");
+		System.out.println("║                                          ║");
+		System.out.println("╚══════════════════════════════════════════╝");
+		int qtd;
+		boolean verEstoque;
+		
+		//EM TESTE ----------------------------------------------------------------------
+		
+		//condição 1 ou 2
+		do {
+			qtd = Util.validarInteiro("Digite a quantidade a ser adicionada: ");
+			verEstoque = verificarEstoque(pc.getIdproduto(), qtd);
+			if(verEstoque == true) {
+				pc.setQuantidade(pc.getQuantidade() + qtd);
+			}
+		}while(!verEstoque);
+		
+		//--------------------------------------------------------------------------------
+		//condição 1 ou 2
+		do {
+			qtd = Util.validarInteiro("Digite a quantidade a ser removida: ");
+			if(qtd <= pc.getQuantidade()) {
+				Produto prod = new Produto();
+				pc.setQuantidade(pc.getQuantidade() - qtd);
+				//prod = e.carregarProdutoMenu2(idprod);
+			}else {
+				System.out.println("Não é possivel remover está qtd!");
+				System.out.println("Você tem apenas "+ pc.getQuantidade()+ " qtd!\n");
+				verEstoque = false;
+			}
+		}while(!verEstoque);
+		
+		//EM TESTE ----------------------------------------------------------------------
+	}
+	
 	public void alterarQtdPedidoItem(ProdutoCarrinho pc, Pedido pd) {
 		//alterarQtdOuProduto(pd);
 		//----------------------------
-		inserirAlteracaoNoBd(alterarProdutoCarrinho(pd), atualizarPedidoItem(pc));
+		//pd = alterarProdutoCarrinho(pd);
+		alterarQtdPedidoItens(pc);
+
+		inserirAlteracaoNoBd(pd, atualizarPedidoItem(pc));
 		pd.dadosPedidos(pd);
 		Menus.menuProdutosCarrinho(pd.getIdpedido());
 	}
 	
 	public void alterarPedidoItem(ProdutoCarrinho pc, Pedido pd) {
-		inserirAlteracaoNoBd(alterarProdutoCarrinho(pd), atualizarPedidoItem(pc));
+		Pedido teste = new Pedido();
+		
+		teste.setDt_emissao(pd.getDt_emissao());
+		teste.setIdcliente(pd.getIdcliente());
+		teste.setIdpedido(pd.getIdpedido());
+		
+		pd = alterarProdutoCarrinho(pd);
+		if(pd != null) {
+			inserirAlteracaoNoBd(pd, atualizarPedidoItem(pc));
+		}
+		pd = teste;
+		//pd.setDt_emissao(teste.getDt_emissao());
+		//pd.setIdcliente(teste.getIdcliente());
+		//pd.setIdpedido(teste.getIdpedido());
+		
 		pd.dadosPedidos(pd);
-		Menus.menuProdutosCarrinho(pd.getIdpedido());
+		ProdutoCarrinho pdItemEscolhido = Menus.menuProdutosCarrinho(pd.getIdpedido());
+		//alterarQtdOuProduto(pdItemEscolhido, pd);
+
 	}
 	
 	// CATEGORIA ----------------------------------------------------------------------
@@ -732,3 +809,4 @@ public class Empresa {
 		return categoria;
 	}	
 }
+

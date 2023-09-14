@@ -212,10 +212,10 @@ public class Main {
 		
 	public static void alterarPedido() {
 		Pedido pd = g4Tech.localizarPedido(); 
+		
 		if(pd != null) {
 			ProdutoCarrinho pdItemEscolhido = Menus.menuProdutosCarrinho(pd.getIdpedido());
 			g4Tech.alterarQtdOuProduto(pdItemEscolhido, pd);
-			g4Tech.alterarPedidoItem(pdItemEscolhido, pd);
 		}
 	}
 		
