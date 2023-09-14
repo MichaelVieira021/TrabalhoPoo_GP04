@@ -239,6 +239,17 @@ public class Menus {
 		return opcao;
 	}
 	
+	public static void menuAlterarPedidoItens() {
+		System.out.println("╔══════════════════════════════════════════╗");
+		System.out.println("║      [1] -   ALTERAR QUANTIDADE          ║");
+		System.out.println("║      [2] -   ALTERAR PRODUTO             ║");
+		System.out.println("║      [3] -   EXCLUIR PRODUTO             ║");
+		System.out.println("║                                          ║");
+		System.out.println("║------------------------------------------║");
+		System.out.println("║         Digite '0' para [Sair]           ║");
+		System.out.println("╚══════════════════════════════════════════╝");
+	}
+	
 	
 	//CRUD-----------------------------------------------------------------------
 	public static void escolherMenu(int opcao) {

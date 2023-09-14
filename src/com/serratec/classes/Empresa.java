@@ -411,28 +411,34 @@ public class Empresa {
 	}
 	
 	public void alterarQtdOuProduto(ProdutoCarrinho pc,Pedido pd) {
-		System.out.println("╔══════════════════════════════════════════╗");
-		System.out.println("║      [1] -   ALTERAR QUANTIDADE          ║");
-		System.out.println("║      [2] -   ALTERAR PRODUTO             ║");
-		System.out.println("║      [3] -   EXCLUIR PRODUTO             ║");
-		System.out.println("║                                          ║");
-		System.out.println("║------------------------------------------║");
-		System.out.println("║         Digite '0' para [Sair]           ║");
-		System.out.println("╚══════════════════════════════════════════╝");
-		
+		Menus.menuAlterarPedidoItens();
 		boolean opcQtdOuPr = false;
 		
 		do {
 			int opcao = Util.validarInteiro("> ");
+			ProdutoCarrinho continuar;
 			switch(opcao) {
+			
 				case 1:
-					alterarQtdPedidoItem(pc, pd);
-					opcQtdOuPr = true;
-					break;
+					continuar = alterarQtdPedidoItem(pc, pd);
+					if(continuar == null) {
+						opcQtdOuPr = true;
+						break;
+					}else {
+						Menus.menuAlterarPedidoItens();
+						opcQtdOuPr = false;
+						break;
+					}
 				case 2:
-					alterarPedidoItem(pc, pd);
-					opcQtdOuPr = true;
-					break;
+					continuar = alterarPedidoItem(pc, pd);
+					if(continuar == null) {
+						opcQtdOuPr = true;
+						break;
+					}else {
+						Menus.menuAlterarPedidoItens();
+						opcQtdOuPr = false;
+						break;
+					}
 				case 3:
 					//alterarPedidoItem(pc, pd);
 					opcQtdOuPr = true;
@@ -529,6 +535,14 @@ public class Empresa {
 			pcdao3.alterarEstoque(pc.getPr()); 
 			pcdao3.alterarEstoque(ori);
 		}
+	}
+	
+	public void inserirAlteracaoQtdNoBd(Pedido pd, ProdutoCarrinho pc) {
+		ProdutoCarrinhoDAO pcdao2 = new ProdutoCarrinhoDAO(con, com.serratec.main.Main.SCHEMA);
+		ProdutoCarrinhoDAO pcdao3 = new ProdutoCarrinhoDAO(con, com.serratec.main.Main.SCHEMA, 2);
+
+		pcdao2.alterarPedidoItem(pc); 
+		pcdao3.alterarEstoque(pc.getPr()); 
 	}
 
 	public static boolean verificarEstoque(int idprod, int quant) {
@@ -697,7 +711,7 @@ public class Empresa {
 		return pc;
 	}
 	
-	public void alterarQtdPedidoItens(ProdutoCarrinho pc) {
+	public ProdutoCarrinho alterarQtdPedidoItens(ProdutoCarrinho pc) {
 		
 		System.out.println("╔══════════════════════════════════════════╗");
 		System.out.println("║    Contem ["+ pc.getQuantidade()+"] qtd! ║");
@@ -709,49 +723,61 @@ public class Empresa {
 		System.out.println("║                                          ║");
 		System.out.println("╚══════════════════════════════════════════╝");
 		int qtd;
-		boolean verEstoque;
-		
-		//EM TESTE ----------------------------------------------------------------------
-		
-		//condição 1 ou 2
+		boolean verEstoque, verificaOpcao = true;
+	
+		Scanner scan = new Scanner(System.in);
+		int opcao;
 		do {
-			qtd = Util.validarInteiro("Digite a quantidade a ser adicionada: ");
-			verEstoque = verificarEstoque(pc.getIdproduto(), qtd);
-			if(verEstoque == true) {
-				pc.setQuantidade(pc.getQuantidade() + qtd);
-			}
-		}while(!verEstoque);
-		
-		//--------------------------------------------------------------------------------
-		//condição 1 ou 2
-		do {
-			qtd = Util.validarInteiro("Digite a quantidade a ser removida: ");
-			if(qtd <= pc.getQuantidade()) {
-				Produto prod = new Produto();
-				pc.setQuantidade(pc.getQuantidade() - qtd);
-				//prod = e.carregarProdutoMenu2(idprod);
-			}else {
-				System.out.println("Não é possivel remover está qtd!");
-				System.out.println("Você tem apenas "+ pc.getQuantidade()+ " qtd!\n");
-				verEstoque = false;
-			}
-		}while(!verEstoque);
-		
-		//EM TESTE ----------------------------------------------------------------------
+		opcao = Util.validarInteiro("> ");
+		if(opcao == 1) {
+			do {
+				qtd = Util.validarInteiro("Digite a quantidade a ser adicionada: ");
+				if (pc.getPr().getQtd_estoque() > 0 && pc.getPr().getQtd_estoque() >= qtd) {
+					pc.getPr().setQtd_estoque(pc.getPr().getQtd_estoque()-qtd);
+					pc.setQuantidade(pc.getQuantidade() + qtd);
+					verEstoque = true;
+				} else {
+					verEstoque = false;
+					if (pc.getPr().getQtd_estoque() == 0) {
+						System.out.println("Produto fora de estoque.");
+					} else {
+						System.out.println("A quantidade solicitada e superior a quantidade disponivel.");
+						System.out.println("Restam apenas ["+ pc.getPr().getQtd_estoque()+"] unidades.");
+					}
+				}
+			}while(!verEstoque);
+				
+		}else if(opcao == 2) {
+			do {
+				qtd = Util.validarInteiro("Digite a quantidade a ser removida: ");
+				if(qtd <= pc.getQuantidade()) {
+					pc.getPr().setQtd_estoque(pc.getPr().getQtd_estoque()+qtd);
+					pc.setQuantidade(pc.getQuantidade() - qtd);
+					verEstoque = true;
+				}else {
+					System.out.println("Não é possivel remover está qtd!");
+					System.out.println("Você tem apenas "+ pc.getQuantidade()+ " qtd!\n");
+					verEstoque = false;
+				}
+			}while(!verEstoque);
+		}else {
+			verificaOpcao = false;
+			System.out.println("Opção inválida!");
+		}
+				
+		}while(!verificaOpcao);
+		return pc;
 	}
 	
-	public void alterarQtdPedidoItem(ProdutoCarrinho pc, Pedido pd) {
-		//alterarQtdOuProduto(pd);
-		//----------------------------
-		//pd = alterarProdutoCarrinho(pd);
-		alterarQtdPedidoItens(pc);
-
-		inserirAlteracaoNoBd(pd, atualizarPedidoItem(pc));
+	public ProdutoCarrinho alterarQtdPedidoItem(ProdutoCarrinho pc, Pedido pd) {		
+		inserirAlteracaoQtdNoBd(pd, alterarQtdPedidoItens(pc));
 		pd.dadosPedidos(pd);
-		Menus.menuProdutosCarrinho(pd.getIdpedido());
+		ProdutoCarrinho pdItemEscolhido = Menus.menuProdutosCarrinho(pd.getIdpedido());
+		return pdItemEscolhido;
+		
 	}
 	
-	public void alterarPedidoItem(ProdutoCarrinho pc, Pedido pd) {
+	public ProdutoCarrinho alterarPedidoItem(ProdutoCarrinho pc, Pedido pd) {
 		Pedido teste = new Pedido();
 		
 		teste.setDt_emissao(pd.getDt_emissao());
@@ -770,6 +796,7 @@ public class Empresa {
 		pd.dadosPedidos(pd);
 		ProdutoCarrinho pdItemEscolhido = Menus.menuProdutosCarrinho(pd.getIdpedido());
 		//alterarQtdOuProduto(pdItemEscolhido, pd);
+		return pdItemEscolhido;
 
 	}
 	

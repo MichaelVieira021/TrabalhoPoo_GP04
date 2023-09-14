@@ -167,7 +167,7 @@ public class ProdutoCarrinhoDAO {
 	public ArrayList <ProdutoCarrinho> carregarProdutoMenuItems(int id) {
 		ArrayList <ProdutoCarrinho> produtoC = new ArrayList<>();
 
-		String sql = "SELECT pp.idpedido_produto, pp.idpedido, pp.idproduto, pp.quantidade, p.nome FROM " + this.schema + ".pedido_produto pp"
+		String sql = "SELECT pp.idpedido_produto, pp.idpedido, pp.idproduto, pp.quantidade, p.nome, p.qtd_estoque FROM " + this.schema + ".pedido_produto pp"
 				+ " LEFT JOIN " + this.schema + ".produto  p ON p.idproduto = pp.idproduto"
 				+ " where idpedido = "+id+" ORDER BY p.nome";
         
@@ -177,8 +177,9 @@ public class ProdutoCarrinhoDAO {
             	ProdutoCarrinho teste = new ProdutoCarrinho();
             	Produto pr = new Produto();
 
-                pr.setIdproduto(tabela.getInt("idpedido"));
+                pr.setIdproduto(tabela.getInt("idproduto"));
                 pr.setNome(tabela.getString("nome"));
+                pr.setQtd_estoque(tabela.getInt("qtd_estoque"));
                 teste.setPr(pr);
                 teste.setIdpedidoitem(tabela.getInt("idpedido_produto"));
                 teste.setIdpedido(tabela.getInt("idpedido"));
