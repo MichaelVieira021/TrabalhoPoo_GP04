@@ -27,7 +27,7 @@ public class Menus {
 		System.out.println("║--------┬---------------------------------║");	
 		for(Categoria ct : e.carregarCategoriaMenu()) {
         	System.out.print(Util.preencherEspacos(9, "║  ["+ct.getIdcategoria()+"] "));
-        	System.out.print(Util.preencherEspacos(34, "|        "+ ct.getNm_categoria()));System.out.println("║");
+        	System.out.printf("%.34s",Util.preencherEspacos(34, "|        "+ ct.getNm_categoria()));System.out.println("║");
         	cat++;
         	if(cat == tmh)System.out.println("║--------┴---------------------------------║");
         	else System.out.println("║--------|---------------------------------║");
@@ -70,7 +70,7 @@ public class Menus {
 		System.out.println("║--------┬---------------------------------║");	
 		for(Cliente cl : e.carregarClienteMenu()) {
         	System.out.print(Util.preencherEspacos(9, "║  ["+cl.getIdcliente()+"] "));
-        	System.out.print(Util.preencherEspacos(34, "|        "+ cl.getNome()));System.out.println("║");
+        	System.out.printf("%.34s",Util.preencherEspacos(34, "|        "+ cl.getNome()));System.out.println("║");
         	
         	cliente++;
         	if(cliente == tmh)System.out.println("║--------┴---------------------------------║");
@@ -118,7 +118,7 @@ public class Menus {
 		System.out.println("║--------┬--------------------┬------------║");
 		for(Produto ct : e.carregarProdutoMenu()) {
         	System.out.print(Util.preencherEspacos(9, "║  ["+ct.getIdproduto()+"] "));
-        	System.out.print(Util.preencherEspacos(21, "| "+ ct.getNome()+" "));
+        	System.out.printf("%.21s",Util.preencherEspacos(21, "| "+ ct.getNome()+" "));
         	if(ct.getQtd_estoque() == 0) {
         		System.out.print(Util.preencherEspacos(18, "|     "+"\u001B[31m" + ct.getQtd_estoque()));System.out.println("\u001B[0m"+"║");
         	}else {
@@ -167,7 +167,7 @@ public class Menus {
 		System.out.println("║——————————————————————————————————————————║");
 		for(ProdutoCarrinho c : produtoC) {
 			System.out.print(Util.preencherEspacos(9, "║  ["+c.getIdproduto()+"] "));
-			System.out.print(Util.preencherEspacos(21, "| "+ c.getPr().getNome()+ " "));
+			System.out.printf("%.21s",Util.preencherEspacos(21, "| "+ c.getPr().getNome()+ " "));
 			System.out.print(Util.preencherEspacos(13, "|     " + c.getQuantidade()));System.out.println("║");
 			System.out.println("║------------------------------------------║");
         }

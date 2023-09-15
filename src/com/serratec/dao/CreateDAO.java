@@ -292,9 +292,13 @@ public class CreateDAO {
 				String sqlClientes = "insert into " + schema + "." + entidade;
 				sqlClientes += " (nome, cpf, email, telefone, dt_nascimento, endereco)";
 				sqlClientes += " values";
-				sqlClientes += "('Lucas', '12345678901', 'lucas@mail' , '12345678', '11/11/2011','Rua das Flores'),";
-				sqlClientes += "('JP Galvao', '98765432109', 'jp@mail' , '87654321', '01/01/2001','Bolso do Bruno Henrique'),";
-				sqlClientes += "('Bruno Lage', '65498732110', 'blage@mail' , '98732165', '22/02/2022','Rua dos Tolos')";
+				sqlClientes += "('Bernardo' , '31418332062' ,'bernardo@mail.com' , '21986544785', '11/10/1990', 'Rua Delfim Moreira'),";
+				sqlClientes += "('Lucas'    , '14098593041' ,'lucas@mail.com'    , '21996544785', '22/04/1995', 'Rua Abelardo Bueno'),";
+				sqlClientes += "('Adilson'  , '82577808046' ,'adilson@mail.com'  , '21986566785', '19/08/2003', 'Rua André Rocha'),";
+				sqlClientes += "('Michael'  , '27591159097' ,'michael@mail.com'  , '21986599785', '23/09/2000', 'Rua Nelson Cardoso'),";
+				sqlClientes += "('Taynara'  , '32985261503' ,'taynara@mail.com'  , '21986585785', '06/11/2004', 'Rua Florianópolis'),";
+				sqlClientes += "('André'    , '35959647303' ,'andre@mail.com'    , '21986544581', '13/07/1999', 'Rua Francisco Caldas'),";
+				sqlClientes += "('Natally'  , '42108064044' ,'natally@mail.com'  , '21975644785', '10/12/2006', 'Rua Marechal Taumaturgo')";
 				con.query(sqlClientes);
 				tabela.close();
 			}

@@ -203,7 +203,7 @@ public class Empresa {
 		for (Cliente c : clientes.getListacliente()) {
 			System.out.printf("%-25s\t", c.getNome());
 			System.out.printf("%-15s\t", c.getCpf());
-			System.out.printf("%-10s\t\t", c.getEmail());
+			System.out.printf("%-23s\t", c.getEmail());
 			if (c.getDt_nascimento() != null)
 				System.out.printf("%s", c.getDt_nascimento().format(dtf));
 				//System.out.println("Não sei usar Data :(");
