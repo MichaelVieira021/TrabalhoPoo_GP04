@@ -644,9 +644,11 @@ public class Empresa {
 		Pedido ped = pedidoDAO.retornarPedidoComCliente(idprod);
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		String emissao = format.format(ped.getDt_emissao());
-		System.out.println("\n=================================================================================================");
+		System.out.println("\n===================================================================================================");
 		System.out.println("                    		  NOTA FISCAL											");
 		System.out.println("===================================================================================================");
+		System.out.println("EMPRESA: g4Tech                                                           CNPJ: 36.439.598/0001-67 ");
+		System.out.println("---------------------------------------------------------------------------------------------------");
 		System.out.println("CLIENTE: "+ped.getCliente().getNome()+"\t\t\t\t\t\t\tDATA DE EMISSÃO: " + emissao);
 		System.out.println("---------------------------------------------------------------------------------------------------");
 		System.out.println("ENDEREÇO DE ENTREGA: "+ped.getCliente().getEndereco());
