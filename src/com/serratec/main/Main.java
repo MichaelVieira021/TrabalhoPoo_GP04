@@ -218,7 +218,9 @@ public class Main {
 		
 		if(pd != null) {
 			ProdutoCarrinho pdItemEscolhido = Menus.menuProdutosCarrinho(pd.getIdpedido());
-			g4Tech.alterarQtdOuProduto(pdItemEscolhido, pd);
+			if(pdItemEscolhido != null) {
+				g4Tech.alterarQtdOuProduto(pdItemEscolhido, pd);
+			}
 		}
 	}
 		

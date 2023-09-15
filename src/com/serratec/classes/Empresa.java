@@ -425,11 +425,17 @@ public class Empresa {
 		        if (!prIgual) {
 		            quant = Util.validarInteiro("Digite a quantidade a ser adicionada: ");
 		            verEstoque = verificarEstoque(idprod, quant);
-		            contador = true;
-		            System.out.println("Produto adicionado com Sucesso!");
+		            
+		            //System.out.println("Produto adicionado com Sucesso!");
 		        }
-		        System.out.println("Digite [1] para adicionar outro produto ou [0] para concluir o pedido.");
-		        opcao = Util.validarInteiro("> ");
+		        if(verEstoque) {
+		        	contador = true;
+		        	System.out.println("Digite [1] para adicionar outro produto ou [0] para concluir o pedido.");
+			        opcao = Util.validarInteiro("> ");
+		        }else {
+		        	opcao = 1;
+		        }
+		        
 		    }
 		} while (opcao == 1);
 
@@ -612,8 +618,23 @@ public class Empresa {
 			System.out.println();
 		}
 		System.out.println();
-		int i = com.serratec.uteis.Util.validarInteiro("Digite o codigo do pedido: ");
-		listarPedidosComProdutos(i);
+		boolean teste = false;
+		do {
+			int i = com.serratec.uteis.Util.validarInteiro("Digite o codigo do pedido ou [0] para sair: ");
+			if(i == 0) {
+				teste = true;
+				break;
+			}
+			for (Pedido pedi : pedidos.getListapedidos()) {
+				if(i == pedi.getIdpedido()) {
+					listarPedidosComProdutos(i);
+					teste = true;
+					break;
+				}
+			}
+			System.out.println("Pedido não encontrado!");
+		}while(!teste);
+		
 	}
 	
 	public void listarPedidosComProdutos(int idprod) {
@@ -749,6 +770,8 @@ public class Empresa {
 		System.out.println("║            [1] - Adicionar               ║");
 		System.out.println("║            [2] - Remover                 ║");
 		System.out.println("║                                          ║");
+		System.out.println("║------------------------------------------║");
+		System.out.println("║          Digite '0' para [Sair]          ║");
 		System.out.println("╚══════════════════════════════════════════╝");
 		int qtd;
 		boolean verEstoque, verificaOpcao = true;
@@ -760,6 +783,9 @@ public class Empresa {
 		if(opcao == 1) {
 			do {
 				qtd = Util.validarInteiro("Digite a quantidade a ser adicionada: ");
+				if(qtd == 0) {
+					break;
+				}
 				if (pc.getPr().getQtd_estoque() > 0 && pc.getPr().getQtd_estoque() >= qtd) {
 					pc.getPr().setQtd_estoque(pc.getPr().getQtd_estoque()-qtd);
 					pc.setQuantidade(pc.getQuantidade() + qtd);
@@ -788,6 +814,8 @@ public class Empresa {
 					verEstoque = false;
 				}
 			}while(!verEstoque);
+		}else if(opcao == 0){
+			break;
 		}else {
 			verificaOpcao = false;
 			System.out.println("Opção inválida!");

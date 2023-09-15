@@ -2,6 +2,9 @@ package com.serratec.classes;
 
 import java.util.Scanner;
 
+import com.serratec.uteis.Menus;
+import com.serratec.uteis.Util;
+
 public class Produto {
 	private int idproduto;
 	private String nome;
@@ -34,28 +37,37 @@ public class Produto {
 		Scanner in = new Scanner(System.in);
 		
 		System.out.println("║Alteracao de dados");
-		System.out.println("║------------------------------------");
+		System.out.println("║------------------------------------");	
 		
-		System.out.println("║Nome: ");
+		System.out.print("║Produto: ");
 		String s = in.nextLine();
 		this.setNome(s);
 		
-		System.out.println("║Descrição: ");
+		System.out.print("║Descrição: ");
 		s = in.nextLine();
 		this.setDescricao(s);
 		
-		System.out.println("║Valor Custo: ");
-		double n = in.nextDouble();
-		this.setVl_custo(n);
-		this.setVl_venda(n*1.15);
+		double vl;
+		do {
+		vl = Util.validarDouble("║Valor custo: ");
+		this.setVl_custo(vl);
+		this.setVl_venda(vl*1.15);
+		if(vl < 1) {
+			System.out.println("║Digite um valor válido!");
+		}
+		}while(vl < 1);
 		
-		System.out.println("║Quantidade Estoque ");
-		int i= in.nextInt();
-		this.setQtd_estoque(i);
+		int qtd;
+		do {
+		qtd = Util.validarInteiro("║Quantidade: ");
+		this.setQtd_estoque(qtd);
+		if(qtd < 1) {
+			System.out.println("║Digite um valor válido!");
+		}
+		}while(qtd < 1);
 		
-		System.out.println("║Id da categoria: ");
-		int id = in.nextInt();
-		this.setIdcategoria(id);
+		int cat = Menus.menuCategorias();
+		this.setIdcategoria(cat);
 	}
 
 	public int getIdcategoria() {
