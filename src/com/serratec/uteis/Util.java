@@ -174,24 +174,24 @@ public class Util {
     	String endereco;
     	String numero_residencia = "";
     	String complemento = "";
-        String json;        
+        String json;   
+        boolean verificaErroCep = false;
 
 	    do {
-	    	
-	        
-	        try {
-	        	Thread.sleep(500);
-	        	System.out.print("║Informe o CEP: ");
-	        	Thread.sleep(500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+	        System.out.print("║Informe o CEP: ");
 			cep = in.next();
-	        if (!Util.verificarNumerico(cep) && cep.length() != 8) {
+	        if (!Util.verificarNumerico(cep) || cep.length() != 8) {
 	        	System.out.print("║");
-	            System.err.println("ERRO: CEP inválido. Digite os 8 dígitos!");
+	            System.err.println("ERRO: CEP inválido. Digite um CEP com 8 dígitos numéricos!");
 	        }
-	    } while (!Util.verificarNumerico(cep) && cep.length() != 8);
+	        if (Util.verificarNumerico(cep) && cep.length() == 8) {
+	        	verificaErroCep = verificarSeCepExiste(cep);
+	        	if (verificaErroCep == true) {
+	        		System.out.println("║CEP não existente");
+	        	}
+	        }        
+	        
+	    } while (!Util.verificarNumerico(cep) || cep.length() != 8 || verificaErroCep == true);
 		
         try {
         	
@@ -271,5 +271,32 @@ public class Util {
         } 
     }
 
+    public static boolean verificarSeCepExiste(String cep){
+        try {
+            String json;   
+            URL url = new URL("http://viacep.com.br/ws/"+ cep +"/json");
+            URLConnection urlConnection = url.openConnection();
+            InputStream is = urlConnection.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            StringBuilder jsonSb = new StringBuilder();
+            String teste;
+            br.lines().forEach(l -> jsonSb.append(l.trim()));
+            json = jsonSb.toString();
+            json = json.replaceAll("[{},:]", "");
+            json = json.replaceAll("\"", "\n");                       
+            String array[] = new String[30];
+            array = json.split("\n");
+            teste = array[2];
+            boolean testeAsBoolean = Boolean.parseBoolean(teste.trim());
+            
+            if (testeAsBoolean == true) {
+            	return true;
+            } else return false;                
+            
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } 
+    }
+    
 	
 }
