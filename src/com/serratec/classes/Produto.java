@@ -10,6 +10,7 @@ public class Produto {
 	private double vl_venda;
 	private int qtd_estoque;
 	private int idcategoria;
+	private Categoria categoria;
 
 	public Produto() {}
 
@@ -111,5 +112,15 @@ public class Produto {
 
 	public void setQtd_estoque(int qtd_estoque) {
 		this.qtd_estoque = qtd_estoque;
+	}
+
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}	
+	
+	
 }
