@@ -35,14 +35,26 @@ public class Menus {
 		System.out.println("║                                          ║");
 		System.out.println("║       [0] -[CRIAR NOVA CATEGORIA]        ║");
 		System.out.println("╚══════════════════════════════════════════╝");
-		int opcao = Util.validarInteiro("[CODIGO]>  ");
-		if(opcao == 0) {
-			Main.cadastrarCategoria();
-			opcao = teste+1;
-		}else {
-			cat=opcao;
-		}
-		return cat;
+		int opcao;
+		
+        cat = -1;
+        do {
+            opcao = Util.validarInteiro("[CODIGO]>  ");
+            if (opcao == 0) {
+                Main.cadastrarCategoria();
+                opcao = teste + 1;
+            }
+            for (Categoria ct : e.carregarCategoriaMenu()) {
+                if (ct.getIdcategoria() == opcao) {
+                    cat = opcao;
+                }
+            }
+            if (cat == -1) {
+                System.out.println("Categoria inválida");
+            }
+            
+        } while (cat == -1);
+        return cat;
 	}
 	
 	public static int menuClientes() {
@@ -62,19 +74,34 @@ public class Menus {
         	
         	cliente++;
         	if(cliente == tmh)System.out.println("║--------┴---------------------------------║");
-        	else System.out.println("║--------|---------------------------------║");
-        	
+        	else System.out.println("║--------|---------------------------------║"); 	
         }
 		System.out.println("║                                          ║");
 		System.out.println("║     Digite '0' para [NOVO CLIENTE]       ║");
 		System.out.println("╚══════════════════════════════════════════╝");
-		int opcao = Util.validarInteiro("[CODIGO]> ");
-		if(opcao == 0) {
-			Main.cadastrarCliente();
-			opcao = teste+1;
-		}else {
-			cliente=opcao;
-		}
+
+		boolean prEncontrado = false;
+		int cat;
+		do {
+			cat = Util.validarInteiro("[CODIGO]> ");
+			//MODIFICADO, ADICIONADO CONTADOR PARA EVITAR A CRIAÇÃO DE PEDIDOS VAZIOS
+			if(cat == 0) {
+				Main.cadastrarCliente();
+				cat = teste+1;
+			}
+			if(cat != 0) {
+				for(Cliente ct : e.carregarClienteMenu()){
+					if(cat == ct.getIdcliente()) {
+						cliente = ct.getIdcliente();
+						prEncontrado = true;
+						break;
+					}
+				}
+				if (!prEncontrado) {
+					System.err.println("Erro: Cliente não encontrado!");
+				}
+			}
+		}while(!prEncontrado);
 
 		return cliente;
 	}

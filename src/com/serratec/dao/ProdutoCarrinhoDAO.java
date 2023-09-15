@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import com.serratec.conexao.Conexao;
+import com.serratec.classes.Pedido;
 import com.serratec.classes.Produto;
 import com.serratec.classes.Empresa.ProdutoCarrinho;
 
@@ -14,12 +15,14 @@ public class ProdutoCarrinhoDAO {
 	
 	PreparedStatement pInclusao;
 	PreparedStatement pAlteracao;
+	PreparedStatement pExclusao;
 	
 	public ProdutoCarrinhoDAO(Conexao conexao, String schema) { 
 		this.conexao = conexao;
 		this.schema = schema;
 		prepararSqlInclusaoProdutoCarrinho();
 		prepararSqlAlteracao();
+		prepararSqlExclusao();
 	}
 	
 	public ProdutoCarrinhoDAO(Conexao conexao, String schema, int i) { 
@@ -27,6 +30,7 @@ public class ProdutoCarrinhoDAO {
 		this.schema = schema;
 		prepararSqlInclusaoProdutoCarrinho();
 		prepararSqlAlteracaoEstoque();
+		prepararSqlExclusao();
 	}
 
 //PREPARAR SQL--------------------------------------------
@@ -70,8 +74,36 @@ public class ProdutoCarrinhoDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	private void prepararSqlExclusao() {
+		String sql = "delete from "+ this.schema + ".pedido_produto";
+		sql += " where idpedido_produto = ?" ;
+		
+		try {
+			this.pExclusao = conexao.getC().prepareStatement(sql);
+		} catch (Exception e) {
+			System.err.println(e);
+			e.printStackTrace();
+		}
+	}
 
 //--------------------------------------------------------
+	
+	public int excluirPedidoCarrinho(ProdutoCarrinho pc) {		
+		try {
+			pExclusao.setInt(1, pc.getIdpedidoitem());	
+			
+			return pExclusao.executeUpdate();
+		}catch  (Exception e) {
+			if (e.getLocalizedMessage().contains("is null")) {
+				System.err.println("\nProduto nao Excluído do Carrinho.\nVerifique se foi chamado o conect:\n" + e);				
+			} else {				
+				System.err.println(e);
+				e.printStackTrace();
+			}
+			return 0;
+		}
+	}
 	public int alterarEstoque(Produto produto) {
 		try {
 			pAlteracao.setInt   (1, produto.getQtd_estoque());

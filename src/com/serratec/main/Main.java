@@ -159,6 +159,9 @@ public class Main {
 		p = g4Tech.cadastrarProduto();
 		pdao.incluirProduto(p);
 		g4Tech.adicionarProduto(p);
+		System.out.println("╔══════════════════════════════════════════╗");
+		System.out.println("║"+"\u001B[32m"+"       Produto cadastrado com sucesso. "+"\u001B[0m"+"   ║");
+		System.out.println("╚══════════════════════════════════════════╝");
 	}
 		
 	public static void alterarProduto() {
@@ -184,11 +187,11 @@ public class Main {
 		
 		if (prod != null) {	
 			System.out.print("║Deseja excluir o Produto " + prod.getNome()+"?(S/N) ");
-			char s = input.next().charAt(0);
+			char s = input.next().toLowerCase().charAt(0);
 			System.out.println("║                                          ║");
 			System.out.println("╚══════════════════════════════════════════╝");
 			
-			if (s == 's' || s == 'S') {
+			if (s == 's') {
 				i = proddao.excluirProduto(prod);
 			
 			}else if (s == 'n' || s == 'N') {
@@ -205,7 +208,7 @@ public class Main {
 		}
 	}
 		
-	//PEDIDO-----------------------------------------------
+	//PEDIDO-------------------------------------------------
 	public static void cadastrarPedido() {
 		g4Tech.cadastrarPedido();
 	}

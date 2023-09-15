@@ -44,6 +44,7 @@ public class Cliente extends Pessoa{
 		System.out.println("║Alteracao de dados");
 		System.out.println("║------------------------------------");
 		System.out.println("║");
+		/*
 		System.out.print("║Nome: ");
 		String s = in.nextLine();
 		
@@ -55,14 +56,14 @@ public class Cliente extends Pessoa{
 		if (!s.isEmpty() && !s.isBlank() && s != null)
 			this.cpf = s;
 	
-		System.out.print("║Digite seu EMAIL: ");
+		System.out.print("║EMAIL: ");
 		s = in.nextLine();
 		
 		if (!s.isEmpty() && !s.isBlank() && s != null)
 			this.email = s;
 		
 		//-----------14 digitos numericos
-		System.out.print("║Digite seu TELEFONE: ");
+		System.out.print("║TELEFONE: ");
 		s = in.nextLine();
 		
 		if (!s.isEmpty() && !s.isBlank() && s != null)
@@ -70,14 +71,35 @@ public class Cliente extends Pessoa{
 		
 		this.endereco = Util.buscarCep();
 		
-		System.out.print("Data nascimento (dd/MM/yyyy): ");
+		System.out.print("Dt nasc. (dd/MM/yyyy): ");
 		s = in.nextLine();
 		
 		if (!s.isEmpty() && !s.isBlank() && s != null) {
 			DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyy"); 
 			
 			this.dt_nascimento = LocalDate.parse(s, formato);
-		}
+		}*/
+		
+		//-----------------------------------------------------
+		System.out.print("║Nome: ");
+		String info = in.next();
+		this.nome = info;
+
+		this.cpf =Util.validarCPF(); 
+
+		System.out.print("║Email: ");
+		in.nextLine();
+		info = in.nextLine();
+		this.email = info;
+		
+		this.telefone = Util.validarTelefone();
+		
+		this.dt_nascimento = Util.validarData("║Data nasc.(dd/MM/yyyy): ");
+		
+		System.out.println("║------------------------------------------");	
+		System.out.println("║ 		ENDEREÇO            	           ");
+		System.out.println("║                                          ");	
+		this.endereco = Util.buscarCep();
 	}	
 	
 	public int getIdcliente() {

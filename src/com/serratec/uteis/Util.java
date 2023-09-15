@@ -187,13 +187,14 @@ public class Util {
 				e.printStackTrace();
 			}
 			cep = in.next();
-	        if (!Util.verificarNumerico(cep) || cep.length() != 8) {
+	        if (!Util.verificarNumerico(cep) && cep.length() != 8) {
 	        	System.out.print("║");
 	            System.err.println("ERRO: CEP inválido. Digite os 8 dígitos!");
 	        }
-	    } while (!Util.verificarNumerico(cep) || cep.length() != 8);
+	    } while (!Util.verificarNumerico(cep) && cep.length() != 8);
 		
         try {
+        	
             URL url = new URL("http://viacep.com.br/ws/"+ cep +"/json");
             URLConnection urlConnection = url.openConnection();
             InputStream is = urlConnection.getInputStream();

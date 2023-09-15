@@ -244,12 +244,24 @@ public class Empresa {
 		s = in.nextLine();
 		c.setDescricao(s);
 		
-		double vl = Util.validarDouble("║Valor custo: ");
+		double vl;
+		do {
+		vl = Util.validarDouble("║Valor custo: ");
 		c.setVl_custo(vl);
 		c.setVl_venda(vl*1.15);
-			
-		int qtd = Util.validarInteiro("║Quantidade: ");
+		if(vl < 1) {
+			System.out.println("║Digite um valor válido!");
+		}
+		}while(vl < 1);
+		
+		int qtd;
+		do {
+		qtd = Util.validarInteiro("║Quantidade: ");
 		c.setQtd_estoque(qtd);
+		if(qtd < 1) {
+			System.out.println("║Digite um valor válido!");
+		}
+		}while(qtd < 1);
 		
 		int cat = Menus.menuCategorias();
 		c.setIdcategoria(cat);
@@ -361,14 +373,11 @@ public class Empresa {
  	    LocalDateTime nowt = LocalDateTime.now();  
  	    LocalDate now = LocalDate.now();  
 
-		//System.out.println(Util.LINHA);
 		System.out.println("Cadastro de pedido: ");
-		//System.out.println(Util.LINHA);
-
-		Util.br();
 		System.out.println("Data de Emissão: " + dtf.format(nowt));
+		
 		pd.setDt_emissao(now);
-
+		
 		pd.setIdcliente(Menus.menuClientes());
 
 		inserirNoBd(inserirProdutoCarrinho(pd), pedidocarrinho);
@@ -387,9 +396,11 @@ public class Empresa {
 		int quant;
 		int opcao = 1;
 		boolean verEstoque = false, prIgual = true;
-		System.out.println("=====================================");
-		System.out.println("	   INSERIR PRODUTOS");
-		System.out.println("=====================================");
+		System.out.println("╔══════════════════════════════════════════╗");
+		System.out.println("║        ************************          ║");
+		System.out.println("║            INSERIR PRODUTOS              ║");
+		System.out.println("║        ************************          ║");
+		System.out.println("╚══════════════════════════════════════════╝");
 		int idprod;
 		//ADICIONADO CONTADOR PARA EVITAR A CRIACAO DE PEDIDOS VAZIOS
 		boolean contador = false;
@@ -414,8 +425,8 @@ public class Empresa {
 		            contador = true;
 		            System.out.println("Produto adicionado com Sucesso!");
 		        }
-		        System.out.println("Digite 1 para adicionar outro produto ou 0 para concluir o pedido.");
-		        opcao = in.nextInt();
+		        System.out.println("Digite [1] para adicionar outro produto ou [0] para concluir o pedido.");
+		        opcao = Util.validarInteiro("> ");
 		    }
 		} while (opcao == 1);
 
@@ -454,7 +465,7 @@ public class Empresa {
 						break;
 					}
 				case 3:
-					//alterarPedidoItem(pc, pd);
+					alterarRemoverPedidoItem(pc, pd);
 					opcQtdOuPr = true;
 					break;
 				case 0:
@@ -665,12 +676,11 @@ public class Empresa {
 		
 		//PARA ALTERAR PEDIDO---------
 		pedidoAlterado = le;
-
-		System.out.println("---------------");
-		System.out.println("ID do produto: " + le.getIdproduto());
-		System.out.println("Estoque do produto: " + le.getQtd_estoque());
-		System.out.println("Quantidade comprada do produto: " + le.getQuantidade());
-		
+		System.out.println("--------------------------------------------");
+		System.out.println("Produto: " + le.getPr().getNome());
+		System.out.println("Quantidade adicionada: " + le.getQuantidade());
+		System.out.println("Restam em estoque: " + le.getQtd_estoque());
+		System.out.println("--------------------------------------------");
 		pedidocarrinho.add(le);
 
 	}
@@ -756,7 +766,7 @@ public class Empresa {
 					if (pc.getPr().getQtd_estoque() == 0) {
 						System.out.println("Produto fora de estoque.");
 					} else {
-						System.out.println("A quantidade solicitada e superior a quantidade disponivel.");
+						System.out.println("A quantidade solicitada é superior a quantidade disponivel em estoque.");
 						System.out.println("Restam apenas ["+ pc.getPr().getQtd_estoque()+"] unidades.");
 					}
 				}
@@ -792,6 +802,52 @@ public class Empresa {
 		
 	}
 	
+	public ProdutoCarrinho alterarRemoverPedidoItem(ProdutoCarrinho pc, Pedido pd) {
+		ProdutoCarrinhoDAO pcdao = new ProdutoCarrinhoDAO(con, com.serratec.main.Main.SCHEMA);
+		PedidoDAO pddao = new PedidoDAO(con, com.serratec.main.Main.SCHEMA);
+		ArrayList<ProdutoCarrinho> teste = pcdao.carregarProdutoMenuItems(pd.getIdpedido());
+		
+		boolean pdExcluir = false;
+		for(ProdutoCarrinho prc : teste) {
+			if(prc.getIdpedidoitem() != pc.getIdpedidoitem()) {
+				pdExcluir = true;
+			}
+		}
+		ProdutoCarrinho pdItemEscolhido = null;
+		if(pdExcluir) {
+			inserirAlteracaoRemoverNoBd(pd, pc);
+			pd.dadosPedidos(pd);
+			pdItemEscolhido = Menus.menuProdutosCarrinho(pd.getIdpedido());
+		}else {
+			pdItemEscolhido = pdItemEscolhido;
+			System.out.println("Seu pedido tem apenas um produto.");
+			System.out.println("Ao excluir esse produto, o pedido tambem sera excluido");
+			System.out.println("Deseja continuar?");
+			System.out.print("[S/N]> ");
+			Scanner scan = new Scanner(System.in);
+			char opcao = scan.next().toLowerCase().charAt(0);
+			switch(opcao) {
+				case 's':
+					pddao.excluirPedido(pd);
+				default:
+					break;
+			}
+		}
+
+		return pdItemEscolhido;
+		
+	}
+	
+	public void inserirAlteracaoRemoverNoBd(Pedido pd, ProdutoCarrinho pc) {
+		ProdutoCarrinhoDAO pcdao2 = new ProdutoCarrinhoDAO(con, com.serratec.main.Main.SCHEMA);
+		ProdutoCarrinhoDAO pcdao3 = new ProdutoCarrinhoDAO(con, com.serratec.main.Main.SCHEMA, 2);		
+
+		//ALTERAR PEDIDO ATUALIZADO		
+		pc.getPr().setQtd_estoque(pc.getPr().getQtd_estoque()+pc.getQuantidade());
+		pcdao3.alterarEstoque(pc.getPr());
+		pcdao2.excluirPedidoCarrinho(pc);
+	}
+	
 	public ProdutoCarrinho alterarPedidoItem(ProdutoCarrinho pc, Pedido pd) {
 		Pedido teste = new Pedido();
 		
@@ -815,6 +871,9 @@ public class Empresa {
 
 	}
 	
+	
+	
+	//inserirNoBd(inserirProdutoCarrinho(pd), pedidocarrinho);
 	// CATEGORIA ----------------------------------------------------------------------
 	
  	public com.serratec.classes.Categoria cadastrarCategoria() {
