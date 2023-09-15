@@ -58,6 +58,8 @@ public class ListaProdutos {
 	private Produto dadosProduto(ResultSet tabela) { 
 		try {
 			Produto prod = new Produto();
+			Categoria cat = new Categoria();
+			cat.setNm_categoria(tabela.getString("nm_categoria"));
 			prod.setNome(tabela.getString("nome"));
 			prod.setDescricao(tabela.getString("descricao"));
 			prod.setVl_custo(tabela.getDouble("vl_custo"));			
@@ -65,6 +67,7 @@ public class ListaProdutos {
 			prod.setQtd_estoque(tabela.getInt("qtd_estoque"));
 			prod.setIdcategoria(tabela.getInt("idcategoria"));
 			prod.setIdproduto(tabela.getInt("idproduto"));
+			prod.setCategoria(cat);
 			
 			return prod;
 		} catch (SQLException e) {

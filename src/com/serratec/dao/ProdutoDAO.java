@@ -133,8 +133,9 @@ public class ProdutoDAO {
 	//------------------------------------------------------------
 	public ResultSet carregarProduto() {
 		ResultSet tabela;				
-		String sql = "select * from " + this.schema + ".produto order by idproduto";
-		
+		String sql = "select * from " + this.schema + ".produto as prod";
+		sql += " JOIN " + this.schema + ".categoria as cat";
+		sql += " ON cat.idcategoria = prod.idcategoria"; 
 		tabela = conexao.query(sql);
 		
 		return tabela;

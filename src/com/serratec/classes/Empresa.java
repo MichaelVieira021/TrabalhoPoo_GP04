@@ -138,6 +138,7 @@ public class Empresa {
 		com.serratec.classes.Cliente cl = new com.serratec.classes.Cliente();
 		
 		int i = -1;
+		listarDadosClientes();
 		System.out.println("╔══════════════════════════════════════════╗");
 		System.out.println("║           LOCALIZAR DE CLIENTE           ║");
 		System.out.println("║------------------------------------------║");
@@ -208,7 +209,7 @@ public class Empresa {
 				//System.out.println("Não sei usar Data :(");
 			System.out.println();
 		}
-
+		System.out.println("==================================================================================");
 		System.out.println();
 	}
 
@@ -279,11 +280,11 @@ public class Empresa {
 		com.serratec.classes.Produto prod = new com.serratec.classes.Produto();
 		
 		int i = -1;
-		
+		listarDadosProdutos();
 		System.out.println("╔══════════════════════════════════════════╗");
 		System.out.println("║           LOCALIZAR DE PRODUTO           ║");
 		System.out.println("║------------------------------------------║");
-		
+			//listarDadosProdutos();
 		do {
 			System.out.print("║Digite o Nome: "); 
 			String s = in.nextLine();
@@ -336,20 +337,22 @@ public class Empresa {
 	public void listarDadosProdutos() {
 		produtos = new ListaProdutos(con, schema);
 
-		System.out.println("\n====================================================================================");
+		System.out.println("\n===========================================================================================================");
 		System.out.println("                               LISTAGEM DE PRODUTOS                               ");
-		System.out.println("====================================================================================");
-		System.out.println("NOME\tDESCRIÇÃO\tVL_CUSTO\tVL_VENDA\tQTD ESTOQUE\tIDCATEGORIA");
-		System.out.println("------------------------------------------------------------------------------------");
+		System.out.println("===========================================================================================================");
+		System.out.println("\tNOME\t\t\tDESCRIÇÃO\t     VL_CUSTO   VL_VENDA   ESTOQUE\tIDCATEGORIA");
+		System.out.println("-----------------------------------------------------------------------------------------------------------");
 		for (Produto prod : produtos.getListaProdutos()) {
-			System.out.printf(prod.getNome()+"\t");
-			System.out.print(prod.getDescricao()+"\t");
-			System.out.print(prod.getVl_custo()+"\t");
-			System.out.print(prod.getVl_venda()+"\t");
-			System.out.print(prod.getQtd_estoque()+"\t");
-			System.out.print(prod.getIdcategoria()+"\t");
+			System.out.printf("%.20s",(Util.preencherEspacos(50,prod.getNome())));
+			System.out.printf("%.30s",(Util.preencherEspacos(50,"     "+prod.getDescricao())));
+			System.out.printf("%.12s",(Util.preencherEspacos(12,"    R$"+String.valueOf((prod.getVl_custo())))));
+			System.out.printf("%.12s",(Util.preencherEspacos(12,"   R$"+String.valueOf(prod.getVl_venda()))));
+			System.out.printf("%.7s" ,(Util.preencherEspacos(10,"   "+String.valueOf(prod.getQtd_estoque()))));
+			System.out.printf("%.25s",(Util.preencherEspacos(15,"   "+String.valueOf(prod.getCategoria().getNm_categoria()))));
+			//System.out.println("\n-----------------------------------------------------------------------------------------------------------");
 			System.out.println();
 		}
+		System.out.println("===========================================================================================================");
 		System.out.println();
 	}
 
@@ -620,23 +623,23 @@ public class Empresa {
 		Pedido ped = pedidoDAO.retornarPedidoComCliente(idprod);
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		String emissao = format.format(ped.getDt_emissao());
-		System.out.println("\n====================================================================================");
+		System.out.println("\n=================================================================================================");
 		System.out.println("                    		  NOTA FISCAL											");
-		System.out.println("====================================================================================");
-		System.out.println("CLIENTE: "+ped.getCliente().getNome()+"\t\tDATA DE EMISSÃO: " + emissao);
-		System.out.println("------------------------------------------------------------------------------------");
+		System.out.println("===================================================================================================");
+		System.out.println("CLIENTE: "+ped.getCliente().getNome()+"\t\t\t\t\t\t\tDATA DE EMISSÃO: " + emissao);
+		System.out.println("---------------------------------------------------------------------------------------------------");
 		System.out.println("ENDEREÇO DE ENTREGA: "+ped.getCliente().getEndereco());
-		System.out.println("------------------------------------------------------------------------------------");
-		System.out.println("IDPEDIDO\t\tIDPRODUTO\tPRODUTO\t\tQUANTIDADE\tVALOR UNITÁRIO\tVALOR FINAL");
-		System.out.println("------------------------------------------------------------------------------------");
+		System.out.println("---------------------------------------------------------------------------------------------------");
+		System.out.println("  IDPEDIDO   IDPRODUTO    PRODUTO               QUANTIDADE      VALOR UNITÁRIO      VALOR FINAL");
+		System.out.println("---------------------------------------------------------------------------------------------------");
 		double total = 0;
 		for(ProdutoCarrinho c : e.listarProdutosNoPedidoSelecionado(idprod)) {
-        	System.out.printf(c.getIdpedido()+"\t");
-        	System.out.printf(c.getIdproduto()+"\t");
-        	System.out.printf(c.getNome()+"\t");
-        	System.out.printf(c.getQuantidade()+"\t");
-        	System.out.printf("R$"+c.getVl_venda()+"\t\t");
-        	System.out.printf("R$"+c.getVl_venda()*c.getQuantidade()+"\t");
+        	System.out.printf("    %.5S",(Util.preencherEspacos(15," "+c.getIdpedido())));
+        	System.out.printf("\t%.5S",(Util.preencherEspacos(15," "+c.getIdproduto())));
+        	System.out.printf("%.25S",(Util.preencherEspacos(30,"     "+c.getNome())));
+        	System.out.printf("%.10S",(Util.preencherEspacos(10,"      "+c.getQuantidade())));
+        	System.out.printf("%.20S",(Util.preencherEspacos(30,"           "+"R$"+c.getVl_venda())));
+        	System.out.printf("%.20S",(Util.preencherEspacos(30,"          "+"R$"+c.getVl_venda()*c.getQuantidade())));
     		System.out.println();
     		total += (c.getVl_venda()*c.getQuantidade());
 		}
@@ -647,9 +650,9 @@ public class Empresa {
 			System.out.print(pedi.getIdcliente()+"\t");
 			System.out.println();
 		}*/
-		System.out.println("------------------------------------------------------------------------------------");
-		System.out.println("VALOR TOTAL: R$" + total);
-		System.out.println("------------------------------------------------------------------------------------");
+		System.out.println("---------------------------------------------------------------------------------------------------");
+		System.out.println("  VALOR TOTAL: R$" + total);
+		System.out.println("---------------------------------------------------------------------------------------------------");
 		System.out.println();
 	}
 	
