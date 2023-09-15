@@ -118,7 +118,7 @@ public class Menus {
 		System.out.println("║--------┬--------------------┬------------║");
 		for(Produto ct : e.carregarProdutoMenu()) {
         	System.out.print(Util.preencherEspacos(9, "║  ["+ct.getIdproduto()+"] "));
-        	System.out.print(Util.preencherEspacos(21, "| "+ ct.getNome()+" "));
+        	System.out.printf("%.21s",Util.preencherEspacos(21, "| "+ ct.getNome()+" "));
         	if(ct.getQtd_estoque() == 0) {
         		System.out.print(Util.preencherEspacos(18, "|     "+"\u001B[31m" + ct.getQtd_estoque()));System.out.println("\u001B[0m"+"║");
         	}else {
