@@ -198,7 +198,7 @@ public class Empresa {
 		System.out.println("\n==================================================================================");
 		System.out.println("                               LISTAGEM DE CLIENTES                               ");
 		System.out.println("==================================================================================");
-		System.out.println("Nome\t\t\t\tCPF\t\tEmail\t\t\tDt.Nasc.");
+		System.out.println("Nome\t\t\t\tCPF\t\tEmail \t\t  Dt.Nasc.");
 		System.out.println("----------------------------------------------------------------------------------");
 		for (Cliente c : clientes.getListacliente()) {
 			System.out.printf("%-25s\t", c.getNome());

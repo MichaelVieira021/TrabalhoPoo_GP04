@@ -25,9 +25,15 @@
 
 
 ### Funcionalidades: 
+<<<<<<< HEAD
+- Cadastrar, atualizar e excluir; 
+- Localizar;
+- Gerar relatorio.
+=======
 - Cadastrar, atualizar e excluir
 - Localizar
 - Gerar relatorio
+>>>>>>> feature/Adilson-Fernando-Neves-Ornellas
 
 ### Localização de Registros
 
@@ -47,4 +53,3 @@ O sistema tera menus dedicados a cada uma das principais funcionalidades:
 - Realizar geração de relatórios
 ***
 
-🚧 EM CONSTRUÇÃO...
