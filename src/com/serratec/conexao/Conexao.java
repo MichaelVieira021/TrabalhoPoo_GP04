@@ -62,8 +62,6 @@ public class Conexao {
 			return getStatment().executeQuery(query);
 		}catch (NullPointerException | SQLException ex) {
 			if (!ex.getLocalizedMessage().contentEquals("Nenhum resultado foi retornado pela consulta.")) {
-				//System.out.println(ex.getMessage());
-				//System.out.println(ex.getErrorCode());
 				ex.printStackTrace();
 			} else if (ex.getLocalizedMessage().contentEquals("is null")) {
 				System.err.println("Verifique se foi chamado o conect");

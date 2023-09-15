@@ -10,9 +10,7 @@ import com.serratec.dao.ClienteDAO;
 public class ListaClientes {
 	private Conexao con;
 	private String schema;
-	
-	ArrayList<Cliente> listacliente = new ArrayList<>();
-	
+	private ArrayList<Cliente> listacliente = new ArrayList<>();
 	
 	public ListaClientes (Conexao con, String schema) {
 		this.con = con;
@@ -50,7 +48,6 @@ public class ListaClientes {
 			while (tabela.next()) {							
 				this.listacliente.add(dadosCliente(tabela));				
 			}
-			
 			tabela.close();
 		
 		} catch (Exception e) {
@@ -67,18 +64,13 @@ public class ListaClientes {
 			dtNasc = tabela.getString("dt_nascimento");
 			if (dtNasc != null)
 				c.setDt_nascimento(LocalDate.parse(dtNasc));
-			c.setNome(tabela.getString("nome"));
-			c.setEndereco(tabela.getString("endereco"));
-			c.setCpf(tabela.getString("cpf"));			
-			c.setEmail(tabela.getString("email"));
-			c.setTelefone(tabela.getString("telefone"));
-			c.setIdcliente(tabela.getInt("idcliente"));
-			System.out.println(tabela.getString("nome") + " - " +
-							   tabela.getString("endereco") + " - " +
-							   tabela.getString("cpf") + " - " +
-							   tabela.getString("email") + " - " +
-							   tabela.getString("telefone") + " - " +
-							   tabela.getString("idcliente"));
+				c.setNome(tabela.getString("nome"));
+				c.setEndereco(tabela.getString("endereco"));
+				c.setCpf(tabela.getString("cpf"));			
+				c.setEmail(tabela.getString("email"));
+				c.setTelefone(tabela.getString("telefone"));
+				c.setIdcliente(tabela.getInt("idcliente"));
+
 			return c;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -93,7 +85,5 @@ public class ListaClientes {
 	public void setListacliente(ArrayList<Cliente> listacliente) {
 		this.listacliente = listacliente;
 	}
-	
-	
 	
 }

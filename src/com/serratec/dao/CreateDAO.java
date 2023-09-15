@@ -20,11 +20,10 @@ public class CreateDAO {
 			
 			if (criarSchema(conexao, schema)) {
 				criarEntidadeCliente(conexao, schema);
-				criarEntidadeEndereco(conexao, schema);
 				criarEntidadeCategoria(conexao, schema);
 				criarEntidadeProduto(conexao, schema);
 				criarEntidadePedido(conexao, schema);
-				//criarEntidadeLivrosCliente(conexao, schema);
+				criarEntidadePedidoItem(conexao, schema);
 				
 				bdCriado = true;
 			}
@@ -34,6 +33,7 @@ public class CreateDAO {
 		return bdCriado;
 	}
 	
+	//CONEXÃO--------------------------------------------------------------------------------
 	private static Conexao conectar(String bd, DadosConexao dadosCon) {		
 		dadosCon.setBanco(bd);
 		Conexao conexao = new Conexao(dadosCon);
@@ -45,6 +45,7 @@ public class CreateDAO {
 		con.disconect();
 	}
 	
+	//---------------------------------------------------------------------------------------
 	private static boolean criarDatabase(Conexao con, String bd) {		
 		boolean bdExiste;
 		int tentativas = 1;
@@ -69,7 +70,7 @@ public class CreateDAO {
 					tentativas++;
 				}
 			} catch (Exception e) {
-				System.err.printf("Nao foi possivel criar o database %s: %s", bd, e);
+				System.err.printf("Não foi possível criar o database %s: %s", bd, e);
 				e.printStackTrace();
 				return false;
 			}
@@ -102,7 +103,7 @@ public class CreateDAO {
 					tentativas++;
 				}
 			} catch (Exception e) {
-				System.err.printf("Nao foi possivel criar o schema %s: %s", schema, e);
+				System.err.printf("Não foi possível criar o schema %s: %s", schema, e);
 				e.printStackTrace();
 				return false;
 			}
@@ -130,43 +131,14 @@ public class CreateDAO {
 			}
 
 			if (estrangeiro) {
-				sql += "references " + schema + "." + entidadeEstrangeira + "(" + atributoEstrangeiro + ")";
+				sql += "references " + schema + "." + entidadeEstrangeira + "(" + atributoEstrangeiro + ") on delete cascade";
 			}
 
 			con.query(sql);
 		}
-	}
-	
-	private static void criarChaveComposta(Conexao con, String schema, String entidade, 
-			String nomesCamposCompostos ) {
-		
-		boolean chaveExist = false;
-		String sql = "SELECT CONNAME FROM pg_constraint where conname = 'chave_pk'";				
-		ResultSet result = con.query(sql);
-		
-		try {
-			chaveExist = (result.next()?true:false);
-			
-		} catch (SQLException e) {
-			System.err.println(e);
-			e.printStackTrace();
-		}
-		
-		if (!chaveExist) {
-			sql = "alter table " + schema + "." + entidade + " add constraint chave_pk" +
-					" primary key (" + nomesCamposCompostos + ")";
-				
-		con.query(sql);
-		}
-	}
-		
+	}	
 
-	/*
-	 * =================================================================================
-	 * 								CRIAR ENTIDADES
-	 * =================================================================================
-	 * */
-	
+	//CRIAR ENTIDADES --------------------------------------------------------------
 	private static void criarEntidadeCliente(Conexao con, String schema) {
 		String entidade = "cliente";
 		
@@ -175,37 +147,13 @@ public class CreateDAO {
 		
 		if (entidadeExists(con, schema, entidade)) {
 			criarCampo(con, schema, entidade, "idcliente", "serial"	 	 	, true,  false, null, null);
-			/*criarCampo(con, schema, entidade, "codigo"	 ,
-					"TEXT GENERATED ALWAYS AS ( 'USER' || LPAD(idcliente::TEXT, 3, '0') ) STORED", 
-					false,  false, null, null);*/
 			criarCampo(con, schema, entidade, "nome"	 , "varchar(100)"	, false, false, null, null);
 			criarCampo(con, schema, entidade, "cpf"		 , "varchar(11)" 	, false, false, null, null);
 			criarCampo(con, schema, entidade, "email"	 , "varchar(150)"	, false, false, null, null);
 			criarCampo(con, schema, entidade, "telefone" , "varchar(16)"	, false, false, null, null);
 			criarCampo(con, schema, entidade, "dt_nascimento"	, "date"	, false, false, null, null);
 			criarCampo(con, schema, entidade, "endereco"	 	, "text"	, false, false, null, null);
-			//criarCampo(con, schema, entidade, "idendereco"	 , "int"	
-			//		, false, true, "endereco", "idendereco");
 			cadastrarClientes(con, schema, entidade);
-		}		
-	}
-	
-	private static void criarEntidadeEndereco(Conexao con, String schema) {
-		String entidade = "endereco";
-		
-		if (!entidadeExists(con, schema, entidade))		
-			criarTabela(con, entidade, schema);
-		
-		if (entidadeExists(con, schema, entidade)) {
-			criarCampo(con, schema, entidade, "idendereco"		, "serial"	 	 	, true,  false, null, null);
-			criarCampo(con, schema, entidade, "cep"	 			, "varchar(14)"		, false, false, null, null);
-			criarCampo(con, schema, entidade, "tipo_logra"		, "varchar(255)" 	, false, false, null, null);
-			criarCampo(con, schema, entidade, "logradouro"		, "varchar(255)"	, false, false, null, null);
-			criarCampo(con, schema, entidade, "numero" 			, "varchar(16)"		, false, false, null, null);
-			criarCampo(con, schema, entidade, "bairro"			, "varchar(255)"	, false, false, null, null);
-			criarCampo(con, schema, entidade, "cidade"	 		, "varchar(255)"	, false, false, null, null);
-			criarCampo(con, schema, entidade, "uf"	 			, "varchar(2)"		, false, false, null, null);
-			criarCampo(con, schema, entidade, "complemento"	 	, "varchar(255)"	, false, false, null, null);
 		}		
 	}
 	
@@ -247,7 +195,7 @@ public class CreateDAO {
 		if (!entidadeExists(con, schema, entidade))		
 			criarTabela(con, entidade, schema);
 		
-		if (entidadeExists(con, schema, entidade)) {
+		if (entidadeExists(con, schema, entidade)) {			
 			criarCampo(con, schema, entidade, "idpedido"			, "serial"	 	 		, true,  false, null, null);
 			criarCampo(con, schema, entidade, "dt_emissao"	 		, "date"				, false, false, null, null);
 			criarCampo(con, schema, entidade, "idcliente"			, "int" 				, false, true, "cliente", "idcliente");
@@ -255,7 +203,22 @@ public class CreateDAO {
 		}		
 	}
 
+	private static void criarEntidadePedidoItem(Conexao con, String schema) {
+		String entidade = "pedido_produto";
+		
+		if (!entidadeExists(con, schema, entidade))		
+			criarTabela(con, entidade, schema);
+		
+		if (entidadeExists(con, schema, entidade)) {
+			criarCampo(con, schema, entidade, "idpedido_produto"	, "serial" 			, true, false, null, null);
+			criarCampo(con, schema, entidade, "idpedido"			, "int"	 	 		, false,  true, "pedido", "idpedido");
+			criarCampo(con, schema, entidade, "idproduto"	 		, "int"				, false,  true, "produto", "idproduto");
+			criarCampo(con, schema, entidade, "quantidade"			, "int" 			, false, false, null, null);
+		
+		}		
+	}
 	
+	//---------------------------------------------------------------------------------------
 	public static boolean databaseExists(Conexao con, String bd) {
 		ResultSet entidade;
 		boolean dbExists = false;
@@ -319,6 +282,8 @@ public class CreateDAO {
 		return atributoExist;
 	}
 	
+	
+	//---------------------------------------------------------------------------------------
 	private static void cadastrarClientes(Conexao con, String schema, String entidade) {
 		ResultSet tabela = con.query("select nome from " + schema + "." + entidade + " limit 1");
 		
@@ -346,9 +311,10 @@ public class CreateDAO {
 				String sqlCategoria = "insert into " + schema + "." + entidade;
 				sqlCategoria += " (nm_categoria, descricao)";
 				sqlCategoria += " values";
-				sqlCategoria += "('Teclados', 'Descrição de Teclados'),";
-				sqlCategoria += "('Monitores', 'Descrição de Monitores'),";
-				sqlCategoria += "('Mouses', 'Descrição de Mouses')";
+				sqlCategoria += "('Hardware', 'Componentes físicos de um sistema de computador.'),";
+				sqlCategoria += "('Perifericos', 'Dispositivos auxiliares.'),";
+				sqlCategoria += "('Celular & Smartphone', 'Telefones móveis que possuem funcionalidades avançadas.'),";
+				sqlCategoria += "('Games', 'Jogos eletrônicos para várias plataformas.')";
 				con.query(sqlCategoria);
 				tabela.close();
 			}
@@ -357,7 +323,7 @@ public class CreateDAO {
 		}		
 	}
 	
-    private static void cadastrarProdutos(Conexao con, String schema, String entidade) {
+	private static void cadastrarProdutos(Conexao con, String schema, String entidade) {
         ResultSet tabela = con.query("select nome from " + schema + "." + entidade + " limit 1");
         
         try {
@@ -365,14 +331,22 @@ public class CreateDAO {
                 String sqlProduto = "insert into " + schema + "." + entidade;
                 sqlProduto += " (nome, descricao, vl_custo, vl_venda, qtd_estoque, idcategoria)";
                 sqlProduto += " values";
-                sqlProduto += "('Kit Gamer', 'Descrição Kit Gamer', '150', '180', '50', '1'),";
-                sqlProduto += "('Monitor Gamer', 'Descrição Monitor gamer', '500', '660', '50', '2'),";
-                sqlProduto += "('Mouse Gamer', 'Descrição Mouse gamer', '50', '90', '4', '3'),";
-                sqlProduto += "('Webcan Gamer', 'Descrição Webcan gamer', '200', '300', '7', '3'),";
-                sqlProduto += "('Teclado Gamer', 'Descrição Teclado gamer', '180', '200', '33', '2'),";
-                sqlProduto += "('Mousepad Gamer', 'Descrição Mousepad gamer', '20', '30', '80', '2'),";
-                sqlProduto += "('Geladeira Gamer', 'Descrição Geladeira gamer', '4000', '5000', '50', '1'),";
-                sqlProduto += "('Monitor Comum', 'Descrição Monitor gamer', '600', '700', '5', '2')";
+                sqlProduto += "('Kit Gamer', 'Um conjunto completo de equipamentos de jogos, incluindo teclado, mouse e fone de ouvido.', '150', '180', '50', '1'),";
+                sqlProduto += "('Monitor Gamer', 'Monitor de alta resolução com taxa de atualização rápida para uma experiência de jogo suave.', '500', '660', '50', '2'),";
+                sqlProduto += "('Mouse Gamer', 'Mouse com alta DPI para controle preciso e botões programáveis para jogos.', '50', '90', '4', '3'),";
+                sqlProduto += "('Webcam Gamer', 'Webcam de alta qualidade para streaming de jogos com boa iluminação.', '200', '300', '7', '3'),";
+                sqlProduto += "('Teclado Gamer', 'Teclado mecânico com teclas programáveis e retroiluminação RGB.', '180', '200', '33', '2'),";
+                sqlProduto += "('Mousepad Gamer', 'Mousepad com superfície otimizada para melhor desempenho do mouse.', '20', '30', '80', '2'),";
+                sqlProduto += "('Geladeira Gamer', 'Geladeira com recursos especiais para gamers, como um cooler para latas de bebida.', '4000', '5000', '50', '1'),";
+                sqlProduto += "('Monitor Comum', 'Monitor com boa resolução e taxa de atualização para uso diário.', '600', '700', '5', '2'),";
+                sqlProduto += "('Smartphone Solar', 'Smartphone com painel solar integrado para carregamento ao ar livre.', '1200', '1400', '30', '4'),";
+                sqlProduto += "('Teclado Projetável', 'Teclado virtual projetável que pode ser usado em qualquer superfície plana.', '200', '250', '40', '1'),";
+                sqlProduto += "('Monitor Transparente', 'Monitor com tecnologia de exibição transparente para uma experiência de visualização futurista.', '800', '1000', '20', '2'),";
+                sqlProduto += "('Webcam de Privacidade', 'Webcam com cobertura física integrada para privacidade.', '100', '150', '35', '3'),";
+                sqlProduto += "('Teclado de Papel', 'Teclado dobrável e leve feito de material durável semelhante ao papel.', '25', '40', '60', '2'),";
+                sqlProduto += "('Geladeira Inteligente', 'Geladeira com tela sensível ao toque e conectividade à Internet para rastreamento e pedidos de alimentos.', '5000', '6000', '15', '1'),";
+                sqlProduto += "('Smartphone com Tradução em Tempo Real', 'Smartphone com capacidade de tradução em tempo real para chamadas telefônicas.', 1500, 1700, 20, 4),";
+                sqlProduto += "('Console Retrô', 'Console de jogos retrô pré-carregado com jogos clássicos.', 300, 350, 30, 4)";
                 con.query(sqlProduto);
                 tabela.close();
             }

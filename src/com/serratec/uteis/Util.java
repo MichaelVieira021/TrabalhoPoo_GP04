@@ -1,16 +1,14 @@
 package com.serratec.uteis;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.net.URLConnection;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Scanner;
-
-import com.serratec.classes.Endereco;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.concurrent.*;
 
 public class Util {
 	public static Scanner in = new Scanner(System.in);
@@ -33,6 +31,26 @@ public class Util {
 		System.out.println(mensagem);
 	}
 	
+	public void preencherEspaco(String teste) {
+		for(int i = 0; i < teste.length(); i++) {
+			
+		}
+	}
+	
+	   public static String preencherEspacos(int tamanho, String texto) {
+	        StringBuilder resultado = new StringBuilder(texto);
+	        
+	        int preencher = tamanho - texto.length();
+	        
+	        for (int i = 0; i < preencher; i++) {
+	            resultado.append(" ");
+	        }
+	        
+	        //resultado.append("║");
+	        
+	        return resultado.toString();
+	    }
+	
 	public static LocalDate validarData(String mensagem) {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDate dataConvertida = null;
@@ -40,19 +58,19 @@ public class Util {
 		boolean dataValidada = false;
 		
 		do {
-			System.out.println(mensagem);
-			sData = in.nextLine();
-			sData = in.nextLine();
+			System.out.print(mensagem);
+			sData = in.next();
 			try {
 				dataConvertida = LocalDate.parse(sData, dtf);   
 				dataValidada = true;
 				return dataConvertida;
 			} catch (Exception e) {
-				System.out.println("Data invalida");
-				return null;
+				System.out.print("║");
+				System.err.println("Data invalida");
 			}
 			
 		} while (!dataValidada);
+		return null;
 	}
 	
  	public static int validarInteiro(String mensagem) {
@@ -66,7 +84,8 @@ public class Util {
 				numero = Integer.parseInt(s);
 				validado = true;
 			} catch (Exception e) {
-				System.out.println("Informe um numero valido - " + e.getMessage());
+				System.out.print("║");
+				System.err.println("Informe um numero valido - " + e.getMessage());
 			}
 		} while (!validado);
 		
@@ -84,11 +103,173 @@ public class Util {
 				numero = Double.parseDouble(s);
 				validado = true;
 			} catch (Exception e) {
-				System.out.println("Informe um numero valido - " + e.getMessage());
+				System.out.print("║");
+				System.err.println("Informe um numero valido - " + e.getMessage());
 			}
 		} while (!validado);
 		
 		return numero;
 	}
+	
+    public static String validarCPF(){
+        String cpf;
+        //in.nextLine();
+
+        do {
+        	
+            
+            try {
+            	Thread.sleep(500);
+            	System.out.print("║CPF: ");
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+            cpf = in.next();
+            
+            if (!verificarNumerico(cpf) || cpf.length() != 11) {
+            	System.out.print("║");
+                System.err.println("Erro: CPF inválido. Por favor, digite os 11 dígitos.");
+
+            }
+        } while (!verificarNumerico(cpf) || cpf.length() != 11);
+        return cpf;
+    }
+    
+    public static String validarTelefone(){
+        String telefone;
+        //in.nextLine();
+
+        do {
+        	
+            
+            try {
+            	Thread.sleep(500);
+            	System.out.print("║Telefone: ");
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+            telefone = in.next();
+            
+            if (!verificarNumerico(telefone) || telefone.length() != 11) {
+            	System.out.print("║");
+                System.err.println("Erro: Telefone inválido. Por favor, digite o telefone com DDD.");
+
+            }
+        } while (!verificarNumerico(telefone) || telefone.length() != 11);
+        return telefone;
+    }
+    
+    public static boolean verificarNumerico(String str) {
+        return str.matches("\\d+");
+    }
+    
+    public static String buscarCep(){
+    	String cep;
+    	String logradouro;
+    	String bairro;
+    	String cidade;
+    	String uf;
+    	String endereco;
+    	String numero_residencia = "";
+    	String complemento = "";
+        String json;        
+
+	    do {
+	    	
+	        
+	        try {
+	        	Thread.sleep(500);
+	        	System.out.print("║Informe o CEP: ");
+	        	Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			cep = in.next();
+	        if (!Util.verificarNumerico(cep) && cep.length() != 8) {
+	        	System.out.print("║");
+	            System.err.println("ERRO: CEP inválido. Digite os 8 dígitos!");
+	        }
+	    } while (!Util.verificarNumerico(cep) && cep.length() != 8);
+		
+        try {
+        	
+            URL url = new URL("http://viacep.com.br/ws/"+ cep +"/json");
+            URLConnection urlConnection = url.openConnection();
+            InputStream is = urlConnection.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            
+
+            StringBuilder jsonSb = new StringBuilder();
+
+            br.lines().forEach(l -> jsonSb.append(l.trim()));
+            json = jsonSb.toString();
+            json = json.replaceAll("[{},:]", "");
+            json = json.replaceAll("\"", "\n");                       
+            String array[] = new String[30];
+            array = json.split("\n");
+            in.nextLine();
+         	System.out.print("║Número da residência:");
+         	numero_residencia = in.nextLine();
+         	
+         	System.out.print("║Complemento: ");
+         	complemento = in.nextLine();
+         	
+    		System.out.println("║                                          ║");
+    		System.out.println("╚══════════════════════════════════════════╝");
+            
+            logradouro = array[7];            
+            bairro = array[15];
+            cidade = array[19]; 
+            uf = array[23];
+            
+            if(complemento == "") {
+                endereco = logradouro + ", " + numero_residencia + " - " + bairro + " - " + 
+             		   cidade + " - " + uf;
+                System.out.println("╔══════════════════════════════════════════╗");
+        		System.out.println("║           ENDEREÇO ENCONTRADO            ║");
+        		System.out.println("║------------------------------------------║");	
+                System.out.print(Util.preencherEspacos(43, "║"+logradouro + ", " + numero_residencia));System.out.println("║");
+                System.out.print(Util.preencherEspacos(43, "║"+bairro + " - " + cidade + " - " + uf));System.out.println("║");
+        		System.out.println("║------------------------------------------║");	
+        		System.out.println("║ Deseja proseguir com esse endereço?(S/N) ║");
+        		System.out.println("╚══════════════════════════════════════════╝");
+            }else {
+            	endereco = logradouro + ", " + numero_residencia + " - " + bairro + " - " + 
+            			cidade + " - " + uf + " - Complemento: " + complemento;
+                System.out.println("╔══════════════════════════════════════════╗");
+        		System.out.println("║           ENDEREÇO ENCONTRADO            ║");
+        		System.out.println("║------------------------------------------║");	
+                System.out.print(Util.preencherEspacos(43, "║"+logradouro + ", " + numero_residencia));System.out.println("║");
+                System.out.print(Util.preencherEspacos(43, "║"+bairro + " - " + cidade + " - " + uf));System.out.println("║");
+                System.out.print(Util.preencherEspacos(43, "║Complemento: " + complemento));System.out.println("║");
+        		System.out.println("║------------------------------------------║");	
+        		System.out.println("║ Deseja prosseguir com esse endereço?(S/N)║");
+        		System.out.println("╚══════════════════════════════════════════╝");
+            }
+            char opcao;///= in.next().toLowerCase().charAt(0);
+            do {
+            	System.out.print("[S/N]>");
+            	opcao = in.next().toLowerCase().charAt(0);
+	            switch(opcao) {
+	            	case 's':
+	            		break;
+	            	case 'n':
+	            		System.out.println("╔══════════════════════════════════════════╗");
+	            		buscarCep();
+	            		break;
+	            	default:
+	            		System.err.println("Opção inválida!");
+	            		continue;
+	            }
+            }while(opcao != 's' && opcao != 'n');
+            
+            return endereco;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } 
+    }
+
 	
 }

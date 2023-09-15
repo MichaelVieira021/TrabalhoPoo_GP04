@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import com.serratec.classes.Categoria;
 import com.serratec.conexao.Conexao;
 
@@ -23,6 +22,7 @@ public class CategoriaDAO {
 		prepararSqlAlteracao();
 	}
 	
+	//------------------------------------------------------------
 	private void prepararSqlInclusao() {
 		String sql = "insert into "+ this.schema + ".categoria";	
 		sql += " (nm_categoria, descricao)";
@@ -51,39 +51,16 @@ public class CategoriaDAO {
 		}
 	}
 	
-	/*public int alterarCliente(Livro livro) {
-		try {
-			pAlteracao.setString(1, livro.getTitulo());
-			pAlteracao.setString(2, livro.getAutor());
-			pAlteracao.setString(3, livro.getEditora());
-			pAlteracao.setString(4, livro.getIsbn());
-			pAlteracao.setInt(5, livro.getNumPaginas());
-			pAlteracao.setInt(6, livro.getQuantidade());
-			pAlteracao.setInt(7, livro.getIdlivro());
-			
-			return pAlteracao.executeUpdate();
-		} catch (Exception e) {
-			if (e.getLocalizedMessage().contains("is null")) {
-				System.err.println("\nLivro nao alterado.\nVerifique se foi chamado o conect:\n" + e);				
-			} else {				
-				System.err.println(e);
-				e.printStackTrace();
-			}
-			return 0;
-		}
-	}*/
-	
+	//------------------------------------------------------------
 	public int incluirCategoria(Categoria categoria) {
 		try {		
 							
 			pInclusao.setString(1, categoria.getNm_categoria());
 			pInclusao.setString(2, categoria.getDescricao());
-			pInclusao.setInt(3, categoria.getIdcategoria());
-			
 			return pInclusao.executeUpdate();
 		} catch (Exception e) {
 			if (e.getLocalizedMessage().contains("is null")) {
-				System.err.println("\nLivro nao incluido.\nVerifique se foi chamado o conect:\n" + e);				
+				System.err.println("\nCategoria não incluída.\nVerifique se foi chamado o conect:\n" + e);				
 			} else {				
 				System.err.println(e);
 				e.printStackTrace();
@@ -92,6 +69,25 @@ public class CategoriaDAO {
 		}
 	}
 	
+	public int alterarCategoria(Categoria categoria) {
+		try {
+			pAlteracao.setString(1, categoria.getNm_categoria());
+			pAlteracao.setString(2, categoria.getDescricao());
+			pAlteracao.setInt(3, categoria.getIdcategoria());
+
+			return pAlteracao.executeUpdate();
+		} catch (Exception e) {
+			if (e.getLocalizedMessage().contains("is null")) {
+				System.err.println("\nCategoria não alterado.\nVerifique se foi chamado o conect:\n" + e);				
+			} else {				
+				System.err.println(e);
+				e.printStackTrace();
+			}
+			return 0;
+		}
+	}
+
+	//------------------------------------------------------------
 	public ResultSet carregarCategoria() {
 		ResultSet tabela;				
 		String sql = "select * from " + this.schema + ".categoria order by idcategoria";
@@ -109,9 +105,7 @@ public class CategoriaDAO {
 
         try {
             while (tabela.next()) {
-            	int  idcategoria = tabela.getInt("idcategoria");
-                String nomeCategoria = tabela.getString("nm_categoria");
-                Categoria categoria = new Categoria(idcategoria, nomeCategoria);
+                Categoria categoria = new Categoria(tabela.getInt("idcategoria"), tabela.getString("nm_categoria"));
                 categorias.add(categoria);
             }
         } catch (SQLException e) {
